@@ -17,3 +17,7 @@
 - aplicar o algoritmo de identificação em tempo real (iterativamente)
 	- conferir com o Juan Goude
 - usar esse resultado para projetar um controlador em tempo real
+
+
+![[Pasted image 20260206162904.png]]
+
