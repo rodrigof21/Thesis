@@ -1,0 +1,19 @@
+- Traçar diagrama de bode das respostas em frequencia para varios valores de nu, zeta, wn
+- achar resposta ao degrau unitário a partir da resposta em frequencia
+	- testar primeiro com 1/s+1, depois com uma simples de segunda ordem
+	- fourier inversa - codigo de matlab
+- verificar se sempre é verdade que o efeito de variar wn é um fator de escala no tempo
+- Usar dois ciclos for para varia nu e zeta e guardar/visualizar as respetivas respostas ao degrau
+- analisar as curvas obtidas visualmente
+- pensar quais os pontos de interesse a obter: Mp, t_Mp, t_0.5, 
+	- posso tentar começar por analisar o caso estavel com 1 peak - sobreimpulso
+- Obter esses pontos para todas as curvas
+- Tentar obter regularidades para o caso 2<nu<1, e zeta >0 
+	- evoluçao linear, polinomial, exponencial...
+- Conceber a partir das regularidades um procedimento de identificaçºao
+- testar o procedimento para varios casos
+- verificar qual a sensibilidade do procedimento à presença de ruído para varios SNR
+- repetir para os outros valores de nu e zeta para os quais há estabilidade
+- aplicar o algoritmo de identificação em tempo real (iterativamente)
+	- conferir com o Juan Goude
+- usar esse resultado para projetar um controlador em tempo real
