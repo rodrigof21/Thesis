@@ -5,7 +5,8 @@ AUTHOR: Rodrigo Fonseca
 DATE: 2026
 
 PROGRAM DESCRIPTION:
-This Program plot the Bode diagram of various
+This Program plots the Bode diagram of various transfer functions with
+different values for nu, zeta and wn.
 
 INPUTS:
 - nu_vec:   Vector of base fractional orders (e.g., [0.2, 0.5, 0.8]).

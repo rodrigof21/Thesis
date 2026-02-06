@@ -4,7 +4,8 @@
 % DATE: 2026
 %
 % PROGRAM DESCRIPTION: 
-% This Program plot the Bode diagram of various 
+% This Program plots the Bode diagram of various transfer functions with
+% different values for nu, zeta and wn.
 %
 % INPUTS:
 %   - nu_vec:   Vector of base fractional orders (e.g., [0.2, 0.5, 0.8]).
@@ -36,7 +37,7 @@ end
 count = 1;
 totalIterations = length(nu_vec) * length(zeta_vec) * length(wn_vec);
 
-% 4. Triple Loop for automated generation
+
 for i = 1:length(nu_vec)
     for j = 1:length(zeta_vec)
         for k = 1:length(wn_vec)
@@ -46,29 +47,27 @@ for i = 1:length(nu_vec)
             zeta = zeta_vec(j);
             wn = wn_vec(k);
             
-            % --- System Construction ---
-            % We define the G(s) = num / den
-            % Denominator coefficients: [1, 2*zeta*wn, wn^2]
-            % Denominator orders: [nu+1, nu, 0]
-            
+            % Denominator
             a = [1, 2*zeta*wn, wn^2];
             na = [nu+1, nu, 0];
-            b = [wn^2];
-            nb = [0];
+
+            % Numerator
+            b = wn^2;
+            nb = 0;
             
-            % Create the fractional transfer function object
+            % transfer function object (den, num)
             G = fotf(a, na, b, nb);
             
             % 5. Plotting
-            h = figure('Visible', 'off'); % Hidden window for batch processing
+            h = figure('Visible', 'off'); % Hidden window
             bode(G);
             grid on;
             
-            % Dynamic title based on current parameters
+            % title based on current parameters
             title_str = sprintf('Bode Plot: \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
             title(title_str);
             
-            % 6. Exporting Results
+            % Exporting 
             fileName = sprintf('Bode_nu%.1f_zeta%.1f_wn%d.png', nu, zeta, wn);
             saveas(h, fullfile(outputFolder, fileName));
             close(h); 
@@ -81,5 +80,6 @@ for i = 1:length(nu_vec)
 end
 
 disp('====================================================');
-disp('Execution Finished: Check the folder for output images.');
+disp('Execution Finished.');
 disp('====================================================');
+

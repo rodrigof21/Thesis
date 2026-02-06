@@ -11,10 +11,14 @@
             "id": "a4c7d3ef3f90793d",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Project/Main steps and cronogram.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Main steps and cronogram"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Project/Main steps and cronogram.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for Main steps and cronogram"
             }
           },
           {
@@ -179,11 +184,13 @@
   },
   "active": "a4c7d3ef3f90793d",
   "lastOpenFiles": [
-    "Info/Matlab Script Index.md",
-    "Info/code files/bode.m.md",
-    "Project/Main steps and cronogram.md",
-    "Project/TODO - Project.md",
     "Project/TODO - Report.md",
+    "Project/TODO - Project.md",
+    "Info/code files/bode.m.md",
+    "Info/Matlab Script Index.md",
+    "Info/code files/teste.m.md",
+    "Info/code files/test.m.md",
+    "Project/Main steps and cronogram.md",
     "Info/README.md",
     "Info/code files/Matlab Script Index.md",
     "Info/File Index.md",
