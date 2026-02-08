@@ -14,6 +14,14 @@
 - trying to find for myself and writing it on [[Inverse Fourier]]
 
 
+### 08-02
+---
+- Maybe finished the inverse Fourier for finding the unitary step response, but still need confirmation. 
+	- Developed [[invFourierTest.m]]
+	- Developed [[UnitStepResponse.m]]
+- It's working for a simple system 1/(s+1)
+- it's working for the intended FO system with a high resolution. simulations take a while
+
 ### 
 ---
 

@@ -25,7 +25,7 @@
 function [t, y] = invFourierTest(G, tf, u)
 
     % frequency params
-    dw = 0.02;
+    dw = 0.0001;
     wmax = 500;
     w = dw:dw:wmax;
     

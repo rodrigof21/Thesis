@@ -1,2 +1,3 @@
 cd C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\python_utilities
-python matlab_to_obsidian.py
+python readme_new.py
+

@@ -70,7 +70,7 @@ def generate_index(obsidian_folder, index, file_data):
     functions = [d for d in file_data if d['type'] == "FUNCTION"]
 
     with open(index_path, 'w', encoding='utf-8') as f:
-        f.write("# Matlab Code Index\n\n")
+        #f.write("# Matlab Code Index\n\n")
         f.write(create_table("Scripts", scripts))
         f.write(create_table("Functions", functions))
 
