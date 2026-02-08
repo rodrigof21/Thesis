@@ -50,7 +50,6 @@ for i = 1:length(nu_vec)
             % Denominator
             a = [1, 2*zeta*wn, wn^2];
             na = [nu+1, nu, 0];
-
             % Numerator
             b = wn^2;
             nb = 0;
@@ -58,16 +57,16 @@ for i = 1:length(nu_vec)
             % transfer function object (den, num)
             G = fotf(a, na, b, nb);
             
-            % 5. Plotting
+            % plot
             h = figure('Visible', 'off'); % Hidden window
             bode(G);
             grid on;
             
-            % title based on current parameters
+            % title
             title_str = sprintf('Bode Plot: \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
             title(title_str);
             
-            % Exporting 
+            % save img
             fileName = sprintf('Bode_nu%.1f_zeta%.1f_wn%d.png', nu, zeta, wn);
             saveas(h, fullfile(outputFolder, fileName));
             close(h); 
