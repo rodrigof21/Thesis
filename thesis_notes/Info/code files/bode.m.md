@@ -4,7 +4,7 @@ THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
 TYPE: SCRIPT
-STATUS: IN PROGRESS
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 This Program plots the Bode diagram of various transfer functions with

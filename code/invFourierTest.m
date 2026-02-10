@@ -10,8 +10,8 @@
 % with the Riemann integral sum - based on [[Inverse Fourier]]
 %
 % INPUTS:
-%   - G: System G = @(s) ...
-%   - u: input u= @(s) ...
+%   - G: System G = @(s)
+%   - u: input u= @(s)
 %   - tf: final time
 %
 % OUTPUTS:
@@ -25,7 +25,7 @@
 function [t, y] = invFourierTest(G, tf, u)
 
     % frequency params
-    dw = 0.0001;
+    dw = 0.001; % ideal = 0.0001;
     wmax = 500;
     w = dw:dw:wmax;
     
@@ -36,6 +36,7 @@ function [t, y] = invFourierTest(G, tf, u)
     ujw = u(1j*w);
     
     % riemann loop
+    % trapz
     for i = 1:length(t)
         integrand = (Gjw .* ujw) .* exp(1j*w*t(i));
     

@@ -10,11 +10,12 @@ and
 
 $$ Y(j\omega) = \frac{1}{j\omega+1} \times\frac{1}{j\omega}$$
 
-in the time domain:
+in the time domain: Lecture notes eq 38.14
 
 $$y(t) = \mathcal{F}^{-1}\{Y(j\omega)\} = \frac{1}{2\pi}\int Y(j\omega) \cdot e^{j\omega t} \, d\omega$$
 
 Riemann's integral:
 
 $$y(t) \approx \frac{1}{2\pi}\sum Y(j\omega)\cdot e^{j\omega t} \Delta \omega $$
-	Apply in matlab
+Apply in matlab
+

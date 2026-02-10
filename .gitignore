@@ -2,4 +2,5 @@ bib/
 code/results/
 thesis_notes/.obsidian/
 thesis_notes/.trash/
-
+code/*.asv
+thesis_notes\Project\ProjectLog.md

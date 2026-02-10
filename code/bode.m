@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: IN PROGRESS
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % This Program plots the Bode diagram of various transfer functions with
@@ -51,7 +51,7 @@ for i = 1:length(nu_vec)
             
             % Denominator
             a = [1, 2*zeta*wn, wn^2];
-            na = [nu+1, nu, 0];
+            na = [nu+1, nu, 0]; % 1 / ( (s/w0)^(nu+1) + 2*zeta*(s/w0) + 1 )
             % Numerator
             b = wn^2;
             nb = 0;
@@ -80,7 +80,5 @@ for i = 1:length(nu_vec)
     end
 end
 
-disp('====================================================');
-disp('Execution Finished.');
-disp('====================================================');
+
 

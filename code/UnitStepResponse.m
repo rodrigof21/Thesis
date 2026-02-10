@@ -24,13 +24,13 @@
 % Assign current loop parameters
 nu = 0.5;
 zeta = 0.7;
-wn = 1;
+wn = 100;
 
 
 %G = @(s) 1./(s+1);
 G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
 u = @(s) 1./s; % unit step
-tfinal = 100;
+tfinal = 30;
 
 [tout, yout] = invFourierTest(G, tfinal, u);
 
@@ -51,4 +51,4 @@ nb = 0;
 
 % transfer function object (den, num)
 Gs = fotf(a, na, b, nb);
-step(Gs)
+%step(Gs)

@@ -11,8 +11,8 @@ First test of a function that implements a inverse Fourier transformation
 with the Riemann integral sum - based on [[Inverse Fourier]]
 
 INPUTS:
-- G: System G = @(s) ...
-- u: input u= @(s) ...
+- G: System G = @(s)
+- u: input u= @(s)
 - tf: final time
 
 OUTPUTS:
@@ -23,3 +23,4 @@ OUTPUT FOLDER: N/A
 
 ---
 **Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\invFourierTest.m`
+
