@@ -20,7 +20,7 @@
 %==========================================================================
 
 
-w = [1 2 3 4];
+w = [1 10 100 1000];
 
 for i = 1:length(w)
 
@@ -29,7 +29,8 @@ for i = 1:length(w)
     zeta = 1;
     wn = w(i);
 
-    G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
+    %G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
+    G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
     u = @(s) 1./s; % unit step
     tfinal = 100;
 
@@ -41,7 +42,7 @@ end
 
 
 % settings and saving -------------------------
-legend('wn = 1', 'wn = 2', 'wn = 3', 'wn = 4');
+legend('wn = 1', 'wn = 10', 'wn = 100', 'wn = 1000');
 title('step response comparison')
 xlabel('time')
 ylabel('amplitude')
@@ -51,5 +52,5 @@ outputFolder = 'results/varyingWn';
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
-saveas(gcf, fullfile(outputFolder, fileName));
-close(gcf); 
+%saveas(gcf, fullfile(outputFolder, fileName));
+%close(gcf); 
