@@ -5,11 +5,8 @@
 Systems of the type:
 
 $$
-\begin{equation}
-	G(s) = \frac{1}{1 + 2\zeta \left( \frac{s}{\omega_n} \right)^\nu + \left( \frac{s}{\omega_n} \right)^{\nu+1}}
+G(s) = \frac{1}{1 + 2\zeta \left( \frac{s}{\omega_n} \right)^\nu + \left( \frac{s}{\omega_n} \right)^{\nu+1}}
 \tag{4}
-\end{equation}
-
 $$
 
 $$
