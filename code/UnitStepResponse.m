@@ -3,42 +3,62 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: IN PROGRESS
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % This program uses the [[invFourierTest.m]] function to compute the unit
-% step response of a system and compare it to the actual unit step response
-% with step(G(s))
+% step response of various systems by looping through various values of
+% zeta and nu
 %
 % INPUTS:
-%   - G: system to analyse
-%   - tfinal: time of analysis
+%   - N/A
 %
 % OUTPUTS:
-%   - step response image
+%   - step response images
 %
-% OUTPUT FOLDER: N/A
+% OUTPUT FOLDER: results/unitStepResponses
 %
-% MODEL TYPE: N/A
+% MODEL TYPE: G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 %==========================================================================
 
-% Assign current loop parameters
-nu = 0.5;
-zeta = 0.7;
-wn = 100;
 
-% System (99)
-G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
+outputFolder = 'results/unitStepResponses';
+if ~exist(outputFolder, 'dir')
+    mkdir(outputFolder);
+end
 
-% System (4)
-%G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+nu_v = 0.1:0.1:0.9;
+zeta_v = 0;
+wn = 1;
 
-u = @(s) 1./s; % unit step
-tfinal = 10;
+u = @(s) 1./s;
 
-%[tout, yout] = invFourierRiemann(G, tfinal, u);
-[tout, yout] = invFourierTrapz(G, tfinal, u);
+count = 1;
+total = length(nu_v)*length(zeta_v);
 
-figure, plot(tout, yout)
-axis([0 tfinal 0 1.2])
+for i = 1:length(nu_v)
+    for j = 1:length(zeta_v)
+        
+        nu = nu_v(i);
+        zeta = zeta_v(j);
 
+        G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+        
+        tfinal = 30;
+
+        [t, y] = invFourierTrapz(G, u, tfinal, 0.05);
+        
+        h = figure('Visible','off');
+        plot(t, y);
+
+        title_str = sprintf('Step Response: \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
+        title(title_str);
+
+        fileName = sprintf('stepResponse_nu%.1f_zeta%.1f.png', nu, zeta);
+        saveas(h, fullfile(outputFolder, fileName));
+        close(h);
+
+        fprintf('Status: %d/%d | Saved: %s\n', count, total, fileName);
+        count = count + 1;
+    end
+end
