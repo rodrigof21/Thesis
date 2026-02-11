@@ -18,5 +18,7 @@ OUTPUTS:
 
 OUTPUT FOLDER: results/varyingWn
 
+MODEL TYPE: N/A
+
 ---
 **Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\varyingWn.m`

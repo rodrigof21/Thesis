@@ -2,7 +2,8 @@
 | Status | Name | Link |
 | :---: | --- | --- |
 | 🟡 | UnitStepResponse | [[UnitStepResponse.m]] |
-| 🟢 | bode | [[bode.m]] |
+| 🟡 | find_fo_bode4 | [[find_fo_bode4.m]] |
+| 🟡 | find_fo_bode99 | [[find_fo_bode99.m]] |
 | 🟡 | varyingWn | [[varyingWn.m]] |
 
 ### Functions

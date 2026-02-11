@@ -21,6 +21,7 @@ OUTPUTS:
 
 OUTPUT FOLDER: N/A
 
+MODEL TYPE: N/A
+
 ---
 **Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\invFourierTest.m`
-

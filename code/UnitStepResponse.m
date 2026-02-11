@@ -19,6 +19,7 @@
 %
 % OUTPUT FOLDER: N/A
 %
+% MODEL TYPE: N/A
 %==========================================================================
 
 % Assign current loop parameters
@@ -26,10 +27,12 @@ nu = 0.5;
 zeta = 0.7;
 wn = 100;
 
+% System (99)
+G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
 
-%G = @(s) 1./(s+1);
-%G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
-G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+% System (4)
+%G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+
 u = @(s) 1./s; % unit step
 tfinal = 30;
 

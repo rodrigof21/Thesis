@@ -20,6 +20,7 @@
 %
 % OUTPUT FOLDER: N/A
 %
+% MODEL TYPE: N/A
 %==========================================================================
 
 function [t, y] = invFourierTest(G, tf, u)

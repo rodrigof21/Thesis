@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: FINISHED
+% STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
 % This Program plots the Bode diagram of various transfer functions with
@@ -20,7 +20,7 @@
 %
 % OUTPUT FOLDER: /results/bode
 %
-% MODEL STRUCTURE: G(s) = wn^2 / (s^(nu+1) + 2*zeta*wn*s^nu + wn^2)
+% MODEL TYPE: (99)
 %==========================================================================
 
 
@@ -30,7 +30,7 @@ zeta_vec = [0.3, 0.7, 1.2];
 wn_vec   = [1, 5, 10];
 
 % 2. Directory setup
-outputFolder = 'results/bode';
+outputFolder = 'results/bode99';
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
@@ -65,11 +65,11 @@ for i = 1:length(nu_vec)
             grid on;
             
             % title
-            title_str = sprintf('Bode Plot: \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
+            title_str = sprintf('Bode Plot (99): \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
             title(title_str);
             
             % save img
-            fileName = sprintf('Bode_nu%.1f_zeta%.1f_wn%d.png', nu, zeta, wn);
+            fileName = sprintf('Bode99_nu%.1f_zeta%.1f_wn%d.png', nu, zeta, wn);
             saveas(h, fullfile(outputFolder, fileName));
             close(h); 
             
