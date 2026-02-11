@@ -7,4 +7,5 @@
 
 I suspect $\omega_n$ acts as a scale factor in time.
 
-![[Pasted image 20260211135651.png]]
+![[Pasted image 20260211153730.png]]
+

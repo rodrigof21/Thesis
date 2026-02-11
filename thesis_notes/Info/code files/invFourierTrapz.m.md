@@ -14,6 +14,7 @@ INPUTS:
 - G: System G = @(s)
 - u: input u= @(s)
 - tf: final time
+- ts: sampling time
 
 OUTPUTS:
 - t: time for the response

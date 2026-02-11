@@ -16,7 +16,7 @@ INPUTS:
 - tfinal: time of analysis
 
 OUTPUTS:
-- one image comparing the two responses
+- step response image
 
 OUTPUT FOLDER: N/A
 

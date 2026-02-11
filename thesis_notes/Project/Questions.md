@@ -1,0 +1,2 @@
+- Is the value for $\omega_{min}$ okay? 
+- 

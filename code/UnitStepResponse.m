@@ -15,7 +15,7 @@
 %   - tfinal: time of analysis
 %
 % OUTPUTS:
-%   - one image comparing the two responses
+%   - step response image
 %
 % OUTPUT FOLDER: N/A
 %
@@ -42,19 +42,3 @@ tfinal = 10;
 figure, plot(tout, yout)
 axis([0 tfinal 0 1.2])
 
-% % compare with real step response
-% hold on
-% % s = tf('s');
-% % Gs = 1/(s+1);
-% % step(Gs, 50);
-% 
-% % Denominator
-% a = [1, 2*zeta*wn, wn^2];
-% na = [nu+1, nu, 0];
-% % Numerator
-% b = wn^2;
-% nb = 0;
-% 
-% % transfer function object (den, num)
-% Gs = fotf(a, na, b, nb);
-% step(Gs, tout)

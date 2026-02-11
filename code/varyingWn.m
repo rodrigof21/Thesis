@@ -31,15 +31,15 @@ for i = 1:length(w)
     wn = w(i);
 
     % System (99)
-    G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
+    %G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
 
-    % System (4)
-    %G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+    % System (4)    
+    G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 
     u = @(s) 1./s; % unit step
-    tfinal = 10;
+    tfinal = 25;
 
-    [tout, yout] = invFourierTrapz(G, tfinal, u);
+    [tout, yout] = invFourierTrapz(G, u, tfinal, 0.05);
 
     plot(tout, yout);
     hold on
@@ -48,8 +48,8 @@ end
 hold off
 
 % settings and saving -------------------------
-legend('wn = 0.5', 'wn = 0.6', 'wn = 0.7', 'wn = 0.8');
-title('step response comparison (99)')
+legend(sprintf('wn = %.1f', w(1)), sprintf('wn = %.1f', w(2)), sprintf('wn = %.1f', w(3)), sprintf('wn = %.1f', w(4)));
+title('step response comparison (4)')
 xlabel('time')
 ylabel('amplitude')
 % % save img

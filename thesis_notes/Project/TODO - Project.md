@@ -7,9 +7,9 @@ general:
 
 bode.m:
 - [ ] more values for nu, zeta, wn
-- [ ] change the system to the eq.4
-- [ ] reanalyze the bode diagrams
+- [x] change the system to the eq.4
+- [x] reanalyze the bode diagrams
 
 invFourierTest:
-- [ ] test with trapz
+- [x] test with trapz
 

@@ -19,3 +19,9 @@ Riemann's integral:
 $$y(t) \approx \frac{1}{2\pi}\sum Y(j\omega)\cdot e^{j\omega t} \Delta \omega $$
 Apply in matlab
 
+
+Constants:
+
+$\omega_{max} = \frac{10\pi}{T_S}$  and $\omega_{min} = \frac{0.1\pi}{T_S}$
+
+$T_s = 0.05$
