@@ -28,7 +28,7 @@ if ~exist(outputFolder, 'dir')
 end
 
 nu_v = 0.1:0.1:0.9;
-zeta_v = 0;
+zeta_v = 0:0.1:0.9;
 wn = 1;
 
 u = @(s) 1./s;
