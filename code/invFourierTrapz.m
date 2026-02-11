@@ -7,7 +7,7 @@
 %
 % PROGRAM DESCRIPTION: FUNCTION
 % First test of a function that implements a inverse Fourier transformation
-% with the Riemann integral sum - based on [[Inverse Fourier]]
+% with the Trapz integral
 %
 % INPUTS:
 %   - G: System G = @(s)
@@ -23,10 +23,10 @@
 % MODEL TYPE: N/A
 %==========================================================================
 
-function [t, y] = invFourierTest(G, tf, u)
+function [t, y] = invFourierTrapz(G, tf, u)
 
     % frequency params
-    dw = 0.001; % ideal = 0.0001;
+    dw = 0.0001; % ideal = 0.0001;
     wmax = 500;
     w = dw:dw:wmax;
     
@@ -36,15 +36,11 @@ function [t, y] = invFourierTest(G, tf, u)
     Gjw = G(1j*w);
     ujw = u(1j*w);
     
-    % riemann loop
     % trapz
     for i = 1:length(t)
         integrand = (Gjw .* ujw) .* exp(1j*w*t(i));
     
-        y(i) = (1/pi) * real(sum(integrand) * dw) + 0.5 * real(G(0));
+        y(i) = (1/pi) * real(trapz(w, integrand));
     end
-
 end
-
-
 

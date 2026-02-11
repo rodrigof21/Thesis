@@ -34,11 +34,13 @@ G = @(s) wn.^2 ./ (s.^(nu+1) + 2.*zeta.*wn.*s.^nu + wn.^2);
 %G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 
 u = @(s) 1./s; % unit step
-tfinal = 30;
+tfinal = 10;
 
-[tout, yout] = invFourierTest(G, tfinal, u);
+%[tout, yout] = invFourierRiemann(G, tfinal, u);
+[tout, yout] = invFourierTrapz(G, tfinal, u);
 
 figure, plot(tout, yout)
+axis([0 tfinal 0 1.2])
 
 % % compare with real step response
 % hold on
