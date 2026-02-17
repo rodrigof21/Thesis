@@ -7,7 +7,7 @@ TYPE: SCRIPT
 STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
-The goal is to test the inFourier functions with known systems and the
+The goal is to test the invFourier functions with known systems and the
 respective step responses and compares it with the actual step response
 
 INPUTS:

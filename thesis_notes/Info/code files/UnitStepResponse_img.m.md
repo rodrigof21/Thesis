@@ -9,18 +9,17 @@ STATUS: FINISHED
 PROGRAM DESCRIPTION:
 This program uses the [[invFourierTest.m]] function to compute the unit
 step response of various systems by looping through various values of
-zeta and nu. The values of each iteration are stored in
-[[Database Values]].
+zeta and nu and saves them as images
 
 INPUTS:
 - N/A
 
 OUTPUTS:
-- step response database in a .mat file
+- step response images
 
 OUTPUT FOLDER: results/unitStepResponses_img
 
 MODEL TYPE: G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\UnitStepResponse.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\UnitStepResponse_img.m`

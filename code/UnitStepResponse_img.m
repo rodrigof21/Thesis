@@ -8,14 +8,13 @@
 % PROGRAM DESCRIPTION: 
 % This program uses the [[invFourierTest.m]] function to compute the unit
 % step response of various systems by looping through various values of
-% zeta and nu. The values of each iteration are stored in 
-% [[Database Values]].
+% zeta and nu and saves them as images
 %
 % INPUTS:
 %   - N/A
 %
 % OUTPUTS:
-%   - step response database in a .mat file
+%   - step response images
 %
 % OUTPUT FOLDER: results/unitStepResponses_img
 %
@@ -23,12 +22,12 @@
 %==========================================================================
 
 
-outputFolder = 'results/unitStepResponses';
+outputFolder = 'results/unitStepResponses_img';
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
 
-nu_v = 0.1:0.1:1.2;
+nu_v = 0.0:0.1:1.2;
 zeta_v = 0.0:0.1:1.2;
 wn = 1;
 
@@ -36,8 +35,6 @@ u = @(s) 1./s;
 
 count = 1;
 total = length(nu_v)*length(zeta_v);
-
-data_storage = struct();
 
 for i = 1:length(nu_v)
     for j = 1:length(zeta_v)
@@ -52,17 +49,17 @@ for i = 1:length(nu_v)
 
         [t, y] = invFourierTrapz(G, u, tfinal, ts);
         
-        % Guardar na estrutura
-        fieldName = sprintf('sim_%d', count);
-        data_storage.(fieldName).nu = nu;
-        data_storage.(fieldName).zeta = zeta;
-        data_storage.(fieldName).t = t;
-        data_storage.(fieldName).y = y;
-        
+        h = figure('Visible','off');
+        plot(t, y);
 
-        fprintf('Status: %d/%d', count, total);
+        title_str = sprintf('Step Response: \\nu=%.1f, \\zeta=%.1f, \\omega_n=%d', nu, zeta, wn);
+        title(title_str);
+
+        fileName = sprintf('stepResponse_nu%.1f_zeta%.1f.png', nu, zeta);
+        saveas(h, fullfile(outputFolder, fileName));
+        close(h);
+
+        fprintf('Status: %d/%d | Saved: %s\n', count, total, fileName);
         count = count + 1;
     end
 end
-
-save(fullfile(outputFolder, 'step_response_database.mat'), 'data_storage');

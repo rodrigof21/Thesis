@@ -10,7 +10,7 @@
 - Obter esses pontos para todas as curvas
 - Tentar obter regularidades para o caso 2<nu<1, e zeta >0 
 	- evoluçao linear, polinomial, exponencial...
-- Conceber a partir das regularidades um procedimento de identificaçºao
+- Conceber a partir das regularidades um procedimento de identificação
 - testar o procedimento para varios casos
 - verificar qual a sensibilidade do procedimento à presença de ruído para varios SNR
 - repetir para os outros valores de nu e zeta para os quais há estabilidade
