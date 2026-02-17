@@ -6,9 +6,8 @@
 % STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
-% This program uses the [[invFourierTest.m]] function to compute the unit
-% step response of various systems by looping through various values of
-% zeta and nu and saves them as images
+% This program uses the databse in [[Database Values] to plot the unit step
+% response of the various systems.
 %
 % INPUTS:
 %   - N/A
