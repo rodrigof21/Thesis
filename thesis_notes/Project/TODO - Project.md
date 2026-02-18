@@ -3,6 +3,10 @@ general:
 - [x] separate functions from scripts in the index
 - [x] add in progress/finished notation in index
 - [x] change to the form in eq. 4 in stability etc valerio article 
+- [ ] Create a Database with:
+	- [ ] Time (0s, 60s)
+	- [ ] $\omega \rightarrow [10^{-4}, 10^4]$ 
+	- [ ] $T_s = 0,01$
 - [ ] update README
 
 bode.m:

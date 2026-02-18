@@ -6,6 +6,8 @@ $\omega_{max} = \frac{10\pi}{T_S}$  and $\omega_{min} = \frac{0.1\pi}{T_S}$
 
 Other option: $w_{min} = \frac{\pi}{T_{total}}$ **(Most likely wrong)** not obtaining good results
 
+I'm currently using $\omega_{min} = \delta\omega = 10^{-3}$ 
+
 $T_s = 0.05$
 
 Other ideas:

@@ -60,7 +60,7 @@ for i = 1:length(nu_v)
         data_storage.(fieldName).y = y;
         
 
-        fprintf('Status: %d/%d', count, total);
+        fprintf('Status: %d/%d\n', count, total);
         count = count + 1;
     end
 end

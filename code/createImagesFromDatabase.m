@@ -16,8 +16,6 @@
 %   - step response images
 %
 % OUTPUT FOLDER: results/unitStepResponses_img_test (currently)
-%
-% MODEL TYPE: G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 %==========================================================================
 
 
