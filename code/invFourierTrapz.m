@@ -24,14 +24,18 @@
 % MODEL TYPE: N/A
 %==========================================================================
 
+% logspace omega
+
 function [t, y] = invFourierTrapz(G, u, tfinal, ts)
 
     % frequency params
-    dw = 0.001; % ideal = 0.0001;
-    wmax = (10*pi)/ts;
-    wmin = dw; % CHECK THE VALUE FOR WMIN
-    w = wmin:dw:wmax;
+    %dw = 1e-3;
+    %wmax = 1e3; %(10*pi)/ts;
+    %wmin = dw; % CHECK THE VALUE FOR WMIN
+    %w = wmin:dw:wmax;
     
+    w = logspace(-4, 4, 8001); % 100 pts por decada
+
     t = 0:ts:tfinal;
     y = zeros(size(t));
     

@@ -51,7 +51,7 @@ uni_nu = unique(nu);
 
 % Mp vs nu
 
-figure;
+h1 = figure('Visible','on');
 hold on;
 grid on;
 
@@ -74,11 +74,11 @@ xlabel('Fractional Order (\\nu)');
 ylabel('Overshoot (M_p)');
 title('Mp vs. nu');
 legend('Location', 'eastoutside');
-
+saveas(h1, fullfile(outputFolder, 'Mp_vs_nu.png'));
 
 % zeta vs. t05
 
-figure;
+h2 = figure('Visible','on');
 hold on;
 grid on;
 
@@ -97,7 +97,9 @@ for i = 1:length(uni_nu)
    plot(zeta_plot, t05_plot, '-o', 'DisplayName', sprintf('\\nu = %.1f', v));
 end
 
+
 ylabel('t05');
 xlabel('Zeta');
 title('\\t_{0,5} vs zeta');
 legend('Location', 'eastoutside');
+saveas(h2, fullfile(outputFolder, 't05_vs_zeta.png'));

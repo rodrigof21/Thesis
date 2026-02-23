@@ -6,7 +6,7 @@
 % STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: Generates a table with the values for each unit step
-% response in the database
+% response in the database and the respective image
 %
 %
 % INPUTS: N/A

@@ -5,7 +5,7 @@
 
 ## System (4)
 
-I suspect $\omega_n$ acts as a scale factor in time.
+$\omega_n$ acts as a scale factor in time.
 
 ![[Pasted image 20260211153730.png]]
 

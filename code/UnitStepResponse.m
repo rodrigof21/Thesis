@@ -28,8 +28,8 @@ if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
 
-nu_v = 0.1:0.1:1.2;
-zeta_v = 0.0:0.1:1.2;
+nu_v = 0.1:0.1:2;
+zeta_v = 0.0:0.1:2;
 wn = 1;
 
 u = @(s) 1./s;
@@ -47,8 +47,8 @@ for i = 1:length(nu_v)
 
         G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
         
-        tfinal = 30;
-        ts = 0.05;
+        tfinal = 60;
+        ts = 0.01;
 
         [t, y] = invFourierTrapz(G, u, tfinal, ts);
         

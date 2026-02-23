@@ -2,7 +2,7 @@
 % THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
-% TYPE: CRIPT
+% TYPE: SCRIPT
 % STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
