@@ -8,7 +8,8 @@ STATUS: IN PROGRESS
 
 PROGRAM DESCRIPTION:
 The goal is to plot various graphs comparing the points extracted in
-[[extractPoints]] to evaluate how they relate and which points to use
+[[extractPoints.m]] and validated in [[validatePoints.m]]
+to evaluate how they relate and which points to use
 
 OUTPUT FOLDER: results\comparePoints
 

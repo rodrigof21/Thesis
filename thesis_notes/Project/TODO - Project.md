@@ -11,6 +11,9 @@ general:
 - [x] update database documentation
 - [ ] Check varying $\omega_n$ by building a code that checks it
 - [ ] Stability chart check
+- [ ] Compute scale effect (factor) of wn
+	- [ ] prove analytically that it is a scale factor
+- [ ] change step of unit step response database
 
 bode.m:
 - [x] more values for nu, zeta, wn

@@ -28,8 +28,8 @@ if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
 
-nu_v = 0.1:0.1:2;
-zeta_v = 0.0:0.1:2;
+nu_v = 0.0:0.1:2; %0.05 step
+zeta_v = 0.0:0.1:2; 
 wn = 1;
 
 u = @(s) 1./s;

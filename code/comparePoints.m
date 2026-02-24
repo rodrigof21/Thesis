@@ -7,7 +7,8 @@
 %
 % PROGRAM DESCRIPTION: 
 % The goal is to plot various graphs comparing the points extracted in
-% [[extractPoints]] to evaluate how they relate and which points to use
+% [[extractPoints.m]] and validated in [[validatePoints.m]] 
+% to evaluate how they relate and which points to use
 %
 % OUTPUT FOLDER: results\comparePoints
 %==========================================================================
@@ -18,13 +19,12 @@ if ~exist(outputFolder, 'dir')
 end
 
 % points db
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\extractPoints\Points.mat');
-% data_storage db
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\unitStepResponses\step_response_database.mat')
+%load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\extractPoints\Points.mat');
+% validated points db
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\validatedPoints\validated_points_database.mat')
 
-sys = fieldnames(points);
+sys = fieldnames(validated_results);
 count = 1;
-
 
 % Tratamento de dados
 Mp = zeros(length(sys), 1);
@@ -35,9 +35,9 @@ zeta = zeros(length(sys), 1);
 for k = 1:length(sys)
     
     current = sys{k};
-    data = points.(current);
+    data = validated_results.(current);
 
-    Mp(k) = data.Mp;
+    Mp(k) = data.Mp_rel;
     t05(k) = data.t05;
     nu(k) = data.nu;
     zeta(k) = data.zeta;

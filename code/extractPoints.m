@@ -32,7 +32,7 @@ for k = 1:length(sys)
 
     fieldname = sprintf('sys_%d', count);
 
-    % Mp Pvershoot
+    % Mp tp Overshoot
     [max_y, idx_p] = max(data.y);
     points.(fieldname).Mp = max_y - data.y(end);
     points.(fieldname).tp = data.t(idx_p);
