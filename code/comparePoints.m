@@ -21,7 +21,8 @@ end
 % points db
 %load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\extractPoints\Points.mat');
 % validated points db
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\validatedPoints\validated_points_database.mat')
+%load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\validatedPoints\validated_points_database.mat')
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\validatedPoints\double_validated_points.mat')
 
 sys = fieldnames(validated_results);
 count = 1;

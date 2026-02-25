@@ -1,7 +1,7 @@
 ### Scripts
 | Status | Name | Link |
 | :---: | --- | --- |
-| 🟢 | UnitStepResponse | [[UnitStepResponse.m]] |
+| 🟡 | UnitStepResponse | [[UnitStepResponse.m]] |
 | 🟡 | comparePoints | [[comparePoints.m]] |
 | 🟢 | createImagesFromDatabase | [[createImagesFromDatabase.m]] |
 | 🟡 | extractPoints | [[extractPoints.m]] |
@@ -15,6 +15,7 @@
 ### Functions
 | Status | Name | Link |
 | :---: | --- | --- |
+| 🟡 | filterUnstablePairs | [[filterUnstablePairs.m]] |
 | 🟢 | invFourierRiemann | [[invFourierRiemann.m]] |
 | 🟡 | invFourierTrapz | [[invFourierTrapz.m]] |
 

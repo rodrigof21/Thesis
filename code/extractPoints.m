@@ -38,7 +38,7 @@ for k = 1:length(sys)
     points.(fieldname).tp = data.t(idx_p);
 
     % t_0.5
-    idx_50 = find(data.y >= 0.5 * data.y(end), 1);
+    idx_50 = find(data.y >= 0.5, 1);
     if isempty(idx_50)
         t05 = NaN; 
     else

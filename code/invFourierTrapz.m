@@ -34,7 +34,7 @@ function [t, y] = invFourierTrapz(G, u, tfinal, ts)
     %wmin = dw; % CHECK THE VALUE FOR WMIN
     %w = wmin:dw:wmax;
     
-    w = logspace(-4, 4, 8001); % 100 pts por decada
+    w = logspace(-4, 4, 8001); % 1000 pts por decada
 
     t = 0:ts:tfinal;
     y = zeros(size(t));
