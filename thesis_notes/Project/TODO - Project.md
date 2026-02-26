@@ -14,6 +14,7 @@ general:
 - [ ] Compute scale effect (factor) of wn
 	- [ ] prove analytically that it is a scale factor
 - [ ] change step of unit step response database
+- [ ] change axis of the point comparison in [[comparePoints.m]]
 
 bode.m:
 - [x] more values for nu, zeta, wn

@@ -34,7 +34,7 @@ for k = 1:length(sys)
 
     % Mp tp Overshoot
     [max_y, idx_p] = max(data.y);
-    points.(fieldname).Mp = max_y - data.y(end);
+    points.(fieldname).Mp = max_y - 1; %data.y(end);
     points.(fieldname).tp = data.t(idx_p);
 
     % t_0.5

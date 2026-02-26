@@ -9,10 +9,16 @@
 % Testing step responses with fotf toolbox
 %==========================================================================
 
-nu = 1;
-zeta = 0;
+nu = 1.25;
+zeta = 0.2;
 wn = 1;
 
-
 G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
-step(G)
+figure, step(G);
+title('fotf')
+
+u = @(s) 1./s;
+Gs = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
+[t, y] = invFourierTrapz(Gs, u, 100, 0.01);
+figure, plot(t, y);
+title('invFourier')

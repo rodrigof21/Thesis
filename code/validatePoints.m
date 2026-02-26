@@ -40,7 +40,7 @@ for i = 1:num_entries
         t = data_storage.(sym_field).t;
         y = data_storage.(sym_field).y;
         y_final = y(end);
-        Mp_abs = y_final + points.(sys_field).Mp;
+        Mp_abs = 1 + points.(sys_field).Mp; %change to y(end) depending on extractPoints
         tp = points.(sys_field).tp;
 
         % Plot for Mp validation
@@ -84,13 +84,14 @@ for j = 1:length(temp_fields)
     data = temp_results.(temp_fields{j});
     
     % Rise time point is usually at 50% of steady state
-    y_target = data.y(end) * 0.5; 
+    y_target = 0.5; 
     
     % Plot for t05 validation
     clf(hFig);
     plot(data.t, data.y, 'LineWidth', 1.5, 'Color', [0.15 0.35 0.55]); hold on; grid on;
-    % Mark Mp (already validated)
-    plot(data.tp, data.y(end)+data.Mp_rel, 'ko', 'MarkerSize', 6); 
+    % Mark Mp (already validated) can change one to data.y(end) depending
+    % on what's in the extractPoint.m
+    plot(data.tp, 1+data.Mp_rel, 'ko', 'MarkerSize', 6); 
     % Mark t05 (to be validated) - marked with a blue X
     plot(data.t05, y_target, 'bx', 'MarkerSize', 12, 'LineWidth', 2);
     
