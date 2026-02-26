@@ -9,8 +9,8 @@
 % Testing step responses with fotf toolbox
 %==========================================================================
 
-nu = 1.8;
-zeta = 0.1;
+nu = 1;
+zeta = 0;
 wn = 1;
 
 
