@@ -16,6 +16,7 @@
 ### Functions
 | Status | Name | Link |
 | :---: | --- | --- |
+| 🟡 | checkStability | [[checkStability.m]] |
 | 🟡 | filterUnstablePairs | [[filterUnstablePairs.m]] |
 | 🟢 | invFourierRiemann | [[invFourierRiemann.m]] |
 | 🟡 | invFourierTrapz | [[invFourierTrapz.m]] |

@@ -9,9 +9,9 @@
 % Testing step responses with fotf toolbox
 %==========================================================================
 
-nu = 1.25;
-zeta = 0.2;
-wn = 1;
+nu = 0.3;
+zeta = 2.0;
+wn = 0.5;
 
 G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
 figure, step(G);

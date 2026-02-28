@@ -20,5 +20,7 @@ general:
 - [ ] check what values of nu and zeta with AM and professor for database
 - [ ] Rereun [[generateDBTable.m]]
 	- [ ] change the outputfolder so it saves automatically into obsidian
+- [ ] Write [[Project Files Structure]]
+- [ ] 
 
 

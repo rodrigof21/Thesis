@@ -85,3 +85,5 @@ text(0.5, -0.5, 'unstable, no peaks', 'FontWeight', 'bold', 'HorizontalAlignment
 
 % Optional: Draw vertical line at nu = 1 to show standard 2nd order case
 line([1 1], [-1 5], 'Color', [0.5 0.5 0.5], 'LineStyle', '--');
+
+plot(1.4, 0.3, 'ro')

@@ -9,6 +9,8 @@ STATUS: IN PROGRESS
 PROGRAM DESCRIPTION:
 checks the effect of varying wn
 Plots the curve fitting for a specific value of nu and zeta
+Can choose if we want to measure the time difference between overshoot
+peaks (that may not exist) or t05
 
 OUTPUT FOLDER: (results\effectsOfWn_Plot) not yet
 

@@ -30,8 +30,12 @@ figure,
 for i = 1:length(w)
 
     % parameters
-    nu = 0.2;
+    nu = 1.4;
     zeta = 0.2;
+    stable = checkStability(nu, zeta);
+    if stable, fprintf('Stable\n')
+    else, fprintf('Unstable\n'), close all, return
+    end
     wn = w(i);
 
     % System (99)
@@ -48,8 +52,15 @@ for i = 1:length(w)
     plot(tout, yout);
     hold on
     
-    [max_y(i), idx_max] = max(yout);
-    tmax(i) = tout(idx_max);
+    % % Evalute overshoot time
+    % [max_y(i), idx_max] = max(yout);
+    % tmax(i) = tout(idx_max);
+
+    % evaluate t05
+    idx05 = find(yout >= 0.5, 1);
+    tmax(i) = tout(idx05);
+    max_y(i) = yout(idx05);
+
     plot(tmax(i), max_y(i), 'ro')
 end
 

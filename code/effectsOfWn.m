@@ -7,7 +7,7 @@
 %
 % PROGRAM DESCRIPTION: 
 % Loops through various nu and zeta to check the scale factor of wn. same
-% as [[effectsOfWn_Plot]] but for all stable values of nu and zeta
+% as [[effectsOfWn_Plot.m]] but for all stable values of nu and zeta
 %
 % OUTPUT FOLDER: results/effectsOfWn
 %==========================================================================
@@ -19,7 +19,7 @@ if ~exist(outputFolder, 'dir')
 end
 
 % Stable values for nu and zeta
-nu_init = 0.0:0.2:2;
+nu_init = 0.1:0.2:2;
 zeta_init = 0.0:0.2:2; 
 [nu_st, zeta_st] = filterUnstablePairs(nu_init, zeta_init);
 
@@ -36,10 +36,10 @@ for k = 1:length(nu_st)
     zeta = zeta_st(k);
 
     % wn iterations
-    w = 0:0.05:5;
+    w = 0.5:0.1:5;
     
     max_y = zeros(1, length(w));
-    tmax = zeros(1, length(w));
+    teval = zeros(1, length(w));
     
     for i = 1:length(w)
         
@@ -49,32 +49,45 @@ for k = 1:length(nu_st)
         G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
     
         u = @(s) 1./s;
-        tfinal = 25;
-    
+        tfinal = 60;
         [tout, yout] = invFourierTrapz(G, u, tfinal, 0.05);
-        [max_y(i), idx_max] = max(yout);
-        tmax(i) = tout(idx_max);
+
+        % [max_y(i), idx_max] = max(yout);
+        % teval(i) = tout(idx_max);
+
+        idx05 = find(yout >= 0.5, 1); %the first value over or = to 0.5
+        teval(i) = tout(idx05);
+
     end
+    
+    h = figure('Visible','off');
+    plot(teval(3:end), w(3:end), 'DisplayName', 'results');
+    hold on
 
-% w = a/tmax  => a = wn * tmax
-a(k) = mean(w.*tmax);
-wn_fit = a(k)./tmax;
+    % y = a/x guess
+    % w = a/tmax  => a = wn * tmax
+    a(k) = mean(w.*teval);
+    wn_fit = a(k)./teval;
+    plot(teval, wn_fit, 'r--', 'DisplayName', sprintf('Fit: a/t, a = %.2f', a(k)));
+    
+    % % curve fitting y = a/(x+b)
+    % model = @(coeff, x) coeff(1)./x + coeff(2);
+    % x0 = [1, 0]; 
+    % coeffs = lsqcurvefit(model, x0, tmax(3:end), w(3:end));
+    % wn_fit = model(coeffs, tmax);
+    % plot(tmax, wn_fit, 'g-', 'DisplayName', sprintf('lscurve: a = %.2f b = %.2f', coeffs(1), coeffs(2)));
 
-% plot figure and save
-h = figure('Visible','off');
-plot(tmax(3:end), w(3:end), 'DisplayName', 'results');
-hold on
-plot(tmax, wn_fit, 'r--', 'DisplayName', sprintf('Fit: a/t, a = %.2f', a(k)));
-legend('show')
-xlabel('tmax')
-ylabel('wn')
-title(sprintf('scale factor of wn nu=%.1f zeta=%.1f', nu, zeta))
-fileName = sprintf('effect_of_wn_nu%.1f_zeta%.1f.png', nu, zeta);
-saveas(h, fullfile(outputFolder, fileName));
-close(h);
-
-% Progress
-fprintf(sprintf("Done %i/%i\n", count, total))
-count = count+1;
+    % Config and save
+    legend('show');
+    xlabel('t05')
+    ylabel('wn')
+    title(sprintf('scale factor of wn vs t05 nu=%.1f zeta=%.1f', nu, zeta))
+    fileName = sprintf('effect_of_wn_nu%.1f_zeta%.1f.png', nu, zeta);
+    saveas(h, fullfile(outputFolder, fileName));
+    close(h);
+    
+    % Progress
+    fprintf(sprintf("Done %i/%i\n", count, total))
+    count = count+1;
 end
 

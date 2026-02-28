@@ -1,7 +1,7 @@
 ### Constants
 
 **Natural frequency** (omega): $\omega_n$
-**Damping Coefficient** (zeta): $\zeta$
+**Pseudo-Damping Coefficient** (zeta): $\zeta$
 **Fraction order** (nu) : $\nu$
 
 
@@ -25,7 +25,7 @@ G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 
 
 
-#### System (99)
+#### System (99) (ignored)
 $$
 G(s) = \frac{\omega_n^2}{s^{\nu+1} + 2\zeta\omega_n s^\nu + \omega_n^2}
 \tag{99}

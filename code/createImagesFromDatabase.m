@@ -19,7 +19,7 @@
 %==========================================================================
 
 
-outputFolder = 'results/unitStepResponses_img_test';
+outputFolder = 'results/unitStepResponses_img';
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end

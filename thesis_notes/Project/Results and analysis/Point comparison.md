@@ -13,11 +13,11 @@ After cleansing:
 Outliers: (left)
 ![[Pasted image 20260226180810.png|293]]
 
-my code vs "real" sumting wong
+my code vs "real" sumting wongz
 ![[Pasted image 20260226181228.png|697]]
 
 
 outlier removed:
-![[Pasted image 20260226182125.png]]
+![[Pasted image 20260226182125.png|697]]
 
 next step is probably to change the axis
