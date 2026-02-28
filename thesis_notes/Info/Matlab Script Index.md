@@ -4,6 +4,7 @@
 | 🟡 | UnitStepResponse | [[UnitStepResponse.m]] |
 | 🟡 | comparePoints | [[comparePoints.m]] |
 | 🟢 | createImagesFromDatabase | [[createImagesFromDatabase.m]] |
+| 🟡 | effectsOfWn_Plot | [[effectsOfWn_Plot.m]] |
 | 🟡 | extractPoints | [[extractPoints.m]] |
 | 🟢 | find_fo_bode4 | [[find_fo_bode4.m]] |
 | 🟢 | find_fo_bode99 | [[find_fo_bode99.m]] |

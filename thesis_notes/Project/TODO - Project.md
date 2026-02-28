@@ -9,18 +9,16 @@ general:
 	- [x] $T_s = 0,01$
 - [x] update README
 - [x] update database documentation
-- [ ] Check varying $\omega_n$ by building a code that checks it
-- [ ] Stability chart check
+- [x] Check varying $\omega_n$ by building a code that checks it
+- [x] Stability chart check
 - [ ] Compute scale effect (factor) of wn
 	- [ ] prove analytically that it is a scale factor
-- [ ] change step of unit step response database
+	- [ ] change to ss value instead of peak time (check [[Effects of varying wn]])
+- [x] change step of unit step response database
 - [ ] change axis of the point comparison in [[comparePoints.m]]
+- [ ] [[Bode Plot Analysis]] preencher
+- [ ] check what values of nu and zeta with AM and professor for database
+- [ ] Rereun [[generateDBTable.m]]
+	- [ ] change the outputfolder so it saves automatically into obsidian
 
-bode.m:
-- [x] more values for nu, zeta, wn
-- [x] change the system to the eq.4
-- [x] reanalyze the bode diagrams
-
-invFourierTest:
-- [x] test with trapz
 

@@ -7,7 +7,7 @@
 %
 % PROGRAM DESCRIPTION: 
 % This program aims to check if varying wn is a scale factor in time. Uses 
-% [[inFourierTest]] or step().
+% [[inFourierTrapz]] or step().
 %
 % INPUTS:
 %   - None
@@ -20,14 +20,18 @@
 % MODEL TYPE: N/A
 %==========================================================================
 
+%% Is it a sacle factor in time?
 
-w = [0.5 0.6 0.7 0.8];
+w = [0.5 0.7 1 1.5 2 5];
+%w = 1;
+max_y = zeros(length(w), 1);
+tmax = zeros(length(w), 1);
 figure,
 for i = 1:length(w)
 
     % parameters
-    nu = 0.8;
-    zeta = 0.3;
+    nu = 0.2;
+    zeta = 0.2;
     wn = w(i);
 
     % System (99)
@@ -43,12 +47,16 @@ for i = 1:length(w)
 
     plot(tout, yout);
     hold on
+    
+    [max_y(i), idx_max] = max(yout);
+    tmax(i) = tout(idx_max);
+    plot(tmax(i), max_y(i), 'ro')
 end
 
 hold off
 
 % settings and saving -------------------------
-legend(sprintf('wn = %.1f', w(1)), sprintf('wn = %.1f', w(2)), sprintf('wn = %.1f', w(3)), sprintf('wn = %.1f', w(4)));
+%legend(sprintf('wn = %.1f', w(1)), sprintf('wn = %.1f', w(2)), sprintf('wn = %.1f', w(3)), sprintf('wn = %.1f', w(4)));
 title('step response comparison (4)')
 xlabel('time')
 ylabel('amplitude')
@@ -60,3 +68,4 @@ ylabel('amplitude')
 % end
 % saveas(gcf, fullfile(outputFolder, fileName));
 % close(gcf); 
+

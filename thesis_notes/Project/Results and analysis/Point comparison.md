@@ -1,7 +1,7 @@
 
-![[t05_vs_zeta.png|500]]
+![[t05_vs_zeta.png|329]]
 
-![[Mp_vs_nu.png|500]]
+![[Mp_vs_nu.png|344]]
 
 ![[Pasted image 20260225195957.png]]
 
@@ -11,10 +11,10 @@ After cleansing:
 
 
 Outliers: (left)
-![[Pasted image 20260226180810.png]]
+![[Pasted image 20260226180810.png|293]]
 
-my code vs "real"
-![[Pasted image 20260226181228.png]]
+my code vs "real" sumting wong
+![[Pasted image 20260226181228.png|697]]
 
 
 outlier removed:
