@@ -5,6 +5,7 @@
 | 🟡 | coeffVsParams | [[coeffVsParams.m]] |
 | 🟡 | comparePoints | [[comparePoints.m]] |
 | 🟢 | createImagesFromDatabase | [[createImagesFromDatabase.m]] |
+| 🟡 | curveFit_test | [[curveFit_test.m]] |
 | 🟡 | effectsOfWn | [[effectsOfWn.m]] |
 | 🟡 | effectsOfWn_Plot | [[effectsOfWn_Plot.m]] |
 | 🟡 | extractPoints | [[extractPoints.m]] |

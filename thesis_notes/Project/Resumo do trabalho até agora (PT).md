@@ -30,3 +30,5 @@
 9. plot da comparaçao dos pontos
 	1. [[comparePoints.m]]
 	2. retirar outliers manualmente
+	3. save files in results/comparePoints
+10. Curve 

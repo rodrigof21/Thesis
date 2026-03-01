@@ -21,3 +21,6 @@ outlier removed:
 ![[Pasted image 20260226182125.png|697]]
 
 next step is probably to change the axis
+
+![[Pasted image 20260301204404.png]]
+

@@ -6,7 +6,8 @@
 % STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
-% Two-stage validation: First validate Overshoot (Mp), then validate Rise Time (t0.5)
+% Two-stage validation: First validate Overshoot (Mp), then validate
+% Rise Time (t0.5)
 %
 % OUTPUT FOLDER: results\validatedPoints
 %==========================================================================

@@ -18,6 +18,8 @@ if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
 
+visibility = 'off';
+
 % points db
 %load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\extractPoints\Points.mat');
 % validated points db
@@ -52,7 +54,7 @@ uni_nu = unique(nu);
 
 % Mp vs nu
 
-h1 = figure('Visible','on');
+h1 = figure('Visible',visibility);
 hold on;
 grid on;
 
@@ -68,18 +70,18 @@ for i = 1:length(uni_zeta)
    nu_plot = plot_data(idx_sort, 3);
    mp_plot = plot_data(idx_sort, 1);
 
-   plot(nu_plot, mp_plot, '-o', 'DisplayName', sprintf('\\zeta = %.1f', z));
+   plot(mp_plot, nu_plot, '-o', 'DisplayName', sprintf('\\zeta = %.1f', z));
 end
 
-xlabel('Fractional Order (\\nu)');
-ylabel('Overshoot (M_p)');
-title('Mp vs. nu');
+ylabel('Fractional Order (\\nu)');
+xlabel('Overshoot (M_p)');
+title('nu vs. Mp');
 legend('Location', 'eastoutside');
-saveas(h1, fullfile(outputFolder, 'Mp_vs_nu.png'));
+saveas(h1, fullfile(outputFolder, 'nu_vs_Mp'));
 
 % zeta vs. t05
 
-h2 = figure('Visible','on');
+h2 = figure('Visible',visibility);
 hold on;
 grid on;
 
@@ -95,12 +97,119 @@ for i = 1:length(uni_nu)
    t05_plot = plot_data(idx_sort, 2);
    zeta_plot = plot_data(idx_sort, 4);
 
-   plot(zeta_plot, t05_plot, '-o', 'DisplayName', sprintf('\\nu = %.1f', v));
+   plot(t05_plot, zeta_plot, '-o', 'DisplayName', sprintf('\\nu = %.1f', v));
 end
 
 
-ylabel('t05');
-xlabel('Zeta');
-title('\\t_{0,5} vs zeta');
+xlabel('t05');
+ylabel('Zeta');
+title('zeta vs t_{0,5}');
 legend('Location', 'eastoutside');
-saveas(h2, fullfile(outputFolder, 't05_vs_zeta.png'));
+saveas(h2, fullfile(outputFolder, 'zeta_vs_t05'));
+
+
+% nu vs. t05 
+h3 = figure('Visible',visibility);
+hold on;
+grid on;
+for i = 1:length(uni_zeta)
+   z = uni_zeta(i);
+   idx = results(:, 4) == z;
+   plot_data = results(idx, :);
+   
+   % We want t05 on X and nu on Y
+   [t05_sorted, idx_sort] = sort(plot_data(:, 2));
+   nu_plot = plot_data(idx_sort, 3);
+   
+   plot(t05_sorted, nu_plot, '-o', 'DisplayName', sprintf('\\zeta = %.1f', z));
+end
+xlabel('Rise Time (t_{0.5})'); % What we know
+ylabel('Fractional Order (\nu)'); % What we want to find
+title('\nu vs. t_{0.5}');
+legend('Location', 'eastoutside');
+saveas(h3, fullfile(outputFolder, 'nu_vs_t05'));
+
+% zeta vs. Mp 
+h4 = figure('Visible',visibility);
+hold on;
+grid on;
+for i = 1:length(uni_nu)
+   v = uni_nu(i);
+   idx = results(:, 3) == v;
+   plot_data = results(idx, :);
+   
+   % We want Mp on X and zeta on Y
+   [mp_sorted, idx_sort] = sort(plot_data(:, 1));
+   zeta_plot = plot_data(idx_sort, 4);
+   
+   plot(mp_sorted, zeta_plot, '-o', 'DisplayName', sprintf('\\nu = %.1f', v));
+end
+xlabel('Overshoot (M_p)'); % What we know
+ylabel('Damping (\zeta)'); % What we want to find
+title('\zeta vs. M_p');
+legend('Location', 'eastoutside');
+saveas(h4, fullfile(outputFolder, 'zeta_vs_Mp'));
+
+
+%% Data structure save
+CalibrationData = struct();
+
+% 1. nu vs. Mp 
+for i = 1:length(uni_zeta)
+   z = uni_zeta(i);
+   idx = results(:, 4) == z;
+   plot_data = results(idx, :);
+   
+   % Ordenar pelo X (Mp)
+   [mp_sorted, idx_sort] = sort(plot_data(:, 1));
+   
+   CalibrationData.nu_vs_Mp(i).zeta = z;
+   CalibrationData.nu_vs_Mp(i).x_Mp = mp_sorted;
+   CalibrationData.nu_vs_Mp(i).y_nu = plot_data(idx_sort, 3);
+end
+
+% 2. zeta vs. t05 
+for i = 1:length(uni_nu)
+   v = uni_nu(i);
+   idx = results(:, 3) == v;
+   plot_data = results(idx, :);
+   
+   % Ordenar pelo X (t05)
+   [t05_sorted, idx_sort] = sort(plot_data(:, 2));
+   
+   CalibrationData.zeta_vs_t05(i).nu = v;
+   CalibrationData.zeta_vs_t05(i).x_t05 = t05_sorted;
+   CalibrationData.zeta_vs_t05(i).y_zeta = plot_data(idx_sort, 4);
+end
+
+% 3. zeta vs. Mp 
+for i = 1:length(uni_nu)
+   v = uni_nu(i);
+   idx = results(:, 3) == v;
+   plot_data = results(idx, :);
+   
+   % Ordenar pelo X (Mp)
+   [mp_sorted, idx_sort] = sort(plot_data(:, 1));
+   
+   CalibrationData.zeta_vs_Mp(i).nu = v;
+   CalibrationData.zeta_vs_Mp(i).x_Mp = mp_sorted;
+   CalibrationData.zeta_vs_Mp(i).y_zeta = plot_data(idx_sort, 4);
+end
+
+% 4. nu vs. t05 
+for i = 1:length(uni_zeta)
+   z = uni_zeta(i);
+   idx = results(:, 4) == z;
+   plot_data = results(idx, :);
+   
+   % Ordenar pelo X (t05)
+   [t05_sorted, idx_sort] = sort(plot_data(:, 2));
+   
+   CalibrationData.nu_vs_t05(i).zeta = z;
+   CalibrationData.nu_vs_t05(i).x_t05 = t05_sorted;
+   CalibrationData.nu_vs_t05(i).y_nu = plot_data(idx_sort, 3);
+end
+
+% Save structure file
+save(fullfile(outputFolder, 'CalibrationData.mat'), 'CalibrationData');
+fprintf('Calibration data saved in: %s\n', outputFolder);
