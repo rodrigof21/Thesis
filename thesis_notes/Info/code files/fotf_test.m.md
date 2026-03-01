@@ -3,8 +3,8 @@
 THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
-TYPE: SCIRPT
-STATUS: IN PROGRESS
+TYPE: SCRIPT
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 Testing step responses with fotf toolbox

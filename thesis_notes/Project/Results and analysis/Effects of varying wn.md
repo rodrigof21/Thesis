@@ -2,6 +2,10 @@
 file [[varyingWn.m]]:
 ## System (99)
 
+
+> [!danger] Not a time scale factor
+
+
 ![[Pasted image 20260211135859.png|477]]
 
 ![[Pasted image 20260223141444.png|480]]
@@ -19,7 +23,6 @@ $\omega_n = [0.5, 0.7, 1.0, 1.5, 2.0, 5.0]$:
 > [!warning] Peak time
 > I'm checking how wn affects the tp overshoot time but some systems may not have one, thus the weird results
 > could try to change to ss value time
-
 
 
 ## In what way does it affect the peak time?
@@ -47,3 +50,6 @@ also tested with lscurvefit in [[effectsOfWn_Plot.m]]
 coefficient results are different 
 
 ![[Pasted image 20260228173825.png]]
+
+![[Pasted image 20260301012648.png]]
+

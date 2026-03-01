@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: FUNCTION
-% STATUS: IN PROGRESS
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % Checks if a (nu, zeta) pair is stable or unstable

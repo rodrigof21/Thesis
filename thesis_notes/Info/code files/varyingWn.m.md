@@ -8,7 +8,7 @@ STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 This program aims to check if varying wn is a scale factor in time. Uses
-[[inFourierTrapz]] or step().
+[[invFourierTrapz.m]] or step().
 
 INPUTS:
 - None

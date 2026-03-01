@@ -2,7 +2,7 @@
 % THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
-% TYPE:
+% TYPE: SCRIPT
 % STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
@@ -10,6 +10,7 @@
 % as [[effectsOfWn_Plot.m]] but for all stable values of nu and zeta
 %
 % OUTPUT FOLDER: results/effectsOfWn
+%                results/effectsOfWn_coefficients
 %==========================================================================
 
 % Save config
@@ -55,8 +56,9 @@ for k = 1:length(nu_st)
         % [max_y(i), idx_max] = max(yout);
         % teval(i) = tout(idx_max);
 
-        idx05 = find(yout >= 0.5, 1); %the first value over or = to 0.5
+        idx05 = find(yout >= 0.5, 1);
         teval(i) = tout(idx05);
+        %teval(i) = interp1(yout, tout, 0.5);
 
     end
     

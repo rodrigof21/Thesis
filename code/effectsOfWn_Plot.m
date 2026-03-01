@@ -33,8 +33,8 @@ max_y = zeros(1, length(w));
 teval = zeros(1, length(w));
 
 % parameters
-nu = 0.3;
-zeta = 2;
+nu = 1.2;
+zeta = 0.5;
 stable = checkStability(nu, zeta);
 if stable, fprintf('Stable\n')
 else, fprintf('Unstable\n'), close(hFig), return

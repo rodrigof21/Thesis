@@ -7,7 +7,7 @@
 %
 % PROGRAM DESCRIPTION: 
 % This program aims to check if varying wn is a scale factor in time. Uses 
-% [[inFourierTrapz]] or step().
+% [[invFourierTrapz.m]] or step().
 %
 % INPUTS:
 %   - None
@@ -26,16 +26,18 @@ w = [0.5 0.7 1 1.5 2 5];
 %w = 1;
 max_y = zeros(length(w), 1);
 tmax = zeros(length(w), 1);
+
+% parameters
+nu = 1.4;
+zeta = 0.7;
+stable = checkStability(nu, zeta);
+if stable, fprintf('Stable\n')
+else, fprintf('Unstable\n'), close all, return
+end
+
 figure,
 for i = 1:length(w)
 
-    % parameters
-    nu = 1.4;
-    zeta = 0.2;
-    stable = checkStability(nu, zeta);
-    if stable, fprintf('Stable\n')
-    else, fprintf('Unstable\n'), close all, return
-    end
     wn = w(i);
 
     % System (99)
