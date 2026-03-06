@@ -2,58 +2,71 @@
 % THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
-% TYPE: SCRIPT
+% TYPE:
 % STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
-% This program loops through the database in order to extract the interest
-% points of every system.
+% Extracts t02, t05, t08, Mp from a given system. Must have F_nu and F_zeta
+% in the workspace from [[idModel_test.]]
 %
-% OUTPUT FOLDER: results\extractPoints
+% INPUTS:
+%   - nu, zeta
+%
+% OUTPUTS:
+%   - t02, t05, t08, Mp
+%
+% OUTPUT FOLDER:
 %==========================================================================
 
-outputFolder = 'results/extractPoints';
-if ~exist(outputFolder, 'dir')
-    mkdir(outputFolder);
-end
+function [t02, t05, t08, Mp, tp] = extractPoints(nu, zeta)
 
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\unitStepResponses\step_response_database.mat');
+    stable = checkStability(nu, zeta);
+    if stable, fprintf('Stable\n')
+    else, fprintf('Unstable\n'), return
+    end
 
-sys = fieldnames(data_storage);
-total = length(sys);
-count = 1;
-
-points = struct();
-
-for k = 1:length(sys)
+    wn = 1;
+    G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
     
-    current = sys{k};
-    data = data_storage.(current);
+    u = @(s) 1./s;
 
-    fieldname = sprintf('sys_%d', count);
+    tfinal = 60;
+    ts = 0.01;
+
+    [t, y] = invFourierTrapz(G, u, tfinal, ts);
 
     % Mp tp Overshoot
-    [max_y, idx_p] = max(data.y);
-    points.(fieldname).Mp = max_y - 1; %data.y(end);
-    points.(fieldname).tp = data.t(idx_p);
+    [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
+    if ~isempty(pks)
+        Mp = pks(1) - 1; 
+        tp = locs(1);
+    else
+        Mp = 0;
+        tp = NaN;
+    end
 
     % t_0.5
-    idx_50 = find(data.y >= 0.5, 1);
+    idx_50 = find(y >= 0.5, 1);
     if isempty(idx_50)
         t05 = NaN; 
     else
-        t05 = data.t(idx_50); 
+        t05 = t(idx_50); 
     end
-    points.(fieldname).t05 = t05;
-
-    %other data
-    points.(fieldname).nu = data.nu;
-    points.(fieldname).zeta = data.zeta;
     
-    % Console Log
-    %fprintf('Status: %d/%d\n', count, total);
-    count = count+1;
-end
+    % t_0.2
+    idx_20 = find(y >= 0.2, 1);
+    if isempty(idx_20)
+        t02 = NaN; 
+    else
+        t02 = t(idx_20); 
+    end
 
-fprintf('Complete\n');
-save(fullfile(outputFolder, 'Points.mat'), 'points')
+    % t_0.8
+    idx_80 = find(y >= 0.8, 1);
+    if isempty(idx_80)
+        t08 = NaN; 
+    else
+        t08 = t(idx_80); 
+    end
+
+end

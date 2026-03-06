@@ -6,13 +6,14 @@
 % STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
-% Two-stage validation: First validate Overshoot (Mp), then validate
-% Rise Time (t0.5)
+% Validation of the Peak (Mp and tp). Filters the database to loop ONLY 
+% through systems where a peak was detected in extractPoints.m. Made with
+% Gemini
 %
 % OUTPUT FOLDER: results\validatedPoints
 %==========================================================================
-
 clear; clc; close all;
+
 outputFolder = 'results/validatedPoints';
 if ~exist(outputFolder, 'dir'), mkdir(outputFolder); end
 
@@ -23,101 +24,84 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 all_fields = fieldnames(points);
 num_entries = length(all_fields);
 
-% Intermediate storage for Mp-validated systems
-temp_results = struct(); 
-mp_valid_count = 0;
+validated_results = struct();
+valid_count = 0;
 
-hFig = figure('Name', 'Sequential Validation Tool', 'Color', 'w', 'Position', [100, 100, 1000, 600]);
+hFig = figure('Name', 'Peak Validation Tool (Filter: Peaks Only)', 'Color', 'w', 'Position', [100, 100, 1000, 600]);
 
-%% 2. STAGE 1: Validate Overshoot (Mp)
-fprintf('--- STAGE 1: Validating Overshoot (Mp) ---\n');
-fprintf('Press [Y] if Mp is correct | [N] to discard system | [Esc] to skip to Stage 2\n\n');
+%% 2. Validation Loop: Only for systems WITH peaks
+fprintf('--- Starting Peak Validation (Mp) ---\n');
+fprintf('Filtering database for systems with valid peaks...\n');
+fprintf('Press [Y] if Peak is correct | [N] to discard | [Esc] to finish and save\n\n');
 
 for i = 1:num_entries
     sym_field = sprintf('sim_%d', i);
     sys_field = sprintf('sys_%d', i);
     
     if isfield(data_storage, sym_field) && isfield(points, sys_field)
+        
+        % Extração de dados para verificação de filtro
+        tp_check = points.(sys_field).tp;
+        
+        % --- FILTRO CRÍTICO: Ignorar sistemas sem pico identificado ---
+        % Se tp for NaN ou 0, o script salta para o próximo sem abrir o gráfico
+        if isnan(tp_check) || tp_check <= 0
+            continue; 
+        end
+        
+        % Se passou o filtro, carregamos o resto dos dados para o plot
         t = data_storage.(sym_field).t;
         y = data_storage.(sym_field).y;
-        y_final = y(end);
-        Mp_abs = 1 + points.(sys_field).Mp; %change to y(end) depending on extractPoints
-        tp = points.(sys_field).tp;
-
-        % Plot for Mp validation
+        Mp_rel = points.(sys_field).Mp;
+        
+        % Plot para Validação
         clf(hFig);
         plot(t, y, 'LineWidth', 1.5, 'Color', [0.15 0.35 0.55]); hold on; grid on;
-        plot(tp, Mp_abs, 'ro', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'y');
-        yline(y_final, '--', 'Color', [0.5 0.5 0.5]);
-        title(sprintf('STAGE 1 (Mp): System %d | \\nu=%.2f \\zeta=%.2f', i, data_storage.(sym_field).nu, data_storage.(sym_field).zeta));
-        legend('Step Response', 'Identified Peak (Mp)');
-
-        % Key Handling
+        
+        % Marcar o pico (Y absoluto = 1 + Mp_relativo)
+        plot(tp_check, 1 + Mp_rel, 'ro', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'y');
+        yline(1, '--', 'Color', [0.5 0.5 0.5]);
+        
+        title(sprintf('System %d | \\nu=%.2f \\zeta=%.2f', i, data_storage.(sym_field).nu, data_storage.(sym_field).zeta));
+        xlabel('Time (s)'); ylabel('Amplitude');
+        legend('Step Response', 'Extracted Peak');
+        
+        % Interação com o utilizador
         isValidInput = false;
         while ~isValidInput
             waitforbuttonpress;
             key = get(hFig, 'CurrentKey');
+            
             if strcmp(key, 'y')
-                mp_valid_count = mp_valid_count + 1;
-                f_name = sprintf('valid_%d', mp_valid_count);
-                temp_results.(f_name) = data_storage.(sym_field); % Save original data
-                temp_results.(f_name).Mp_rel = points.(sys_field).Mp;
-                temp_results.(f_name).tp = tp;
-                temp_results.(f_name).t05 = points.(sys_field).t05;
+                valid_count = valid_count + 1;
+                f_name = sprintf('valid_%d', valid_count);
+                
+                % Guardar os dados validados
+                validated_results.(f_name) = data_storage.(sym_field); 
+                validated_results.(f_name).Mp_rel = Mp_rel;
+                validated_results.(f_name).tp = tp_check;
+                validated_results.(f_name).t05 = points.(sys_field).t05;
+                validated_results.(f_name).t02 = points.(sys_field).t02;
+                validated_results.(f_name).t08 = points.(sys_field).t08;
+                
+                fprintf('System %d (ID: %s) VALIDATED. Total: %d\n', i, sys_field, valid_count);
                 isValidInput = true;
-            elseif strcmp(key, 'n') || strcmp(key, 'escape'), isValidInput = true; end
+            elseif strcmp(key, 'n')
+                isValidInput = true;
+            elseif strcmp(key, 'escape')
+                isValidInput = true;
+            end
         end
+        
         if strcmp(key, 'escape'), break; end
     end
 end
 
-%% 3. STAGE 2: Validate Rise Time (t0.5) from Mp-Validated Results
-if mp_valid_count == 0, error('No systems passed Mp validation.'); end
-
-validated_results = struct();
-final_valid_count = 0;
-temp_fields = fieldnames(temp_results);
-
-fprintf('--- STAGE 2: Validating Rise Time (t05) ---\n');
-fprintf('Press [Y] if t05 is correct | [N] to discard system | [Esc] to finish\n\n');
-
-for j = 1:length(temp_fields)
-    data = temp_results.(temp_fields{j});
-    
-    % Rise time point is usually at 50% of steady state
-    y_target = 0.5; 
-    
-    % Plot for t05 validation
-    clf(hFig);
-    plot(data.t, data.y, 'LineWidth', 1.5, 'Color', [0.15 0.35 0.55]); hold on; grid on;
-    % Mark Mp (already validated) can change one to data.y(end) depending
-    % on what's in the extractPoint.m
-    plot(data.tp, 1+data.Mp_rel, 'ko', 'MarkerSize', 6); 
-    % Mark t05 (to be validated) - marked with a blue X
-    plot(data.t05, y_target, 'bx', 'MarkerSize', 12, 'LineWidth', 2);
-    
-    title(sprintf('STAGE 2 (t0.5): System %d | Target y=%.3f', j, y_target));
-    legend('Step Response', 'Validated Mp', 'Extracted t_{0.5}');
-
-    isValidInput = false;
-    while ~isValidInput
-        waitforbuttonpress;
-        key = get(hFig, 'CurrentKey');
-        if strcmp(key, 'y')
-            final_valid_count = final_valid_count + 1;
-            f_name = sprintf('final_%d', final_valid_count);
-            validated_results.(f_name) = data;
-            isValidInput = true;
-        elseif strcmp(key, 'n') || strcmp(key, 'escape'), isValidInput = true; end
-    end
-    if strcmp(key, 'escape'), break; end
-end
-
-%% 4. Save Final Results
-if final_valid_count > 0
+%% 3. Save Final Results
+if valid_count > 0
     fullPath = fullfile(outputFolder, 'double_validated_points.mat');
     save(fullPath, 'validated_results');
-    fprintf('\nSuccess! %d systems passed both validations.\n', final_valid_count);
+    fprintf('\nSuccess! %d systems with peaks were validated.\n', valid_count);
 else
-    fprintf('\nNo data was saved.\n');
+    fprintf('\nNo peaks were validated.\n');
 end

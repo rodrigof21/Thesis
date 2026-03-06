@@ -24,7 +24,7 @@
 	4. [[createImagesFromDatabase.m]]
 6. Escolher pontos de interesse em [[Points to analyze]]
 7. extrair os pontos
-	1. [[extractPoints.m]]
+	1. [[extractPointsFromDatabase.m]]
 8. validar os pontos 1 a 1
 	1. [[validatePoints.m]]
 9. plot da comparaçao dos pontos

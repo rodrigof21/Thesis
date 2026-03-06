@@ -3,14 +3,20 @@
 THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
-TYPE: SCRIPT
+TYPE:
 STATUS: IN PROGRESS
 
 PROGRAM DESCRIPTION:
-This program loops through the database in order to extract the interest
-points of every system.
+Extracts t02, t05, t08, Mp from a given system. Must have F_nu and F_zeta
+in the workspace from [[idModel_test.]]
 
-OUTPUT FOLDER: results\extractPoints
+INPUTS:
+- nu, zeta
+
+OUTPUTS:
+- t02, t05, t08, Mp
+
+OUTPUT FOLDER:
 
 ---
 **Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\extractPoints.m`

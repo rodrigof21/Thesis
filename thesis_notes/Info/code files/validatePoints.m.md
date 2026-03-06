@@ -7,8 +7,9 @@ TYPE: SCRIPT
 STATUS: IN PROGRESS
 
 PROGRAM DESCRIPTION:
-Two-stage validation: First validate Overshoot (Mp), then validate
-Rise Time (t0.5)
+Validation of the Peak (Mp and tp). Filters the database to loop ONLY
+through systems where a peak was detected in extractPoints.m. Made with
+Gemini
 
 OUTPUT FOLDER: results\validatedPoints
 

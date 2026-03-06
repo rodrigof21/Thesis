@@ -15,12 +15,14 @@ general:
 	- [ ] prove analytically that it is a scale factor
 	- [ ] change to ss value instead of peak time (check [[Effects of varying wn]])
 - [x] change step of unit step response database
-- [ ] change axis of the point comparison in [[comparePoints.m]]
+- [x] change axis of the point comparison in [[comparePoints.m]]
 - [ ] [[Bode Plot Analysis]] preencher
 - [ ] check what values of nu and zeta with AM and professor for database
-- [ ] Rereun [[generateDBTable.m]]
+- [x] Rereun [[generateDBTable.m]]
 	- [ ] change the outputfolder so it saves automatically into obsidian
 - [ ] Write [[Project Files Structure]]
-- [ ] 
+- [ ] update[[Resumo do trabalho até agora (PT)]] project workflow
+- [ ] Evaluate errors, RMS, VAF etc.
+- [ ] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
 
 

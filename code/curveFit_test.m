@@ -20,7 +20,7 @@ end
 
 load('results/comparePoints/CalibrationData.mat');
 
-idx = 7;
+idx = 6;
 
 % Data
 x = CalibrationData.nu_vs_Mp(idx).x_Mp;
@@ -29,7 +29,7 @@ zeta = CalibrationData.nu_vs_Mp(idx).zeta;
 
 % val(x) = a*x^b+c
 f_power = fit(x, y, 'power2');
-coefs = coeffvalues(f_power);
+coeffs = coeffvalues(f_power);
 
 % plots
 figure;
@@ -38,6 +38,9 @@ hold on;
 plot(f_power, 'b--');
 legend('data', 'power function');
 grid on;
+xlabel('Mp')
+ylabel('\nu')
+fprintf(sprintf('a*x^b+c, a=%.2f, b=%.2f, c=%.2f\n', coeffs(1), coeffs(2), coeffs(3)))
 
 
 % figure, plot(x, y, 'DisplayName', sprintf('z = %.1f', zeta))
