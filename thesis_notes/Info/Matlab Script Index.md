@@ -13,8 +13,9 @@
 | 🟢 | find_fo_bode99 | [[find_fo_bode99.m]] |
 | 🟢 | fotf_test | [[fotf_test.m]] |
 | 🟢 | generateDBTable | [[generateDBTable.m]] |
-| 🔴 | idModel_test | [[idModel_test.m]] |
+| 🟢 | idModel_test | [[idModel_test.m]] |
 | 🟡 | identificationTest | [[identificationTest.m]] |
+| 🟡 | params_to_markdown | [[params_to_markdown.m]] |
 | 🟢 | stabilityChart | [[stabilityChart.m]] |
 | 🟡 | surfaceMapping | [[surfaceMapping.m]] |
 | 🟢 | testing_with_known_systems | [[testing_with_known_systems.m]] |
@@ -25,6 +26,7 @@
 | Status | Name | Link |
 | :---: | --- | --- |
 | 🟢 | checkStability | [[checkStability.m]] |
+| 🟢 | extractPoints | [[extractPoints.m]] |
 | 🟡 | filterUnstablePairs | [[filterUnstablePairs.m]] |
 | 🟡 | identify_system | [[identify_system.m]] |
 | 🟢 | invFourierRiemann | [[invFourierRiemann.m]] |

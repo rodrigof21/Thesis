@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: GAVE UP
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % First test at a simple Identification Model
@@ -27,3 +27,4 @@ F_nu = scatteredInterpolant(results(:,2), results(:,4), results(:,5), 'linear', 
 
 % 2. Criar interpolador para Zeta: zeta = f(t05, nu)
 F_zeta = scatteredInterpolant(results(:,3), results(:,5), results(:,6), 'linear', 'nearest');
+

@@ -1,11 +1,11 @@
 
 #### Workflow do projeto:
 
-1. Plot do bode diagram para varios valores de nu e zeta
+1. Plot do bode diagram para vários valores de nu e zeta
 	1. [[find_fo_bode4.m]]
-	2. Conclusoes tiradas
-2. Desenvolvimento da funçao da inversa de fourier para calcular a resposta ao degrau unitário
-	1. validar a funcao [[testing_with_known_systems.m]]
+	2. Conclusões tiradas
+2. Desenvolvimento da função da inversa de Fourier para calcular a resposta ao degrau unitário
+	1. validar a função [[testing_with_known_systems.m]]
 	2. comparar com fomcon toolbox
 	3. [[fotf_test.m]]
 	4. [[invFourierTrapz.m]]
@@ -25,10 +25,16 @@
 6. Escolher pontos de interesse em [[Points to analyze]]
 7. extrair os pontos
 	1. [[extractPointsFromDatabase.m]]
+	2. Mp, t02, t05, t08
 8. validar os pontos 1 a 1
 	1. [[validatePoints.m]]
-9. plot da comparaçao dos pontos
+9. plot da comparação dos pontos
 	1. [[comparePoints.m]]
-	2. retirar outliers manualmente
-	3. save files in results/comparePoints
-10. Curve 
+	2. [[surfaceMapping.m]]
+10. (Opcional) Identificador Automático
+	1. [[idModel_test.m]]
+	2. [[identify_system.m]]
+	3. [[identificationTest.m]]
+11. Modelo de Identificação "analítico"
+	1. [[curveFit_test.m]]
+	2. 

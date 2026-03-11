@@ -24,5 +24,7 @@ general:
 - [ ] update[[Resumo do trabalho até agora (PT)]] project workflow
 - [ ] Evaluate errors, RMS, VAF etc.
 - [ ] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
+- [ ] Rebuild database with more values of $\nu$ and $\zeta$ 
+- [ ] 
 
 

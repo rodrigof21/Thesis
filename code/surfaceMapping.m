@@ -24,13 +24,13 @@ t08_data = cellfun(@(s) validated_results.(s).t08, sys);
 nu_data  = cellfun(@(s) validated_results.(s).nu, sys);
 zeta_data = cellfun(@(s) validated_results.(s).zeta, sys);
 
-results = [Mp, t02, t05, t08, nu, zeta];
-
-t02_data  = results(:, 2);
-t05_data  = results(:, 3);
-t08_data  = results(:, 4);
-nu_data   = results(:, 5);
-zeta_data = results(:, 6);
+% results = [Mp, t02, t05, t08, nu, zeta];
+% 
+% t02_data  = results(:, 2);
+% t05_data  = results(:, 3);
+% t08_data  = results(:, 4);
+% nu_data   = results(:, 5);
+% zeta_data = results(:, 6);
 
 % --- SURFACE PLOT 1: nu = f(t02, t08) ---
 h_surf1 = figure('Name', 'Surface nu = f(t02, t08)', 'Color', 'w');

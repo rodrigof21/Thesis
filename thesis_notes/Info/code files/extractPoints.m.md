@@ -3,8 +3,8 @@
 THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
-TYPE:
-STATUS: IN PROGRESS
+TYPE: FUNCTION
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 Extracts t02, t05, t08, Mp from a given system. Must have F_nu and F_zeta

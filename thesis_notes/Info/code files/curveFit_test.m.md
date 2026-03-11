@@ -7,8 +7,11 @@ TYPE: SCRIPT
 STATUS: IN PROGRESS
 
 PROGRAM DESCRIPTION:
-First test at fitting a curve to the data taken in the
-[[comparePoints.m]] file. uses the structure saved in that script
+First test at fitting curves to the results database from
+[[comparePoints.m]] to make an identification model.
+1. nu = f(t02, t08, zeta)
+2. a. b. c = f(zeta) coeficientes do passo 1
+3. zeta = f(t05, nu)
 
 OUTPUT FOLDER: results/curveFit_test
 
