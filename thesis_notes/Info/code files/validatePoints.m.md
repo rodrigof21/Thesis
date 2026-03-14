@@ -4,7 +4,7 @@ THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
 TYPE: SCRIPT
-STATUS: IN PROGRESS
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 Validation of the Peak (Mp and tp). Filters the database to loop ONLY

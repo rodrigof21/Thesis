@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: IN PROGRESS
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % Tests the identification method in the previous files.
@@ -19,7 +19,7 @@ ts = 0.05;
 
 [t02, t05, t08, Mp, tp] = extractPoints(nu_init, zeta_init);
 fprintf(sprintf('Defined Parameters: nu=%.2f zeta=%.2f\n', nu_init, zeta_init))
-[nu_final, zeta_final] = identify_system(t02, t05, t08);
+[nu_final, zeta_final] = identifyModelAuto(t02, t05, t08);
 
 
 

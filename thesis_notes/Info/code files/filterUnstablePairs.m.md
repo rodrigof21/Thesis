@@ -4,7 +4,7 @@ THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
 TYPE: FUNCTION
-STATUS: IN PROGRESS
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 Filters unstable values for nu and zeta

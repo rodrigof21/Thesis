@@ -13,7 +13,7 @@ First test at fitting curves to the results database from
 2. a. b. c = f(zeta) coeficientes do passo 1
 3. zeta = f(t05, nu)
 
-OUTPUT FOLDER: results/curveFit_test
+OUTPUT FOLDER: results/idModel_1
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\curveFit_test.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idModel_1.m`

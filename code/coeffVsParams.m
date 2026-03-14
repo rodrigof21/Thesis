@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: IN PROGRESS
+% STATUS: FINISHED
 %
 % PROGRAM DESCRIPTION: 
 % Plots the coefficients a taken from [[effectsOfWn.m]] and plots them

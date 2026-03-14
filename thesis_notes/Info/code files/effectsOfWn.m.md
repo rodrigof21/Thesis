@@ -4,7 +4,7 @@ THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
 TYPE: SCRIPT
-STATUS: IN PROGRESS
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
 Loops through various nu and zeta to check the scale factor of wn. same

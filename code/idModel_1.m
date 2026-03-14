@@ -12,10 +12,10 @@
 % 2. a. b. c = f(zeta) coeficientes do passo 1
 % 3. zeta = f(t05, nu)
 %
-% OUTPUT FOLDER: results/curveFit_test
+% OUTPUT FOLDER: results/idModel_1
 %==========================================================================
 
-outputFolder = 'results/curveFit_test';
+outputFolder = 'results/idModel_1';
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
@@ -101,4 +101,7 @@ grid on; view(-45, 30);
 gof.rsquare
 
 
-Iden
+idModel1 = struct();
+idModel1.NuStep1 = Model_nu;
+idModel1.NuStep2 = Model_pvszeta;
+idModel1.ZetaFinal = fit_zeta;

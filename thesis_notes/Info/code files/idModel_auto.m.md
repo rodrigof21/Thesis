@@ -13,4 +13,4 @@ First test at a simple Identification Model
 OUTPUT FOLDER: results/idModel_test
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idModel_test.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idModel_auto.m`

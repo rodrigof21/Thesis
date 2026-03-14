@@ -4,10 +4,10 @@ THESIS PROJECT: Time-Domain Identification of Second-Species Systems
 AUTHOR: Rodrigo Fonseca
 DATE: 2026
 TYPE: SCRIPT
-STATUS: IN PROGRESS
+STATUS: FINISHED
 
 PROGRAM DESCRIPTION:
-Plots nu = f(t02, t08) and zeta = f(t05, nu)
+Plots nu = f(t02, t08) and zeta = f(t05, nu) from model_auto
 
 OUTPUT FOLDER: results/surfaceMapping
 
