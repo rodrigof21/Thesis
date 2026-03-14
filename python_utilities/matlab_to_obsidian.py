@@ -80,27 +80,28 @@ if not os.path.exists(OBSIDIAN_FOLDER):
 valid_md_files = []
 file_data_for_index = [] # Store metadata for the index
 
-for filename in os.listdir(MATLAB_FOLDER):
-    if filename.endswith(".m"):
-        script_path = os.path.join(MATLAB_FOLDER, filename)
-        info, f_type, f_status = extract_matlab_info(script_path)
-        
-        md_filename = f"{filename}.md"
-        valid_md_files.append(md_filename)
-        
-        # Collect data for index
-        file_data_for_index.append({
-            'name': filename.replace(".m", ""),
-            'filename': md_filename,
-            'type': f_type,
-            'status': f_status
-        })
-        
-        md_path = os.path.join(OBSIDIAN_FOLDER, md_filename)
-        content = f"## Description\n\n{info}\n\n---\n**Source Path:** `{script_path}`"
-        
-        with open(md_path, 'w', encoding='utf-8') as f:
-            f.write(content)
+for root, dirs, files in os.walk(MATLAB_FOLDER):
+    for filename in files:
+        if filename.endswith(".m"):
+            script_path = os.path.join(root, filename)
+            info, f_type, f_status = extract_matlab_info(script_path)
+            
+            md_filename = f"{filename}.md"
+            valid_md_files.append(md_filename)
+            
+            # Collect data for index
+            file_data_for_index.append({
+                'name': filename.replace(".m", ""),
+                'filename': md_filename,
+                'type': f_type,
+                'status': f_status
+            })
+            
+            md_path = os.path.join(OBSIDIAN_FOLDER, md_filename)
+            content = f"## Description\n\n{info}\n\n---\n**Source Path:** `{script_path}`"
+            
+            with open(md_path, 'w', encoding='utf-8') as f:
+                f.write(content)
 
 for existing_file in os.listdir(OBSIDIAN_FOLDER):
     if existing_file.endswith(".md") and existing_file not in valid_md_files:

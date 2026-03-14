@@ -10,4 +10,4 @@ PROGRAM DESCRIPTION:
 Tests the identification method in the previous files.
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\model_auto_test.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idmodel_auto_test.m`

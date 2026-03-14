@@ -25,6 +25,9 @@ general:
 - [ ] Evaluate errors, RMS, VAF etc.
 - [ ] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
 - [ ] Rebuild database with more values of $\nu$ and $\zeta$ 
-- [ ] 
+
+### Models to test
+- [ ] 2: ratios tau between to2 t05 t08
+- [ ] 3: least squares matrix with the 3 time values
 
 

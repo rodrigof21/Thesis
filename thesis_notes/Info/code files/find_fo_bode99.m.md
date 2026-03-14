@@ -24,4 +24,4 @@ OUTPUT FOLDER: /results/bode
 MODEL TYPE: (99)
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\find_fo_bode99.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\1 - Early Steps\find_fo_bode99.m`

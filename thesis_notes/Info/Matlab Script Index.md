@@ -13,10 +13,12 @@
 | 🟢 | fotf_test | [[fotf_test.m]] |
 | 🟢 | generateDBTable | [[generateDBTable.m]] |
 | 🟡 | idModel_1 | [[idModel_1.m]] |
+| 🟡 | idModel_2 | [[idModel_2.m]] |
 | 🟢 | idModel_auto | [[idModel_auto.m]] |
-| 🔴 | model1_test | [[model1_test.m]] |
-| 🟢 | model_auto_test | [[model_auto_test.m]] |
+| 🔴 | idmodel1_test | [[idmodel1_test.m]] |
+| 🟢 | idmodel_auto_test | [[idmodel_auto_test.m]] |
 | 🔴 | params_to_markdown | [[params_to_markdown.m]] |
+| 🟡 | pointDataCorrelation | [[pointDataCorrelation.m]] |
 | 🟢 | stabilityChart | [[stabilityChart.m]] |
 | 🟢 | surfaceMapping | [[surfaceMapping.m]] |
 | 🟢 | testing_with_known_systems | [[testing_with_known_systems.m]] |

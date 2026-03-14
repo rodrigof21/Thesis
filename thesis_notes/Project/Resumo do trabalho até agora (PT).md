@@ -36,5 +36,7 @@
 	2. [[identify_system.m]]
 	3. [[identificationTest.m]]
 11. Modelo de Identificação "analítico"
-	1. [[curveFit_test.m]]
-	2. 
+	1. Fazer o modelo: [[idModel_1.m]]
+	2. Função para identificar sistemas: [[identifyModel1.m]]
+	3. testar o modelo [[idmodel1_test.m]]
+12. 
