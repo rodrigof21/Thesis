@@ -1,9 +1,9 @@
 
 Done in [[pointDataCorrelation.m]]
 
-### Correlation Matrix (Pearson)
+### Correlation Matrix
 
-| Mp       |   t02   |   t05   |  t08   |  tau   |   nu    |  zeta   |        |
+|          |   Mp    |   t02   |  t05   |  t08   |   tau   |   nu    |  zeta  |
 | :------- | :-----: | :-----: | :----: | :----: | :-----: | :-----: | :----: |
 | **Mp**   |    1    |  0.364  | 0.0606 | -0.213 | -0.8371 | 0.6283  | 0.0102 |
 | **t02**  |  0.364  |    1    | 0.9376 | 0.7787 | -0.3192 | 0.9193  | 0.9185 |

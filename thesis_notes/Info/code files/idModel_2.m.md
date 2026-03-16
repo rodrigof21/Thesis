@@ -12,4 +12,4 @@ Second try at a identification model. nu = f(tau1, tau2)
 OUTPUT FOLDER:
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idModel_2.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\Models\model 2\idModel_2.m`

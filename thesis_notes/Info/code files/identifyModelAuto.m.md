@@ -19,4 +19,4 @@ OUTPUTS:
 OUTPUT FOLDER: N/A
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\identifyModelAuto.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\Models\auto model\identifyModelAuto.m`

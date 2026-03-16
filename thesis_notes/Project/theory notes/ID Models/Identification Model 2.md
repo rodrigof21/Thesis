@@ -11,6 +11,9 @@ $$\nu(\tau, t_{0.5}) = p_{00} + p_{10}\tau + p_{01}t_{0.5} + p_{20}\tau^2 + p_{1
 
 $$\zeta(t_{0.5}, \nu) = q_{00} + q_{10}t_{0.5} + q_{01}\nu + q_{20}t_{0.5}^2 + q_{11}t_{0.5}\nu + q_{02}\nu^2$$
 
+### With the coefficients
 
-try with 3rd order models
+$$\nu(\tau, t_{0.5}) = 1.6295 + -1.3239\cdot \tau + 1.7639\cdot t_{0.5} + 0.1878\cdot \tau^2 + -0.0748\cdot \tau\cdot t_{0.5} + -0.2966\cdot t_{0.5}^2$$
+$$\zeta(t_{0.5}, \nu) = -0.7427 + 1.2557\cdot t_{0.5} + -0.8545\cdot \nu + -0.4000\cdot t_{0.5}^2 + 1.3128\cdot t_{0.5}\cdot \nu + -0.5995\cdot \nu^2$$
+
 

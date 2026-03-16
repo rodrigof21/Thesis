@@ -16,4 +16,4 @@ First test at fitting curves to the results database from
 OUTPUT FOLDER: results/idModel_1
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\idModel_1.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\Models\model 1\idModel_1.m`

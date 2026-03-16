@@ -12,4 +12,4 @@ Uses the Model 1 to identify a give system.
 OUTPUT FOLDER:
 
 ---
-**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\identifyModel1.m`
+**Source Path:** `C:/Users/r7fon/OneDrive - Universidade de Lisboa/MEMec/Thesis/code\Models\model 1\identifyModel1.m`

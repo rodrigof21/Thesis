@@ -18,12 +18,12 @@
 % OUTPUT FOLDER:
 %==========================================================================
 
-function [t02, t05, t08, Mp, tp] = extractPoints(nu, zeta)
+function [t02, t05, t08] = extractPoints(nu, zeta)
 
-    stable = checkStability(nu, zeta);
-    if stable, fprintf('Stable\n')
-    else, fprintf('Unstable\n'), return
-    end
+    % stable = checkStability(nu, zeta);
+    % if stable, fprintf('Stable\n')
+    % else, fprintf('Unstable\n'), return
+    % end
 
     wn = 1;
     G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
@@ -35,15 +35,15 @@ function [t02, t05, t08, Mp, tp] = extractPoints(nu, zeta)
 
     [t, y] = invFourierTrapz(G, u, tfinal, ts);
 
-    % Mp tp Overshoot
-    [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
-    if ~isempty(pks)
-        Mp = pks(1) - 1; 
-        tp = locs(1);
-    else
-        Mp = 0;
-        tp = NaN;
-    end
+    % % Mp tp Overshoot
+    % [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
+    % if ~isempty(pks)
+    %     Mp = pks(1) - 1; 
+    %     tp = locs(1);
+    % else
+    %     Mp = 0;
+    %     tp = NaN;
+    % end
 
     % t_0.5
     idx_50 = find(y >= 0.5, 1);

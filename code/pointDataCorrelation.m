@@ -28,16 +28,15 @@ var_names = {'Mp', 't02', 't05', 't08', 'tau', 'nu', 'zeta'};
 
 R = corrcoef(data_for_corr);
 
-% 3. Mostrar a correlação especificamente para o nu e zeta
 T_corr = array2table(R, 'VariableNames', var_names, 'RowNames', var_names);
 disp('--- Matriz de Correlação ---');
 disp(T_corr);
 
 
-fprintf('\n### Correlation Matrix (Pearson)\n\n');
-fprintf('| | %s |\n', strjoin(var_names, ' | '));
-fprintf('| :--- | %s |\n', repmat(':---: | ', 1, length(var_names)));
-
-for i = 1:size(R, 1)
-    fprintf('| **%s** | %s |\n', var_names{i}, strjoin(string(round(R(i,:), 4)), ' | '));
-end
+% fprintf('\n### Correlation Matrix (Pearson)\n\n');
+% fprintf('| | %s |\n', strjoin(var_names, ' | '));
+% fprintf('| :--- | %s |\n', repmat(':---: | ', 1, length(var_names)));
+% 
+% for i = 1:size(R, 1)
+%     fprintf('| **%s** | %s |\n', var_names{i}, strjoin(string(round(R(i,:), 4)), ' | '));
+% end

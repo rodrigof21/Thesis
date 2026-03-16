@@ -25,6 +25,7 @@ general:
 - [ ] Evaluate errors, RMS, VAF etc.
 - [ ] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
 - [ ] Rebuild database with more values of $\nu$ and $\zeta$ 
+- [ ] check if i need Mp in extractPoints, because it may be taking away some needed responses for the t08 times etc.
 
 ### Models to test
 - [ ] 2: ratios tau between to2 t05 t08

@@ -24,8 +24,8 @@ $$\zeta(t_{0.5}, \nu) = q_{00} + q_{10} t_{0.5} + q_{01} \nu + q_{20} t_{0.5}^2 
 
 ---
 		x\
-![[Pasted image 20260314102552.png|416]]
-![[Pasted image 20260314102616.png|419]]
+![[Pasted image 20260314102552.png|410]]
+![[Pasted image 20260314102616.png|414]]
 
 
 Results
