@@ -3,7 +3,7 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: SCRIPT
-% STATUS: IN PROGRESS
+% STATUS: GAVE UP
 %
 % PROGRAM DESCRIPTION: 
 % First test at fitting curves to the results database from

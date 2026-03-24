@@ -1,4 +1,3 @@
-
 #### Workflow do projeto:
 
 1. Plot do bode diagram para vários valores de nu e zeta
@@ -31,12 +30,15 @@
 9. plot da comparação dos pontos
 	1. [[comparePoints.m]]
 	2. [[surfaceMapping.m]]
-10. (Opcional) Identificador Automático
+10. (Opcional) Identificador Automático (changed names)
 	1. [[idModel_test.m]]
 	2. [[identify_system.m]]
 	3. [[identificationTest.m]]
-11. Modelo de Identificação "analítico"
-	1. Fazer o modelo: [[idModel_1.m]]
-	2. Função para identificar sistemas: [[identifyModel1.m]]
-	3. testar o modelo [[idmodel1_test.m]]
-12. 
+11. (loop) Modelo de Identificação "analítico"
+	1. Pearson Correlation Matrix [[Point correlation]]
+	2. Fazer o modelo: [[idModel_1.m]]
+	3. Função para identificar sistemas: [[identifyModel1.m]]
+	4. testar o modelo [[idmodel1_test.m]]
+	5. Same for models 2 and 3 etc.
+
+

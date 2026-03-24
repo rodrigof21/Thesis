@@ -32,15 +32,15 @@ for k = 1:length(sys)
 
     fieldname = sprintf('sys_%d', count);
 
-    % Mp tp Overshoot
-    [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.05);
-    if ~isempty(pks)
-        points.(fieldname).Mp = pks(1) - 1; 
-        points.(fieldname).tp = locs(1);
-    else
-        points.(fieldname).Mp = 0;
-        points.(fieldname).tp = NaN; % Ou o tempo final da simulação
-    end
+    % % Mp tp Overshoot
+    % [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.05);
+    % if ~isempty(pks)
+    %     points.(fieldname).Mp = pks(1) - 1; 
+    %     points.(fieldname).tp = locs(1);
+    % else
+    %     points.(fieldname).Mp = 0;
+    %     points.(fieldname).tp = NaN; % Ou o tempo final da simulação
+    % end
 
     % t_0.5
     idx_50 = find(data.y >= 0.5, 1);

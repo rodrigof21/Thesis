@@ -8,7 +8,7 @@
 % PROGRAM DESCRIPTION: 
 % Second try at a identification model. nu = f(tau1, tau2)
 %
-% OUTPUT FOLDER:
+% OUTPUT FOLDER: Models\model2
 %==========================================================================
 
 % results = [Mp, t02, t05, t08, nu, zeta];

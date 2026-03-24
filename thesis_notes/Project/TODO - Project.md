@@ -21,14 +21,14 @@ general:
 - [x] Rereun [[generateDBTable.m]]
 	- [ ] change the outputfolder so it saves automatically into obsidian
 - [ ] Write [[Project Files Structure]]
-- [ ] update[[Resumo do trabalho até agora (PT)]] project workflow
-- [ ] Evaluate errors, RMS, VAF etc.
-- [ ] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
+- [x] update[[Resumo do trabalho até agora (PT)]] project workflow
+- [x] Evaluate errors, RMS, VAF etc.
+- [x] update some functions to better explain what they are doing and clear some gemini trash that isn't being used.
 - [ ] Rebuild database with more values of $\nu$ and $\zeta$ 
-- [ ] check if i need Mp in extractPoints, because it may be taking away some needed responses for the t08 times etc.
+- [ ] re-check if i need Mp in extractPoints, because it may be taking away some needed responses for the t08 times etc.
 
 ### Models to test
-- [ ] 2: ratios tau between to2 t05 t08
-- [ ] 3: least squares matrix with the 3 time values
+- [x] 2: ratios tau between to2 t05 t08
+- [x] 3: least squares matrix with the 3 time values
 
 
