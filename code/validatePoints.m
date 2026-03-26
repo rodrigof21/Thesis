@@ -17,7 +17,7 @@ clear; clc; close all;
 outputFolder = 'results/validatedPoints';
 if ~exist(outputFolder, 'dir'), mkdir(outputFolder); end
 
-%% 1. Load your databases
+% 1. Load your databases
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\unitStepResponses\step_response_database.mat')
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\extractPoints\Points.mat')
 
@@ -29,7 +29,7 @@ valid_count = 0;
 
 hFig = figure('Name', 'Peak Validation Tool (Filter: Peaks Only)', 'Color', 'w', 'Position', [100, 100, 1000, 600]);
 
-%% 2. Validation Loop: Only for systems WITH peaks
+% 2. Validation Loop: Only for systems WITH peaks
 fprintf('--- Starting Peak Validation (Mp) ---\n');
 fprintf('Filtering database for systems with valid peaks...\n');
 fprintf('Press [Y] if Peak is correct | [N] to discard | [Esc] to finish and save\n\n');

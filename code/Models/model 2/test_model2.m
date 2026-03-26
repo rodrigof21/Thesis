@@ -12,8 +12,8 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_values = 0.24:0.2:2.04;
-zeta_values = 0.13:0.2:2.03;
+nu_values = 0.01:0.05:2.01;
+zeta_values = 0.01:0.1:2.01;
 rms = zeros(length(nu_values), length(zeta_values));
 wn = 1;
 u = @(s) 1./s;

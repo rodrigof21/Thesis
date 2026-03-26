@@ -53,7 +53,7 @@ for k = 1:length(sys)
 
     % t_0.2
     idx_20 = find(data.y >= 0.2, 1);
-    if isempty(idx_50)
+    if isempty(idx_20)
         t02 = NaN; 
     else
         t02 = data.t(idx_20); 
@@ -62,7 +62,7 @@ for k = 1:length(sys)
 
     % t_0.8
     idx_80 = find(data.y >= 0.8, 1);
-    if isempty(idx_50)
+    if isempty(idx_80)
         t08 = NaN; 
     else
         t08 = data.t(idx_80); 

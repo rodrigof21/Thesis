@@ -11,24 +11,28 @@
 % OUTPUT FOLDER: Models\model2
 %==========================================================================
 
-% results = [Mp, t02, t05, t08, nu, zeta];
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\comparePoints\results.mat')
+% % results = [Mp, t02, t05, t08, nu, zeta];
+%load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\comparePoints\results.mat')
 
-Mp   = results(:, 1);
-t02  = results(:, 2);
-t05  = results(:, 3);
-t08  = results(:, 4);
-nu   = results(:, 5);
-zeta = results(:, 6);
+% filteredPoints (better alternative to results)
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\filterPoints\filteredPoints.mat')
+results = filteredPoints;
 
-tau1 = t02./t05;
-tau2 = t05./t08;
+% Mp   = results(:, 1); % remove if working with filteredPoints
+t02  = results(:, 1);
+t05  = results(:, 2);
+t08  = results(:, 3);
+nu   = results(:, 4);
+zeta = results(:, 5);
+
+% tau1 = t02./t05;
+% tau2 = t05./t08;
 tau = t08./t02;
 
 % nu = f(t02, t05, t08)
-X_nu = [tau, t05];
+X_nu = [log(tau), log(t05)];
 Y_nu = nu;
-fit_nu = fit(X_nu, Y_nu, 'poly22');
+fit_nu = fit(X_nu, Y_nu, 'poly33');
 
 % zeta = f(t05, nu)
 X_zeta = [t05, nu];
