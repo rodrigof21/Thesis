@@ -29,6 +29,7 @@
 | 🟡 | test_model2_onefunc | [[test_model2_onefunc.m]] |
 | 🟡 | test_model3 | [[test_model3.m]] |
 | 🟢 | testing_with_known_systems | [[testing_with_known_systems.m]] |
+| 🟡 | tryModel2Once | [[tryModel2Once.m]] |
 | 🟢 | validatePoints | [[validatePoints.m]] |
 | 🟢 | varyingWn | [[varyingWn.m]] |
 

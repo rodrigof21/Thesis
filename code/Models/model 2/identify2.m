@@ -20,8 +20,8 @@ function [nu_guess, zeta_guess] = identify2(t02, t05, t08)
     
     tau = t08/t02;
 
-    nu_guess = fit_nu(tau, t05);
-    zeta_guess = fit_zeta(t05, nu_guess);
+    nu_guess = fit_nu(log(tau), log(t05));
+    zeta_guess = fit_zeta(log(t05), nu_guess);
 
 end
 

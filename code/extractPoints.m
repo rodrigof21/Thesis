@@ -31,7 +31,7 @@ function [t02, t05, t08] = extractPoints(nu, zeta)
     u = @(s) 1./s;
 
     tfinal = 60;
-    ts = 0.01;
+    ts = 0.05;
 
     [t, y] = invFourierTrapz(G, u, tfinal, ts);
 

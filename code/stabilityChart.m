@@ -17,8 +17,8 @@
 close all;
 
 % Parameters and Grid Setup
-nu_vec = linspace(0.01, 2, 300);    % nu range (x-axis)
-zeta_vec = linspace(-1, 5, 300);   % zeta range (y-axis)
+nu_vec = linspace(0.01, 2, 900);    % nu range (x-axis)
+zeta_vec = linspace(-1, 5, 900);   % zeta range (y-axis)
 [NU, ZETA] = meshgrid(nu_vec, zeta_vec);
 
 % classification matrix
@@ -86,4 +86,4 @@ text(0.5, -0.5, 'unstable, no peaks', 'FontWeight', 'bold', 'HorizontalAlignment
 % Optional: Draw vertical line at nu = 1 to show standard 2nd order case
 line([1 1], [-1 5], 'Color', [0.5 0.5 0.5], 'LineStyle', '--');
 
-plot(1.4, 0.3, 'ro')
+%plot(1.4, 0.3, 'ro')

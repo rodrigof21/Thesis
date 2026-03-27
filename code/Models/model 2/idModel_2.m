@@ -32,19 +32,22 @@ tau = t08./t02;
 % nu = f(t02, t05, t08)
 X_nu = [log(tau), log(t05)];
 Y_nu = nu;
-fit_nu = fit(X_nu, Y_nu, 'poly33');
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
 % zeta = f(t05, nu)
-X_zeta = [t05, nu];
-fit_zeta = fit(X_zeta, zeta, 'poly22');
+X_zeta = [log(t05), nu];
+[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly22');
+fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 idModel2 = struct();
 idModel2.step1 = fit_nu;
 idModel2.step2 = fit_zeta;
 
+visibility = 'off';
 
 % --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
-figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w');
+figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);
 
 % Plot da superfície de fit semitransparente
 plot(fit_nu, X_nu, nu); 
@@ -61,7 +64,7 @@ colormap jet; % Cor para a superfície
 alpha(0.7);   % Transparência para ver os pontos por baixo
 
 % --- Gráfico 2: Ajuste de Zeta = f(t05, nu) ---
-figure('Name', 'Ajuste do Amortecimento (\zeta)', 'Color', 'w');
+figure('Name', 'Ajuste do Amortecimento (\zeta)', 'Color', 'w', 'Visible',visibility);
 
 % Plot da superfície de fit
 plot(fit_zeta, X_zeta, zeta);
@@ -76,3 +79,15 @@ grid on;
 view(135, 15);
 colormap parula; % Cor diferente para distinguir
 alpha(0.7);
+
+
+% --- save ---
+savePath = 'C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\model2.mat';
+
+% Garante que a pasta existe
+if ~exist(fileparts(savePath), 'dir')
+    mkdir(fileparts(savePath));
+end
+
+save(savePath, 'idModel2');
+fprintf('Modelo idModel2 gravado com sucesso em: %s\n', savePath);
