@@ -90,4 +90,27 @@ if ~exist(fileparts(savePath), 'dir')
 end
 
 save(savePath, 'idModel2');
-fprintf('Modelo idModel2 gravado com sucesso em: %s\n', savePath);
+%fprintf('Modelo idModel2 gravado com sucesso em: %s\n', savePath);
+
+
+
+%% --- GEMINI CODE FOR EQUATIONS LATEX ---
+fprintf('\n--- EQUAÇÕES PARA A TESE (LATEX) ---\n');
+
+% 1. Equação para Nu (poly33) com log(tau) e log(t05)
+c_n = coeffvalues(fit_nu);
+eqn_nu = sprintf(['\\nu(\\tau, t_{0.5}) = %.4f + %.4f\\ln(\\tau) + %.4f\\ln(t_{0.5}) + ', ...
+                  '%.4f\\ln(\\tau)^2 + %.4f\\ln(\\tau)\\ln(t_{0.5}) + %.4f\\ln(t_{0.5})^2 + ', ...
+                  '%.4f\\ln(\\tau)^3 + %.4f\\ln(\\tau)^2\\ln(t_{0.5}) + %.4f\\ln(\\tau)\\ln(t_{0.5})^2 + ', ...
+                  '%.4f\\ln(t_{0.5})^3'], ...
+                  c_n(1), c_n(2), c_n(3), c_n(4), c_n(5), c_n(6), c_n(7), c_n(8), c_n(9), c_n(10));
+
+% 2. Equação para Zeta (poly22) com log(t05) e nu
+c_z = coeffvalues(fit_zeta);
+eqn_zeta = sprintf(['\\zeta(t_{0.5}, \\nu) = %.4f + %.4f\\ln(t_{0.5}) + %.4f\\nu + ', ...
+                    '%.4f\\ln(t_{0.5})^2 + %.4f\\ln(t_{0.5})\\nu + %.4f\\nu^2'], ...
+                    c_z(1), c_z(2), c_z(3), c_z(4), c_z(5), c_z(6));
+
+% Mostrar no Command Window
+fprintf('\nCopia para o LaTeX (Nu):\n%s\n', eqn_nu);
+fprintf('\nCopia para o LaTeX (Zeta):\n%s\n', eqn_zeta);

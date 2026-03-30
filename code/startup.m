@@ -1,1 +1,1 @@
-addpath(genpath('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code'))
+addpath(genpath('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\Model 2'))

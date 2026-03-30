@@ -35,6 +35,8 @@ if stable, fprintf('Stable\n')
 else, fprintf('Unstable\n'), close all, return
 end
 
+h = zeros(length(w), 1);
+
 figure,
 for i = 1:length(w)
 
@@ -51,17 +53,17 @@ for i = 1:length(w)
 
     [tout, yout] = invFourierTrapz(G, u, tfinal, 0.05);
 
-    plot(tout, yout);
+    h(i) = plot(tout, yout, 'DisplayName', sprintf('wn = %.1f', w(i)));
     hold on
     
-    % % Evalute overshoot time
-    % [max_y(i), idx_max] = max(yout);
-    % tmax(i) = tout(idx_max);
+    % Evalute overshoot time
+    [max_y(i), idx_max] = max(yout);
+    tmax(i) = tout(idx_max);
 
-    % evaluate t05
-    idx05 = find(yout >= 0.5, 1);
-    tmax(i) = tout(idx05);
-    max_y(i) = yout(idx05);
+    % % evaluate t05
+    % idx05 = find(yout >= 0.5, 1);
+    % tmax(i) = tout(idx05);
+    % max_y(i) = yout(idx05);
 
     plot(tmax(i), max_y(i), 'ro')
 end
@@ -69,10 +71,10 @@ end
 hold off
 
 % settings and saving -------------------------
-%legend(sprintf('wn = %.1f', w(1)), sprintf('wn = %.1f', w(2)), sprintf('wn = %.1f', w(3)), sprintf('wn = %.1f', w(4)));
-title('step response comparison (4)')
-xlabel('time')
-ylabel('amplitude')
+legend(h)
+title('Time scaling property of \omega_n')
+xlabel('Time (s)')
+ylabel('Amplitude')
 % % save img
 % fileName = 'varyingWncomparison99.png';
 % outputFolder = 'results/varyingWn';

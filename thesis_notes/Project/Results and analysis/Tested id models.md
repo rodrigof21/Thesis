@@ -19,3 +19,9 @@ zeta = f(t05, nu)
 
 ---
 
+nu = f(log(tau), log(t05))
+zeta = f(log(t05), nu)
+
+**VERY GOOD**
+
+---
