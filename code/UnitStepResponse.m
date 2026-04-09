@@ -29,8 +29,8 @@ if ~exist(outputFolder, 'dir')
 end
 
 %% Values and check for stability
-nu_init = 0.0:0.01:2; %0.05 step
-zeta_init = 0.0:0.1:5; 
+nu_init = 0.0:0.02:2; %0.05 step
+zeta_init = 0.0:0.05:5; 
 wn = 1;
 u = @(s) 1./s;
 

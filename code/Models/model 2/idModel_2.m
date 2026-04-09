@@ -32,12 +32,12 @@ tau = t08./t02;
 % nu = f(t02, t05, t08)
 X_nu = [log(tau), log(t05)];
 Y_nu = nu;
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly44');
 fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
 % zeta = f(t05, nu)
 X_zeta = [log(t05), nu];
-[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly22');
+[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly33');
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 idModel2 = struct();

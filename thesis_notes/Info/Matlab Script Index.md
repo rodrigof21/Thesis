@@ -22,12 +22,14 @@
 | 🟢 | idmodel_auto_test | [[idmodel_auto_test.m]] |
 | 🔴 | params_to_markdown | [[params_to_markdown.m]] |
 | 🟡 | pointDataCorrelation | [[pointDataCorrelation.m]] |
+| 🟢 | singleStepResponsePlot | [[singleStepResponsePlot.m]] |
 | 🟢 | stabilityChart | [[stabilityChart.m]] |
 | 🟡 | startup | [[startup.m]] |
 | 🟢 | surfaceMapping | [[surfaceMapping.m]] |
 | 🟡 | test_model2 | [[test_model2.m]] |
 | 🟡 | test_model2_onefunc | [[test_model2_onefunc.m]] |
 | 🟡 | test_model3 | [[test_model3.m]] |
+| 🟡 | test_once_noise | [[test_once_noise.m]] |
 | 🟢 | testing_with_known_systems | [[testing_with_known_systems.m]] |
 | 🟡 | tryModel2Once | [[tryModel2Once.m]] |
 | 🟢 | validatePoints | [[validatePoints.m]] |
@@ -38,6 +40,7 @@
 | :---: | --- | --- |
 | 🟢 | checkStability | [[checkStability.m]] |
 | 🟢 | extractPoints | [[extractPoints.m]] |
+| 🟡 | extractPoints2 | [[extractPoints2.m]] |
 | 🟢 | filterUnstablePairs | [[filterUnstablePairs.m]] |
 | 🟡 | identify2 | [[identify2.m]] |
 | 🟡 | identify3 | [[identify3.m]] |

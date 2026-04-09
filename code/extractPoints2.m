@@ -3,37 +3,21 @@
 % AUTHOR: Rodrigo Fonseca
 % DATE: 2026
 % TYPE: FUNCTION
-% STATUS: FINISHED
+% STATUS: IN PROGRESS
 %
 % PROGRAM DESCRIPTION: 
-% Extracts t02, t05, t08, Mp from a given system. Must have F_nu and F_zeta
-% in the workspace from [[idModel_test.]]
-%
-% INPUTS:
-%   - nu, zeta
-%
-% OUTPUTS:
-%   - t02, t05, t08, Mp
+% extract points but with different inputs
 %
 % OUTPUT FOLDER:
 %==========================================================================
 
-function [t02, t05, t08] = extractPoints(nu, zeta)
+
+function [t02, t05, t08] = extractPoints2(t, y)
 
     % stable = checkStability(nu, zeta);
     % if stable, fprintf('Stable\n')
     % else, fprintf('Unstable\n'), return
     % end
-
-    wn = 1;
-    G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
-    
-    u = @(s) 1./s;
-
-    tfinal = 60;
-    ts = 0.05;
-
-    [t, y] = invFourierTrapz(G, u, tfinal, ts);
 
     % % Mp tp Overshoot
     % [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);

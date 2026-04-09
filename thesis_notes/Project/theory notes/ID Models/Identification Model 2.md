@@ -20,7 +20,7 @@ $$\zeta(t_{0.5}, \nu) = q_{00} + q_{10}\ln t_{0.5} + q_{01}\nu + q_{20}(\ln t_{0
 
 ### $\nu$ with poly33 (better)
 
-$$nu(\tau, t_{0.5}) =p_{00} + p_{10}\ln(\tau) + p_{01}\ln(t_{0.5}) + p_{20}\ln(\tau)^2 + p_{11}\ln(\tau)\ln(t_{0.5}) + p_{02}\ln(t_{0.5})^2 + p_{30}\ln(\tau)^3 + p_{21}\ln(\tau)^2\ln(t_{0.5}) + p_{12}\ln(\tau)\ln(t_{0.5})^2 + p_{03}\ln(t_{0.5})^3$$
+$$\nu(\tau, t_{0.5}) =p_{00} + p_{10}\ln(\tau) + p_{01}\ln(t_{0.5}) + p_{20}\ln(\tau)^2 + p_{11}\ln(\tau)\ln(t_{0.5}) + p_{02}\ln(t_{0.5})^2 + p_{30}\ln(\tau)^3 + p_{21}\ln(\tau)^2\ln(t_{0.5}) + p_{12}\ln(\tau)\ln(t_{0.5})^2 + p_{03}\ln(t_{0.5})^3$$
 
 ### With the coefficients
 

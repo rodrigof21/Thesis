@@ -12,8 +12,8 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_values = 0.03:0.1:2.03;
-zeta_values = 0.13:0.1:2.03;
+nu_values = 0.01:0.02:2.0;
+zeta_values = 0.01:0.05:5.0;
 rms = zeros(length(nu_values), length(zeta_values));
 wn = 1;
 u = @(s) 1./s;
@@ -35,11 +35,19 @@ for i = 1:length(nu_values)
             fprintf('Unstable\n');
             fprintf('%.i/%.i\n', count, total);
             count=count+1;
-            continue;
+            continue
         end
         
         [t02, t05, t08] = extractPoints(nu_real, zeta_real);
         [nu_g, zeta_g] = identify2(t02, t05, t08);
+
+        if t02 == 0 || t05 == 0 || t08 == 0
+            rms(i,j) = inf;
+            fprintf('non existing time\n')
+            fprintf('%.i/%.i\n', count, total);
+            count=count+1;
+            continue
+        end
 
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
@@ -53,6 +61,7 @@ for i = 1:length(nu_values)
         [t_real, y_real] = invFourierTrapz(G_real, u, 60, 0.05);
         [t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
         
+        % % Debug Options
         % figure
         % plot(t_real, y_real, 'DisplayName', 'real'), hold on
         % plot(t_guess, y_guess, 'DisplayName', 'guess');
