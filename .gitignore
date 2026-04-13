@@ -1,10 +1,5 @@
 bib/
-code/results/unitStepResponses_img
-code/results/unitStepResponses
-code/results/effectsOfWn_peak_clean
-code/results/bode4
-code/results/bode99
-code/results/effectsOfWn
+code/results/
 thesis_notes/.obsidian/
 thesis_notes/.trash/
 *.asv
