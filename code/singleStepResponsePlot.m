@@ -19,12 +19,12 @@ wn = 1;
 u = @(s) 1./s;
 G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
 
-[t02, t05, t08, Mp, tp] = extractPoints(nu, zeta);
+[t02, t05, t08] = extractPoints(nu, zeta);
 
-tfinal = 40;
+tfinal = 30;
 [y, t] = invFourierTrapz(G, u, tfinal, 0.01);
 
-h = zeros(5, 1);
+h = zeros(4, 1);
 
 figure
 h(1) = plot(y, t, 'DisplayName','Step Resp. Curve');
@@ -32,7 +32,7 @@ hold on
 h(2) = plot(t02, 0.2, 'ro','MarkerFaceColor', 'r', 'DisplayName','t_{0,2}');
 h(3) = plot(t05, 0.5, 'go','MarkerFaceColor', 'g', 'DisplayName','t_{0,5}');
 h(4) = plot(t08, 0.8, 'ko','MarkerFaceColor', 'k', 'DisplayName','t_{0,8}');
-h(5) = plot(tp, Mp+1, 'b^','MarkerFaceColor', 'b', 'DisplayName','M_p');
+%h(5) = plot(tp, Mp+1, 'b^','MarkerFaceColor', 'b', 'DisplayName','M_p');
 yline(1, '--', 'DisplayName','SS value')
 title('Step Response with \nu = 1.3 and \zeta = 1.8')
 legend(h, 'Location','southeast')

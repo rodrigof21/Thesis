@@ -24,15 +24,17 @@ t05  = results(:, 2);
 t08  = results(:, 3);
 nu   = results(:, 4);
 zeta = results(:, 5);
+t005 = results(:, 6);
 
 % tau1 = t02./t05;
 % tau2 = t05./t08;
 tau = t08./t02;
+tau2 = t005./t05;
 
 % nu = f(t02, t05, t08)
-X_nu = [log(tau), log(t05)];
+X_nu = [log(tau), log(tau2)];
 Y_nu = nu;
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly44');
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
 fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
 % zeta = f(t05, nu)
@@ -44,7 +46,7 @@ idModel2 = struct();
 idModel2.step1 = fit_nu;
 idModel2.step2 = fit_zeta;
 
-visibility = 'off';
+visibility = 'on';
 
 % --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
 figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);
@@ -105,11 +107,16 @@ eqn_nu = sprintf(['\\nu(\\tau, t_{0.5}) = %.4f + %.4f\\ln(\\tau) + %.4f\\ln(t_{0
                   '%.4f\\ln(t_{0.5})^3'], ...
                   c_n(1), c_n(2), c_n(3), c_n(4), c_n(5), c_n(6), c_n(7), c_n(8), c_n(9), c_n(10));
 
-% 2. Equação para Zeta (poly22) com log(t05) e nu
+% 2. Equação para Zeta (poly33) com log(t05) e nu
 c_z = coeffvalues(fit_zeta);
-eqn_zeta = sprintf(['\\zeta(t_{0.5}, \\nu) = %.4f + %.4f\\ln(t_{0.5}) + %.4f\\nu + ', ...
-                    '%.4f\\ln(t_{0.5})^2 + %.4f\\ln(t_{0.5})\\nu + %.4f\\nu^2'], ...
-                    c_z(1), c_z(2), c_z(3), c_z(4), c_z(5), c_z(6));
+
+% A ordem dos termos no poly33 do MATLAB (x=log(t05), y=nu) é:
+% p00, p10, p01, p20, p11, p02, p30, p21, p12, p03
+eqn_zeta = sprintf(['\\zeta(t_{0.5}, \\nu) = %.4f + %.4f\\ln(t_{0.5}) + %.4f\\nu ', ...
+                    '+ %.4f\\ln(t_{0.5})^2 + %.4f\\ln(t_{0.5})\\nu + %.4f\\nu^2 ', ...
+                    '+ %.4f\\ln(t_{0.5})^3 + %.4f\\ln(t_{0.5})^2\\nu + %.4f\\ln(t_{0.5})\\nu^2 + %.4f\\nu^3'], ...
+                    c_z(1), c_z(2), c_z(3), c_z(4), c_z(5), c_z(6), c_z(7), c_z(8), c_z(9), c_z(10));
+
 
 % Mostrar no Command Window
 fprintf('\nCopia para o LaTeX (Nu):\n%s\n', eqn_nu);

@@ -18,14 +18,14 @@
 % OUTPUT FOLDER:
 %==========================================================================
 
-function [t02, t05, t08] = extractPoints(nu, zeta)
+function [t02, t05, t08] = extractPoints(nu, zeta, wn)
 
     % stable = checkStability(nu, zeta);
     % if stable, fprintf('Stable\n')
     % else, fprintf('Unstable\n'), return
     % end
 
-    wn = 1;
+    %wn = 1;
     G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
     
     u = @(s) 1./s;

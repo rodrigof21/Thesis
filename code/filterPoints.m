@@ -23,19 +23,20 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 
 fn = fieldnames(points);
 n_sys = length(fn);
-raw_matrix = zeros(n_sys, 5);
+raw_matrix = zeros(n_sys, 6);
 
 for k = 1:n_sys
     p = points.(fn{k});
-    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta];
+    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta, p.t005];
 end
 
 
 is_finite = all(isfinite(raw_matrix), 2);
 
 t02_not_zero = (raw_matrix(:, 1) > 1e-9); % removes t02 = 0 bc of tau
+t005_not_zero = (raw_matrix(:, 6) > 1e-9); % removes t005 = 0 bc of tau
 
-valid_rows = is_finite & t02_not_zero;
+valid_rows = is_finite & t02_not_zero & t005_not_zero;
 filteredPoints = raw_matrix(valid_rows, :);
 
 % gemini log code

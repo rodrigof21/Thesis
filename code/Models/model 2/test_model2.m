@@ -41,7 +41,7 @@ for i = 1:length(nu_values)
         [t02, t05, t08] = extractPoints(nu_real, zeta_real);
         [nu_g, zeta_g] = identify2(t02, t05, t08);
 
-        if t02 == 0 || t05 == 0 || t08 == 0
+        if isnan(t02) || isnan(t05) || isnan(t08)
             rms(i,j) = inf;
             fprintf('non existing time\n')
             fprintf('%.i/%.i\n', count, total);

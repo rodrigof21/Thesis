@@ -11,30 +11,45 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 0.03;
-zeta_real = 0.43;
+nu_real = 0.8;
+zeta_real = 1.2;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
 end
 
-wn = 1;
+wn = 3;
 u = @(s) 1./s;
+G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
-[t02, t05, t08] = extractPoints(nu_real, zeta_real);
 
+[t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
 fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
 
+% Id params
 [nu_g, zeta_g] = identify2(t02, t05, t08);
 
-G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
-G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
+
+% ID natural frequency
+% load Model
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+
+log_a = fitresult(nu_g, zeta_g);
+a = exp(log_a);
+wn_g = a/t05;
+
+
+% Guessed Model
+G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
 
 
 [t_real, y_real] = invFourierTrapz(G_real, u, 60, 0.05);
 [t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
 
+fprintf('nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
 fprintf('nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
+fprintf('Real wn = %.2f\n', wn);
+fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
 plot(t_real, y_real, 'DisplayName', 'Real'), hold on
@@ -44,3 +59,4 @@ legend('show');
 err = y_real-y_guess;
 rms = sqrt(mean(err.^2));
 fprintf('RMS = %.3f\n', rms);
+

@@ -69,9 +69,19 @@ for k = 1:length(sys)
     end
     points.(fieldname).t08 = t08;
 
+
     %other data
     points.(fieldname).nu = data.nu;
     points.(fieldname).zeta = data.zeta;
+
+    % t_0.05
+    idx_005 = find(data.y >= 0.05, 1);
+    if isempty(idx_005)
+        t005 = NaN; 
+    else
+        t005 = data.t(idx_005); 
+    end
+    points.(fieldname).t005 = t005;
     
     % Console Log
     %fprintf('Status: %d/%d\n', count, total);
