@@ -1,8 +1,13 @@
 bib/
-code/results/
+code/results/unitStepResponses_img
+code/results/unitStepResponses
+code/results/effectsOfWn_peak_clean
+code/results/bode4
+code/results/bode99
+code/results/effectsOfWn
 thesis_notes/.obsidian/
 thesis_notes/.trash/
-code/*.asv
+*.asv
 thesis_notes/Project/Project Log.md
 thesis_notes/Assets/DatabaseImgs
 images/

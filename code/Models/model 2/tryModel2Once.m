@@ -11,34 +11,34 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 0.8;
+nu_real = 0.9;
 zeta_real = 1.2;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
 end
 
-wn = 3;
+wn = 1;
 u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
 
 [t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
-fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
+%fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
 
 % Id params
 [nu_g, zeta_g] = identify2(t02, t05, t08);
 
 
-% ID natural frequency
-% load Model
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+% % ID natural frequency
+% % load Model
+% load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+% 
+% log_a = fitresult(nu_g, zeta_g);
+% a = exp(log_a);
+% wn_g = a/t05;
 
-log_a = fitresult(nu_g, zeta_g);
-a = exp(log_a);
-wn_g = a/t05;
-
-
+wn_g = wn;
 % Guessed Model
 G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
 
@@ -48,8 +48,8 @@ G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
 
 fprintf('nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
 fprintf('nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
-fprintf('Real wn = %.2f\n', wn);
-fprintf('Guess wn = %.2f\n', wn_g);
+% fprintf('Real wn = %.2f\n', wn);
+% fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
 plot(t_real, y_real, 'DisplayName', 'Real'), hold on
