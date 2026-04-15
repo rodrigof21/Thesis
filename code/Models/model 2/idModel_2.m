@@ -18,23 +18,24 @@
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\filterPoints\filteredPoints.mat')
 results = filteredPoints;
 
-% Mp   = results(:, 1); % remove if working with filteredPoints
+% points data
 t02  = results(:, 1);
 t05  = results(:, 2);
 t08  = results(:, 3);
 nu   = results(:, 4);
 zeta = results(:, 5);
-t005 = results(:, 6);
+Mp   = results(:, 6);
+tp   = results(:, 7);
 
 % tau1 = t02./t05;
 % tau2 = t05./t08;
 tau = t08./t02;
-tau2 = (t08-t05)./(t05-t02);
+tau2 = tp./t05;
 
 % nu = f(t02, t05, t08)
-X_nu = [log(tau), log(tau2)];
+X_nu = [log(Mp), log(tau2)];
 Y_nu = nu;
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly55');
 fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
 % zeta = f(t05, nu)
@@ -51,19 +52,18 @@ visibility = 'on';
 % --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
 figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);
 
-% Plot da superfície de fit semitransparente
+% Plot da superfície 
 plot(fit_nu, X_nu, nu); 
 
-% Melhorar o visual
+% Configs
 xlabel('\tau_1 (t_{0.2}/t_{0.5})');
 ylabel('\tau_2 (t_{0.5}/t_{0.8})');
 zlabel('\nu (Ordem)');
 title('Superfície de Identificação de \nu');
 grid on;
-% Ajustar a vista para ver bem a curvatura
 view(-45, 15); 
-colormap jet; % Cor para a superfície
-alpha(0.7);   % Transparência para ver os pontos por baixo
+colormap jet;
+alpha(0.7);
 
 % --- Gráfico 2: Ajuste de Zeta = f(t05, nu) ---
 figure('Name', 'Ajuste do Amortecimento (\zeta)', 'Color', 'w', 'Visible',visibility);
@@ -71,22 +71,20 @@ figure('Name', 'Ajuste do Amortecimento (\zeta)', 'Color', 'w', 'Visible',visibi
 % Plot da superfície de fit
 plot(fit_zeta, X_zeta, zeta);
 
-% Melhorar o visual
+% Configs
 xlabel('t_{0.5} (s)');
 ylabel('\nu (Ordem)');
 zlabel('\zeta (Amortecimento)');
 title('Superfície de Identificação de \zeta');
 grid on;
-% Ajustar a vista
 view(135, 15);
-colormap parula; % Cor diferente para distinguir
+colormap parula;
 alpha(0.7);
 
 
 % --- save ---
 savePath = 'C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\model2.mat';
 
-% Garante que a pasta existe
 if ~exist(fileparts(savePath), 'dir')
     mkdir(fileparts(savePath));
 end
