@@ -30,25 +30,27 @@ tp   = results(:, 7);
 % tau1 = t02./t05;
 % tau2 = t05./t08;
 tau = t08./t02;
-tau2 = tp./t05;
+tau2 = tp./t02;
 
-% zeta = f(, )
-X_zeta = [log(tau), log(Mp)];
-[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly22');
-fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 % nu = f(, , )
-X_nu = [log(tau), zeta];
-Y_nu = nu;
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+X_nu = [log(tau), log(tau2)];
+[fit_nu, gof_nu] = fit(X_nu, nu, 'poly33');
 fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
 
-idModel2 = struct();
-idModel2.step1 = fit_zeta;
-idModel2.step2 = fit_nu;
+% zeta = f(, )
+X_zeta = [log(tau), nu];
+[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly33');
+fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
-visibility = 'on';
+
+
+idModel2 = struct();
+idModel2.step1 = fit_nu;
+idModel2.step2 = fit_zeta;
+
+visibility = 'off';
 
 % --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
 figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);
