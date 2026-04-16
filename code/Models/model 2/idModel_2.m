@@ -32,20 +32,21 @@ tp   = results(:, 7);
 tau = t08./t02;
 tau2 = tp./t05;
 
-% nu = f(t02, t05, t08)
-X_nu = [log(Mp), log(tau2)];
-Y_nu = nu;
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly55');
-fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
-
-% zeta = f(t05, nu)
-X_zeta = [log(tau), nu];
-[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly33');
+% zeta = f(, )
+X_zeta = [log(tau), log(Mp)];
+[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly22');
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
+% nu = f(, , )
+X_nu = [log(tau), zeta];
+Y_nu = nu;
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
+
+
 idModel2 = struct();
-idModel2.step1 = fit_nu;
-idModel2.step2 = fit_zeta;
+idModel2.step1 = fit_zeta;
+idModel2.step2 = fit_nu;
 
 visibility = 'on';
 
