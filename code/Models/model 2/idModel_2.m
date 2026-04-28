@@ -27,14 +27,13 @@ zeta = results(:, 5);
 Mp   = results(:, 6);
 tp   = results(:, 7);
 
-% tau1 = t02./t05;
-% tau2 = t05./t08;
+
 tau = t08./t02;
-tau2 = tp./t02;
+tau2 = t05./tp;
 
 
 % nu = f(, , )
-X_nu = [log(tau), log(tau2)];
+X_nu = [log(tau), log(Mp)];
 [fit_nu, gof_nu] = fit(X_nu, nu, 'poly33');
 fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
 
@@ -45,12 +44,11 @@ X_zeta = [log(tau), nu];
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
-
 idModel2 = struct();
 idModel2.step1 = fit_nu;
 idModel2.step2 = fit_zeta;
 
-visibility = 'off';
+visibility = 'on';
 
 % --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
 figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);

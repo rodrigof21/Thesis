@@ -11,8 +11,8 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 0.9;
-zeta_real = 1.2;
+nu_real = 1.0;
+zeta_real = 0.7;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return

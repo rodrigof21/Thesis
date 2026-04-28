@@ -12,8 +12,12 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_values = 0.01:0.02:2.0;
-zeta_values = 0.01:0.05:5.0;
+% nu_values = 0.01:0.02:2.0;
+% zeta_values = 0.01:0.05:5.0;
+
+nu_values = 0.01:0.05:2;
+zeta_values = 0.01:0.05:3;
+
 rms = zeros(length(nu_values), length(zeta_values));
 wn = 1;
 u = @(s) 1./s;
@@ -38,7 +42,7 @@ for i = 1:length(nu_values)
             continue
         end
         
-        [t02, t05, t08] = extractPoints(nu_real, zeta_real);
+        [t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
         [nu_g, zeta_g] = identify2(t02, t05, t08);
 
         if isnan(t02) || isnan(t05) || isnan(t08)
