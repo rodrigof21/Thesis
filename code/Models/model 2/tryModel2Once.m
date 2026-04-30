@@ -34,15 +34,15 @@ end
 [nu_g0, zeta_g0, nu_g1, zeta_g1] = identify2(t02, t05, t08);
 
 
-% ID natural frequency
-% load Model
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+% % ID natural frequency
+% % load Model
+% load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+% 
+% log_a = fitresult(nu_g0, zeta_g0);
+% a = exp(log_a);
+% wn_g = a/t05;
 
-log_a = fitresult(nu_g0, zeta_g0);
-a = exp(log_a);
-wn_g = a/t05;
-
-%wn_g = wn;
+wn_g = wn;
 % Guessed Model
 G_guess0 = @(s) 1 ./ (1 + 2.*zeta_g0.*(s/wn_g).^nu_g0 + (s/wn_g).^(nu_g0+1));
 G_guess1 = @(s) 1 ./ (1 + 2.*zeta_g1.*(s/wn_g).^nu_g1 + (s/wn_g).^(nu_g1+1));
@@ -55,8 +55,8 @@ G_guess1 = @(s) 1 ./ (1 + 2.*zeta_g1.*(s/wn_g).^nu_g1 + (s/wn_g).^(nu_g1+1));
 fprintf('Real: nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
 fprintf('Guess0: nu = %.2f and zeta = %.2f\n', nu_g0, zeta_g0);
 fprintf('Guess1: nu = %.2f and zeta = %.2f\n', nu_g1, zeta_g1);
-fprintf('Real wn = %.2f\n', wn);
-fprintf('Guess wn = %.2f\n', wn_g);
+% fprintf('Real wn = %.2f\n', wn);
+% fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
 plot(t_real, y_real, 'DisplayName', 'Real'), hold on
