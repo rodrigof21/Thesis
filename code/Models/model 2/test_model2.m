@@ -27,6 +27,8 @@ count = 1;
 
 guess0 = zeros(length(nu_values), length(zeta_values), 2);
 guess1 = zeros(length(nu_values), length(zeta_values), 2);
+err_nu = zeros(length(nu_values), length(zeta_values), 2);
+err_zeta = zeros(length(nu_values), length(zeta_values), 2);
 
 for i = 1:length(nu_values)
     for j = 1:length(zeta_values)
@@ -74,6 +76,10 @@ for i = 1:length(nu_values)
         guess0(i, j, 2) = zeta_g0;
         guess1(i, j, 1) = nu_g1;
         guess1(i, j, 2) = zeta_g1;
+        err_nu(i, j, 1) = nu_real - nu_g0;
+        err_nu(i, j, 2) = nu_real - nu_g1;
+        err_zeta(i, j, 1) = zeta_real - zeta_g0;
+        err_zeta(i, j, 2) = zeta_real - zeta_g1;
         
         G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
         G_guess0 = @(s) 1 ./ (1 + 2.*zeta_g0.*(s/wn).^nu_g0 + (s/wn).^(nu_g0+1));

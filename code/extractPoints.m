@@ -18,7 +18,7 @@
 % OUTPUT FOLDER:
 %==========================================================================
 
-function [t02, t08, Mp] = extractPoints(nu, zeta, wn)
+function [t02, t05, t08] = extractPoints(nu, zeta, wn)
 
     % stable = checkStability(nu, zeta);
     % if stable, fprintf('Stable\n')
@@ -35,24 +35,24 @@ function [t02, t08, Mp] = extractPoints(nu, zeta, wn)
 
     [t, y] = invFourierTrapz(G, u, tfinal, ts);
 
-    % Mp tp Overshoot
-    [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
-    if ~isempty(pks) & pks(1) - 1 > 0.05
-        Mp = pks(1) - 1; 
-        tp = locs(1);
+    % % Mp tp Overshoot
+    % [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
+    % if ~isempty(pks) & pks(1) - 1 > 0.05
+    %     Mp = pks(1) - 1; 
+    %     tp = locs(1);
+    % else
+    %     Mp = 0;
+    %     tp = NaN;
+    % end
+
+    % t_0.5
+    idx_50 = find(y >= 0.5, 1);
+    if isempty(idx_50)
+        t05 = NaN; 
     else
-        Mp = 0;
-        tp = NaN;
+        t05 = t(idx_50); 
     end
 
-    % % t_0.5
-    % idx_50 = find(y >= 0.5, 1);
-    % if isempty(idx_50)
-    %     t05 = NaN; 
-    % else
-    %     t05 = t(idx_50); 
-    % end
-    % 
     % t_0.2
     idx_20 = find(y >= 0.2, 1);
     if isempty(idx_20)

@@ -31,12 +31,12 @@ tp   = results(:, 7);
 
 
 tau = t08./t02;
-tau2 = Mp;
+tau2 = t05./t02;
 
-halfpoint = 1.12;
+
+halfpoint = 1.11;
 idx0 = nu < halfpoint;
 idx1 = nu >= halfpoint;
-
 Y_nu0 = nu(idx0);
 Y_nu1 = nu(idx1);
     
