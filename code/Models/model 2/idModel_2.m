@@ -11,6 +11,8 @@
 % OUTPUT FOLDER: Models\model2
 %==========================================================================
 
+clc;
+
 % % results = [Mp, t02, t05, t08, nu, zeta];
 %load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\comparePoints\results.mat')
 
@@ -29,38 +31,71 @@ tp   = results(:, 7);
 
 
 tau = t08./t02;
-tau2 = t05./tp;
+tau2 = Mp;
+
+halfpoint = 1.12;
+idx0 = nu < halfpoint;
+idx1 = nu >= halfpoint;
+
+Y_nu0 = nu(idx0);
+Y_nu1 = nu(idx1);
+    
+
+% nu0
+X_nu0 = [log(tau(idx0)), log(tau2(idx0))];
+[fit_nu0, gof_nu0] = fit(X_nu0, Y_nu0, 'poly33');
+fprintf('R-squared para Nu0: %.4f\n', gof_nu0.rsquare);
+
+% nu1
+X_nu1 = [log(tau(idx1)), log(tau2(idx1))];
+[fit_nu1, gof_nu1] = fit(X_nu1, Y_nu1, 'poly33');
+fprintf('R-squared para Nu1: %.4f\n', gof_nu1.rsquare);
 
 
-% nu = f(, , )
-X_nu = [log(tau), log(Mp)];
-[fit_nu, gof_nu] = fit(X_nu, nu, 'poly33');
-fprintf('R-squared para Nu: %.4f\n', gof_nu.rsquare);
-
-
-% zeta = f(, )
+% zeta
 X_zeta = [log(tau), nu];
 [fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly33');
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
 idModel2 = struct();
-idModel2.step1 = fit_nu;
-idModel2.step2 = fit_zeta;
+idModel2.step1 = fit_nu0;
+idModel2.step2 = fit_nu1;
+idModel2.step3 = fit_zeta;
 
-visibility = 'on';
+visibility = 'off';
 
-% --- Gráfico 1: Ajuste de Nu = f(tau1, tau2) ---
-figure('Name', 'Ajuste da Ordem Fracionária (\nu)', 'Color', 'w', 'Visible',visibility);
+figure('Name', 'ID Points', 'Visible', 'off');
+plot3(tau, tau2, zeta, '.')
+grid on
+
+% --- Gráfico 1.0: Ajuste de Nu = f(tau1, tau2) ---
+figure('Name', 'Ajuste da Ordem Fracionária (\nu) 0', 'Color', 'w', 'Visible',visibility);
 
 % Plot da superfície 
-plot(fit_nu, X_nu, nu); 
+plot(fit_nu0, X_nu0, Y_nu0); 
 
 % Configs
 xlabel('\tau_1 (t_{0.2}/t_{0.5})');
 ylabel('\tau_2 (t_{0.5}/t_{0.8})');
 zlabel('\nu (Ordem)');
-title('Superfície de Identificação de \nu');
+title('Superfície de Identificação de \nu_0');
+grid on;
+view(-45, 15); 
+colormap jet;
+alpha(0.7);
+
+% --- Gráfico 1.1: Ajuste de Nu = f(tau1, tau2) ---
+figure('Name', 'Ajuste da Ordem Fracionária (\nu) 1', 'Color', 'w', 'Visible',visibility);
+
+% Plot da superfície 
+plot(fit_nu1, X_nu1, Y_nu1); 
+
+% Configs
+xlabel('\tau_1 (t_{0.2}/t_{0.5})');
+ylabel('\tau_2 (t_{0.5}/t_{0.8})');
+zlabel('\nu (Ordem)');
+title('Superfície de Identificação de \nu_1');
 grid on;
 view(-45, 15); 
 colormap jet;
@@ -94,29 +129,3 @@ save(savePath, 'idModel2');
 %fprintf('Modelo idModel2 gravado com sucesso em: %s\n', savePath);
 
 
-
-%% --- GEMINI CODE FOR EQUATIONS LATEX ---
-fprintf('\n--- EQUAÇÕES PARA A TESE (LATEX) ---\n');
-
-% 1. Equação para Nu (poly33) com log(tau) e log(t05)
-c_n = coeffvalues(fit_nu);
-eqn_nu = sprintf(['\\nu(\\tau, t_{0.5}) = %.4f + %.4f\\ln(\\tau) + %.4f\\ln(t_{0.5}) + ', ...
-                  '%.4f\\ln(\\tau)^2 + %.4f\\ln(\\tau)\\ln(t_{0.5}) + %.4f\\ln(t_{0.5})^2 + ', ...
-                  '%.4f\\ln(\\tau)^3 + %.4f\\ln(\\tau)^2\\ln(t_{0.5}) + %.4f\\ln(\\tau)\\ln(t_{0.5})^2 + ', ...
-                  '%.4f\\ln(t_{0.5})^3'], ...
-                  c_n(1), c_n(2), c_n(3), c_n(4), c_n(5), c_n(6), c_n(7), c_n(8), c_n(9), c_n(10));
-
-% 2. Equação para Zeta (poly33) com log(t05) e nu
-c_z = coeffvalues(fit_zeta);
-
-% A ordem dos termos no poly33 do MATLAB (x=log(t05), y=nu) é:
-% p00, p10, p01, p20, p11, p02, p30, p21, p12, p03
-eqn_zeta = sprintf(['\\zeta(t_{0.5}, \\nu) = %.4f + %.4f\\ln(t_{0.5}) + %.4f\\nu ', ...
-                    '+ %.4f\\ln(t_{0.5})^2 + %.4f\\ln(t_{0.5})\\nu + %.4f\\nu^2 ', ...
-                    '+ %.4f\\ln(t_{0.5})^3 + %.4f\\ln(t_{0.5})^2\\nu + %.4f\\ln(t_{0.5})\\nu^2 + %.4f\\nu^3'], ...
-                    c_z(1), c_z(2), c_z(3), c_z(4), c_z(5), c_z(6), c_z(7), c_z(8), c_z(9), c_z(10));
-
-
-% Mostrar no Command Window
-fprintf('\nCopia para o LaTeX (Nu):\n%s\n', eqn_nu);
-fprintf('\nCopia para o LaTeX (Zeta):\n%s\n', eqn_zeta);
