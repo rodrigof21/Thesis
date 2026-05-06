@@ -17,17 +17,14 @@ a = wnid_data(:, 1);
 nu = wnid_data(:, 2);
 zeta = wnid_data(:, 3);
 
-% 1. Prepare the data (Ensure they are column vectors)
+
 x = (nu); 
 y = (zeta); 
 z = log(a);
 
-% 2. Set up fittype and options
-% 'poly33' creates: a = p00 + p10*nu + p01*zeta + p20*nu^2 + p11*nu*zeta... up to 3rd degree
-%ft = fittype('rat22');
-
-% 3. Fit the model to the data
 [fitresult, gof] = fit([x, y], z, 'poly44');
+
+
 
 % 4. Display the results
 fprintf('\n--- Surface Fit Results ---\n');

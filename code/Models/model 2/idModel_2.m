@@ -35,8 +35,8 @@ tau2 = t05./t02;
 
 
 halfpoint = 1.11;
-idx0 = nu < halfpoint;
-idx1 = nu >= halfpoint;
+idx0 = nu <= halfpoint;
+idx1 = nu > halfpoint;
 Y_nu0 = nu(idx0);
 Y_nu1 = nu(idx1);
     
@@ -63,10 +63,10 @@ idModel2.step1 = fit_nu0;
 idModel2.step2 = fit_nu1;
 idModel2.step3 = fit_zeta;
 
-visibility = 'off';
+visibility = 'on';
 
 figure('Name', 'ID Points', 'Visible', 'off');
-plot3(tau, tau2, zeta, '.')
+plot3(tau, tau2, nu, '.')
 grid on
 
 % --- Gráfico 1.0: Ajuste de Nu = f(tau1, tau2) ---

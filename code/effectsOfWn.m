@@ -20,8 +20,8 @@ if ~exist(outputFolder, 'dir')
 end
 
 % Stable values for nu and zeta
-nu_init = 0.1:0.2:2;
-zeta_init = 0.0:0.2:2; 
+nu_init = 0.1:0.1:2;
+zeta_init = 0.0:0.2:5; 
 [nu_st, zeta_st] = filterUnstablePairs(nu_init, zeta_init);
 
 % a factor vector
