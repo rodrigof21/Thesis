@@ -26,11 +26,14 @@ t05  = results(:, 2);
 t08  = results(:, 3);
 nu   = results(:, 4);
 zeta = results(:, 5);
-Mp   = results(:, 6);
-tp   = results(:, 7);
+t09  = results(:, 6);
+t95  = results(:, 7);
+t99  = results(:, 8);
 
 
-tau = t08./t02;
+idx = zeta>=2;
+
+tau = t08./t95;
 tau2 = t05./t02;
 
 
@@ -42,34 +45,21 @@ tau2 = t05./t02;
 
 
 % nu
-X_nu = [tau, nu];
-Y_nu = tau2;
-[fit_tau2, gof_tau2] = fit(X_nu, Y_nu, 'poly22');
-fprintf('R-squared para Nu0: %.4f\n', gof_tau2.rsquare);
+X_nu = [log(tau(idx)), log(tau2(idx))];
+Y_nu = nu(idx);
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+fprintf('R-squared para Nu0: %.4f\n', gof_nu.rsquare);
 
 
 % zeta
-X_zeta = [log(tau2), nu];
-Y_zeta = zeta;
+X_zeta = [log(tau2(idx)), nu(idx)];
+Y_zeta = zeta(idx);
 [fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly44');
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
 
 %% Invert and create the Model
-
-coeffs = coeffvalues(fit_tau2);
-
-p00 = coeffs(1); 
-p10 = coeffs(2); 
-p01 = coeffs(3);
-p20 = coeffs(4); 
-p11 = coeffs(5); 
-p02 = coeffs(6);
-
-fit_nu = @(t1, t2) ...
-    ( - (p01 + p11.*t1) + sqrt( (p01 + p11.*t1).^2 - 4.*p02.*((p00 + p10.*t1 + p20.*t1.^2) - t2) ) ) ./ (2.*p02);
-
 
 idModel2 = struct();
 idModel2.step1 = fit_nu;
