@@ -11,23 +11,20 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 0.01;
-zeta_real = 0.01;
+nu_real = 1.5;
+zeta_real = 2;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
 end
 
-wn = 4;
+wn = 1;
 u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
 
 [t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
 fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
-
-tau = t08./t02;
-tau2 = t05./t02;
 
 
 % Id params

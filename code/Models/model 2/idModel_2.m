@@ -31,30 +31,24 @@ t95  = results(:, 7);
 t99  = results(:, 8);
 
 
-idx = zeta>=2;
+idx = zeta>=2 & nu >= 1;
 
-tau = t08./t95;
+tau = t08./t02;
 tau2 = t05./t02;
-
-
-% halfpoint = 1.11;
-% idx0 = nu <= halfpoint;
-% idx1 = nu > halfpoint;
-% Y_nu0 = nu(idx0);
-% Y_nu1 = nu(idx1);
+tau3 = t08./t05;
 
 
 % nu
 X_nu = [log(tau(idx)), log(tau2(idx))];
 Y_nu = nu(idx);
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
+[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly44');
 fprintf('R-squared para Nu0: %.4f\n', gof_nu.rsquare);
 
 
 % zeta
-X_zeta = [log(tau2(idx)), nu(idx)];
+X_zeta = [log(tau2(idx)), (nu(idx))];
 Y_zeta = zeta(idx);
-[fit_zeta, gof_zeta] = fit(X_zeta, zeta, 'poly44');
+[fit_zeta, gof_zeta] = fit(X_zeta, Y_zeta, 'poly44');
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
@@ -77,38 +71,14 @@ fprintf('Modelo idModel2 gravado com sucesso em: %s\n', savePath);
 
 %% Graphs
 
-visibility = 'off';
-
-% 1. Create a grid of points
-[T1, T2] = meshgrid(linspace(min(tau), max(tau), 50), ...
-                    linspace(min(tau2), max(tau2), 50));
-
-% 2. Evaluate the inverted function
-% Note: Using arrayfun if your fit_nu isn't fully vectorized, 
-% but the formula we built is vectorized, so this works:
-NU_SURFACE = real(fit_nu(T1, T2));
-
-% 3. Plot
-figure('Name', 'Model Validation');
-surf(T1, T2, NU_SURFACE, 'EdgeColor', 'none', 'FaceAlpha', 0.7);
-hold on;
-
-% 4. Overlay the original data points (Real values)
-plot3(tau, tau2, nu, 'ro', 'MarkerSize', 2, 'MarkerFaceColor', 'r');
-
-grid on;
-xlabel('\tau_1');
-ylabel('\tau_2');
-zlabel('\nu');
-legend('Analytical Inversion (fit\_nu)', 'Real Data Points');
-view(-45, 20);
+visibility = 'on';
 
 
 % --- Gráfico 1.0: Ajuste de Nu = f(tau1, tau2) ---
 figure('Name', 'Ajuste da Ordem Fracionária (\nu) 0', 'Color', 'w', 'Visible',visibility);
 
 % Plot da superfície 
-plot(fit_tau2, X_nu, Y_nu); 
+plot(fit_nu, X_nu, Y_nu); 
 
 % Configs
 xlabel('\tau_1 (t_{0.2}/t_{0.5})');
@@ -126,7 +96,7 @@ alpha(0.7);
 figure('Name', 'Ajuste do Amortecimento (\zeta)', 'Color', 'w', 'Visible',visibility);
 
 % Plot da superfície de fit
-plot(fit_zeta, X_zeta, zeta);
+plot(fit_zeta, X_zeta, Y_zeta);
 
 % Configs
 xlabel('t_{0.5} (s)');
@@ -139,29 +109,3 @@ colormap parula;
 alpha(0.7);
 
 
-
-%% GEMINI EXPRESSION GENERATOR
-
-clc;
-
-% 1. Extrair coeficientes do fit_tau2
-c = coeffvalues(fit_tau2);
-p00 = c(1); p10 = c(2); p01 = c(3);
-p20 = c(4); p11 = c(5); p02 = c(6);
-
-% 2. Gerar a string LaTeX para o Obsidian
-% Note: Usamos num2str com precisão para manter o rigor
-formula_md = sprintf('$$\\nu = \\frac{-(%.4f + %.4f\\tau_1) \\pm \\sqrt{(%.4f + %.4f\\tau_1)^2 - 4(%.4f)(%.4f + %.4f\\tau_1 + %.4f\\tau_1^2 - \\tau_2)}}{2(%.4f)}$$', ...
-    p01, p11, p01, p11, p02, p00, p10, p20, p02);
-
-% 3. Exibir no Command Window para copiar
-disp('--- Copia para o Obsidian abaixo desta linha ---')
-disp(formula_md)
-disp('---')
-
-formula_direta = sprintf('$$\\tau_2 = %.6f + (%.6f)\\tau_1 + (%.6f)\\nu + (%.6f)\\tau_1^2 + (%.6f)\\tau_1\\nu + (%.6f)\\nu^2$$', ...
-    p00, p10, p01, p20, p11, p02);
-
-disp('--- Copia para o Obsidian ---')
-disp(formula_direta)
-disp('---')

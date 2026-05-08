@@ -15,8 +15,8 @@
 % nu_values = 0.01:0.02:2.0;
 % zeta_values = 0.01:0.05:5.0;
 
-nu_values = 0.01:0.05:2;
-zeta_values = 0.01:0.05:3;
+nu_values = 1:0.05:2;
+zeta_values = 2:0.05:5;
 
 rms = zeros(length(nu_values), length(zeta_values));
 wn = 1;
@@ -66,7 +66,7 @@ for i = 1:length(nu_values)
         err_zeta(i, j) = zeta_real - zeta_g;
         
         G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
-        G_guess0 = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
+        G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
         
         [t_real, y_real] = invFourierTrapz(G_real, u, 60, 0.05);
         [t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
