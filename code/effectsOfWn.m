@@ -20,8 +20,8 @@ if ~exist(outputFolder, 'dir')
 end
 
 % Stable values for nu and zeta
-nu_init = 0.1:0.1:2;
-zeta_init = 0.0:0.2:5; 
+nu_init = 1:0.1:2;
+zeta_init = 2.0:0.2:5; 
 [nu_st, zeta_st] = filterUnstablePairs(nu_init, zeta_init);
 
 % a factor vector
@@ -70,3 +70,12 @@ end
 wnid_data = [a' nu_st' zeta_st'];
 
 
+% --- save ---
+savePath = 'C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_data.mat';
+
+if ~exist(fileparts(savePath), 'dir')
+    mkdir(fileparts(savePath));
+end
+
+save(savePath, 'wnid_data');
+fprintf('Modelo Wn gravado com sucesso em: %s\n', savePath);

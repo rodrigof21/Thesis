@@ -15,7 +15,7 @@
 % nu_values = 0.01:0.02:2.0;
 % zeta_values = 0.01:0.05:5.0;
 
-nu_values = 1:0.05:2;
+nu_values = 1:0.01:2;
 zeta_values = 2:0.05:5;
 
 rms = zeros(length(nu_values), length(zeta_values));
@@ -44,7 +44,7 @@ for i = 1:length(nu_values)
             continue
         end
         
-        [t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
+        [t02, t05, t08, Mp] = extractPoints(nu_real, zeta_real, wn);
 
 
         if isnan(t02) || isnan(t08) || isnan(t05)
@@ -55,7 +55,16 @@ for i = 1:length(nu_values)
             continue
         end
 
-        [nu_g, zeta_g] = identify2(t02, t05, t08);
+        if Mp == 0
+            rms(i,j) = inf;
+            fprintf('non existing Mp\n')
+            fprintf('%.i/%.i\n', count, total);
+            count=count+1;
+            continue
+        end
+
+        [nu_g, zeta_g] = identify2(t02, t05, t08, Mp);
+        %zeta_g = exp(log_zeta_g);
 
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);

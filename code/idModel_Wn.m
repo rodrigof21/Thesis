@@ -22,18 +22,18 @@ x = (nu);
 y = (zeta); 
 z = log(a);
 
-[fitresult, gof] = fit([x, y], z, 'poly44');
+[fit_wn, gof] = fit([x, y], z, 'poly22');
 
 
 
 % 4. Display the results
 fprintf('\n--- Surface Fit Results ---\n');
-disp(fitresult);
+disp(fit_wn);
 fprintf('Goodness of Fit (R-squared): %.4f\n', gof.rsquare);
 
 % 5. Plot the result to compare with your data
 figure('Name', 'Thesis: Surface Fit Validation');
-h = plot(fitresult, [x, y], z);
+h = plot(fit_wn, [x, y], z);
 xlabel('\nu (Fractional Order)');
 ylabel('\zeta (Damping)');
 zlabel('Scaling Factor (a)');
