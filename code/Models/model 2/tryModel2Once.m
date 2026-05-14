@@ -11,7 +11,7 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 1.43;
+nu_real = 1.67;
 zeta_real = 3;
 
 stable = checkStability(nu_real, zeta_real);

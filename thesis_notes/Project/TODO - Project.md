@@ -34,3 +34,6 @@ general:
 - [x] 3: least squares matrix with the 3 time values
 
 
+### Professor's suggestions
+Para o Rodrigo: (1) pôr por escrito as regras que já achou; (2) tentar ajustar uma superfície ao caso 0.5<nu<1 ou um intervalo semelhante, descobrindo depois zeta a partir de nu; (3) se isto não funcionar mande-me os gráficos que me esteve a mostrar
+
