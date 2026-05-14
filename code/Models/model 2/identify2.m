@@ -12,7 +12,7 @@
 %==========================================================================
 
 
-function [nu_guess, zeta_guess] = identify2(t02, t05, t08, Mp)
+function [nu_guess, zeta_guess] = identify2(t02, t05, t08)
     
     load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\model2.mat')
     fit_nu = idModel2.step1;
@@ -23,7 +23,7 @@ function [nu_guess, zeta_guess] = identify2(t02, t05, t08, Mp)
     %tau3 = t08./t05;
 
     nu_guess = fit_nu(log(tau), log(tau2));
-    zeta_guess = fit_zeta(log(tau2), Mp);
+    zeta_guess = fit_zeta(log(tau2), nu_guess);
     
 end
 

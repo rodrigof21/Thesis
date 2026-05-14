@@ -11,8 +11,8 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 1.67;
-zeta_real = 3;
+nu_real = 1.4;
+zeta_real = 4;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
@@ -28,7 +28,7 @@ fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
 
 
 % Id params
-[nu_g, zeta_g] = identify2(t02, t05, t08, Mp);
+[nu_g, zeta_g] = identify2(t02, t05, t08);
 
 
 % ID natural frequency
