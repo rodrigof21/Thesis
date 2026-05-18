@@ -27,14 +27,14 @@ nu   = results(:, 4);
 zeta = results(:, 5);
 
 
-idx = nu > 0.6 & zeta >= 2;
+idx = nu > 0.6 & zeta < 2;
 
 tau = t08./t02;
 tau2 = t05./t02;
 
 
 % nu
-X_nu = [log(tau(idx)), log(tau2(idx))];
+X_nu = [(tau(idx)), (tau2(idx))];
 Y_nu = nu(idx);
 [fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
 fprintf('R-squared para Nu0: %.4f\n', gof_nu.rsquare);
@@ -47,7 +47,7 @@ Y_zeta = (zeta(idx));
 fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
-%figure, plot3(log(tau(idx)), log(tau2(idx)), nu(idx), '.'), grid on
+figure, plot3(log(tau(idx)), log(tau2(idx)), nu(idx), '.'), grid on
 
 
 

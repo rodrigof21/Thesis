@@ -18,7 +18,7 @@ $$
 
 #### The work of Hmed et al.
 
-Stability Regions and Ressonance
+Stability Regions and Ressonance. My works was based on the arcticle by Hmed et al. where the stability and ressonance regions for my system were deeply studied.
 
 ![[Pasted image 20260212121230.png|357]]
 
@@ -43,15 +43,15 @@ Time ratios:
 ---
 #### Identification Logic
 
-For $\nu > 0.6$ and $\zeta > 2$:
-- $\nu = f(\tau_1, \tau_2) \rightarrow \texttt{poly33}$
-- $\zeta = f(\tau_2, \nu) \rightarrow \texttt{poly43}$
+For $\nu > 0.6$ and $\zeta \geq 2$:
+- $\nu = f(\ln \tau_1, \ln \tau_2) \rightarrow \texttt{poly33}$
+- $\zeta = f(\ln\tau_2, \nu) \rightarrow \texttt{poly43}$
 
 For $\nu > 0.6$ and $\zeta < 2$:
 - $\zeta = f(, )$
 - $\zeta = f(,)$
 
-For $\nu < 0.4$ identification is not possible
+For $\nu < 0.46 identification is not possible
 
 
 ---
