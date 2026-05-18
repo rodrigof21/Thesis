@@ -23,11 +23,11 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 
 fn = fieldnames(points);
 n_sys = length(fn);
-raw_matrix = zeros(n_sys, 5);
+raw_matrix = zeros(n_sys, 8);
 
 for k = 1:n_sys
     p = points.(fn{k});
-    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta];
+    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta, p.t07 p.Mp, p.tp];
 end
 
 

@@ -39,7 +39,7 @@ for k = 1:length(sys)
         points.(fieldname).tp = locs(1);
     else
         points.(fieldname).Mp = 0;
-        points.(fieldname).tp = NaN; % Ou o tempo final da simulação
+        points.(fieldname).tp = 0; % Ou o tempo final da simulação
     end
 
     % t_0.5
@@ -68,6 +68,15 @@ for k = 1:length(sys)
         t08 = data.t(idx_80); 
     end
     points.(fieldname).t08 = t08;
+
+    % t_0.7
+    idx_70 = find(data.y >= 0.7, 1);
+    if isempty(idx_70)
+        t07 = NaN; 
+    else
+        t07 = data.t(idx_70); 
+    end
+    points.(fieldname).t07 = t07;
 
     % % t_0.9
     % idx_90 = find(data.y >= 0.9, 1);
