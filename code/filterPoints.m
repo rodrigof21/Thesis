@@ -23,18 +23,18 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 
 fn = fieldnames(points);
 n_sys = length(fn);
-raw_matrix = zeros(n_sys, 9);
+raw_matrix = zeros(n_sys, 12);
 
 for k = 1:n_sys
     p = points.(fn{k});
-    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta, p.t07 p.Mp, p.tp, p.t01];
+    raw_matrix(k, :) = [p.t02, p.t05, p.t08, p.nu, p.zeta, p.t07 p.Mp, p.tp, p.t01, p.t09, p.t95, p.t99];
 end
 
 
 is_finite = all(isfinite(raw_matrix), 2);
 
 t02_not_zero = (raw_matrix(:, 1) > 1e-9); % removes t02 = 0 bc of tau
-%Mp_not_zero = (raw_matrix(:, 6) > 1e-9);
+
 
 
 valid_rows = t02_not_zero & is_finite; %& Mp_not_zero;

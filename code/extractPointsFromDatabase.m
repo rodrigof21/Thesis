@@ -30,7 +30,7 @@ for k = 1:length(sys)
     current = sys{k};
     data = data_storage.(current);
 
-    fieldname = sprintf('sys_%d', count);
+    fieldname = current;
 
     % Mp tp Overshoot
     [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.05);
@@ -87,33 +87,33 @@ for k = 1:length(sys)
     end
     points.(fieldname).t01 = t01;
 
-    % % t_0.9
-    % idx_90 = find(data.y >= 0.9, 1);
-    % if isempty(idx_90)
-    %     t09 = NaN; 
-    % else
-    %     t09 = data.t(idx_90); 
-    % end
-    % 
-    % % t_0.95
-    % idx_95 = find(data.y >= 0.95, 1);
-    % if isempty(idx_95)
-    %     t95 = NaN; 
-    % else
-    %     t95 = data.t(idx_95); 
-    % end
-    % 
-    % % t_0.99
-    % idx_99 = find(data.y >= 0.99, 1);
-    % if isempty(idx_99)
-    %     t99 = NaN; 
-    % else
-    %     t99 = data.t(idx_99); 
-    % end
-    % 
-    % points.(fieldname).t09 = t09;
-    % points.(fieldname).t95 = t95;
-    % points.(fieldname).t99 = t99;
+    % t_0.9
+    idx_90 = find(data.y >= 0.9, 1);
+    if isempty(idx_90)
+        t09 = NaN; 
+    else
+        t09 = data.t(idx_90); 
+    end
+
+    % t_0.95
+    idx_95 = find(data.y >= 0.95, 1);
+    if isempty(idx_95)
+        t95 = NaN; 
+    else
+        t95 = data.t(idx_95); 
+    end
+
+    % t_0.99
+    idx_99 = find(data.y >= 0.99, 1);
+    if isempty(idx_99)
+        t99 = NaN; 
+    else
+        t99 = data.t(idx_99); 
+    end
+
+    points.(fieldname).t09 = t09;
+    points.(fieldname).t95 = t95;
+    points.(fieldname).t99 = t99;
 
     %other data
     points.(fieldname).nu = data.nu;
