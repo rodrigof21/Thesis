@@ -11,7 +11,7 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_real = 1.4;
+nu_real = 0.9;
 zeta_real = 4;
 
 stable = checkStability(nu_real, zeta_real);
@@ -23,7 +23,7 @@ u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
 
-[t02, t05, t08, Mp] = extractPoints(nu_real, zeta_real, wn);
+[t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
 fprintf('t02 = %.2f t05 = %.2f t08 = %.2f\n', t02, t05, t08)
 
 
