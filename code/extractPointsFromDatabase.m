@@ -78,6 +78,15 @@ for k = 1:length(sys)
     end
     points.(fieldname).t07 = t07;
 
+    % t_0.1
+    idx_10 = find(data.y >= 0.1, 1);
+    if isempty(idx_10)
+        t01 = NaN; 
+    else
+        t01 = data.t(idx_10); 
+    end
+    points.(fieldname).t01 = t01;
+
     % % t_0.9
     % idx_90 = find(data.y >= 0.9, 1);
     % if isempty(idx_90)

@@ -16,7 +16,7 @@ tp   = results(:, 8);
 t01  = results(:, 9);
 
 
-idx = nu>0.6 & Mp > 0;
+idx = nu > 0.6 & Mp > 0.00001;
 
 tau1 = (t05./t02);
 tau2 = t08./t02;
@@ -25,12 +25,20 @@ tau4 = t01./t02;
 tau5 = (t08-t05)./(t05-t02);
 tau6 = tp./t01;
 
+tau1 = tau1(idx);
+tau2 = tau2(idx);
+tau3 = tau3(idx);
+tau4 = tau4(idx);
+tau5 = tau5(idx);
+tau6 = tau6(idx);
+Mp = Mp(idx);
+zeta = zeta(idx);
 
-% nu
-X_nu = [log(tau6(idx)), (Mp(idx))];
-Y_nu = nu(idx);
-[fit_nu, gof_nu] = fit(X_nu, Y_nu, 'poly33');
-fprintf('R-squared para Nu0: %.4f\n', gof_nu.rsquare);
+% zeta
+X_zeta = [tau5, Mp];
+Y_zeta = (zeta);
+[fit_zeta, gof_zeta] = fit(X_zeta, Y_zeta, 'poly44');
+fprintf('R-squared para Zeta: %.4f\n', gof_zeta.rsquare);
 
 
-figure, plot3(tau6(idx), Mp(idx), nu(idx), '.'), grid on;
+%figure, plot3(tau(idx), Mp(idx), zeta(idx), '.'), grid on;
