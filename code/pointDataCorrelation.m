@@ -12,19 +12,42 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-% results = [Mp, t02, t05, t08, nu, zeta];
-load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\comparePoints\results.mat')
+% filteredPoints (better alternative to results)
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\filterPoints\filteredPoints.mat')
+results = filteredPoints;
 
-Mp   = results(:, 1);
-t02  = results(:, 2);
-t05  = results(:, 3);
-t08  = results(:, 4);
-nu   = results(:, 5);
-zeta = results(:, 6);
-tau = t08./t02;
+% points data
+t02  = results(:, 1);
+t05  = results(:, 2);
+t08  = results(:, 3);
+nu   = results(:, 4);
+zeta = results(:, 5);
+t07  = results(:, 6);
+Mp   = results(:, 7);
+tp   = results(:, 8);
+t01  = results(:, 9);
 
-data_for_corr = [Mp, t02, t05, t08, tau, nu, zeta];
-var_names = {'Mp', 't02', 't05', 't08', 'tau', 'nu', 'zeta'};
+
+idx = nu > 0.6 & Mp > 0.00001;
+
+tau1 = (t05./t02);
+tau2 = t08./t02;
+tau3 = t02./t07;
+tau4 = t01./t02;
+tau5 = (t08-t05)./(t05-t02);
+tau6 = tp./t01;
+
+tau1 = tau1(idx);
+tau2 = tau2(idx);
+tau3 = tau3(idx);
+tau4 = tau4(idx);
+tau5 = tau5(idx);
+tau6 = tau6(idx);
+Mp = Mp(idx);
+zeta = zeta(idx);
+
+data_for_corr = [tau1, tau2, tau3, tau4, tau5, tau6, Mp, zeta, tp(idx), nu(idx)];
+var_names = {'tau1', 'tau2', 'tau3', 'tau4', 'tau5', 'tau6', 'Mp', 'zeta', 'tp', 'nu'};
 
 R = corrcoef(data_for_corr);
 

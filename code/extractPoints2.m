@@ -12,7 +12,7 @@
 %==========================================================================
 
 
-function [t02, t05, t08] = extractPoints2(t, y)
+function [t02, t05, t08, t09, t95] = extractPoints2(t, y)
 
     % stable = checkStability(nu, zeta);
     % if stable, fprintf('Stable\n')
@@ -52,5 +52,22 @@ function [t02, t05, t08] = extractPoints2(t, y)
     else
         t08 = t(idx_80); 
     end
+
+    % t_0.9
+    idx_90 = find(y >= 0.9, 1);
+    if isempty(idx_90)
+        t09 = NaN; 
+    else
+        t09 = t(idx_90); 
+    end
+
+    % t_0.95
+    idx_95 = find(y >= 0.95, 1);
+    if isempty(idx_95)
+        t95 = NaN; 
+    else
+        t95 = t(idx_95); 
+    end
+
 
 end
