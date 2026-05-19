@@ -30,7 +30,7 @@ if ~exist(outputFolder, 'dir')
 end
 
 %% 1. Definição dos Vetores Primitivos
-nu_init = 0.0:0.05:2; 
+nu_init = 0.0:0.02:2; 
 zeta_init = 0.0:0.05:5; 
 wn = 1;
 u = @(s) 1./s;

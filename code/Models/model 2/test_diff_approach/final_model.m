@@ -47,7 +47,7 @@ idx1 = nu > 0.6 & zeta >=2;
 tau5 = t05./t09;
 
 X_nu_1 = [tau5(idx1), tau3(idx1)];
-[fit_nu_1, gof_nu_1] = fit(X_nu_1, nu(idx1), 'poly44');
+[fit_nu_1, gof_nu_1] = fit(X_nu_1, nu(idx1), 'poly22');
 fprintf('R-squared para nu_1: %.4f\n', gof_nu_1.rsquare);
 
 
@@ -57,7 +57,7 @@ fprintf('R-squared para nu_1: %.4f\n', gof_nu_1.rsquare);
 idx2 = nu > 0.6 & zeta < 2;
 
 X_nu_2 = [tau5(idx2), zeta(idx2)];
-[fit_nu_2, gof_nu_2] = fit(X_nu_2, nu(idx2), 'poly44');
+[fit_nu_2, gof_nu_2] = fit(X_nu_2, nu(idx2), 'poly32');
 fprintf('R-squared para nu_2: %.4f\n', gof_nu_2.rsquare);
 
 

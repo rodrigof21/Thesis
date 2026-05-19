@@ -42,78 +42,14 @@ for k = 1:length(sys)
         points.(fieldname).tp = 0; % Ou o tempo final da simulação
     end
 
-    % t_0.5
-    idx_50 = find(data.y >= 0.5, 1);
-    if isempty(idx_50)
-        t05 = NaN; 
-    else
-        t05 = data.t(idx_50); 
-    end
-    points.(fieldname).t05 = t05;
-
-    % t_0.2
-    idx_20 = find(data.y >= 0.2, 1);
-    if isempty(idx_20)
-        t02 = NaN; 
-    else
-        t02 = data.t(idx_20); 
-    end
-    points.(fieldname).t02 = t02;
-
-    % t_0.8
-    idx_80 = find(data.y >= 0.8, 1);
-    if isempty(idx_80)
-        t08 = NaN; 
-    else
-        t08 = data.t(idx_80); 
-    end
-    points.(fieldname).t08 = t08;
-
-    % t_0.7
-    idx_70 = find(data.y >= 0.7, 1);
-    if isempty(idx_70)
-        t07 = NaN; 
-    else
-        t07 = data.t(idx_70); 
-    end
-    points.(fieldname).t07 = t07;
-
-    % t_0.1
-    idx_10 = find(data.y >= 0.1, 1);
-    if isempty(idx_10)
-        t01 = NaN; 
-    else
-        t01 = data.t(idx_10); 
-    end
-    points.(fieldname).t01 = t01;
-
-    % t_0.9
-    idx_90 = find(data.y >= 0.9, 1);
-    if isempty(idx_90)
-        t09 = NaN; 
-    else
-        t09 = data.t(idx_90); 
-    end
-
-    % t_0.95
-    idx_95 = find(data.y >= 0.95, 1);
-    if isempty(idx_95)
-        t95 = NaN; 
-    else
-        t95 = data.t(idx_95); 
-    end
-
-    % t_0.99
-    idx_99 = find(data.y >= 0.99, 1);
-    if isempty(idx_99)
-        t99 = NaN; 
-    else
-        t99 = data.t(idx_99); 
-    end
-
-    points.(fieldname).t09 = t09;
-    points.(fieldname).t95 = t95;
-    points.(fieldname).t99 = t99;
+    points.(fieldname).t02 = extractTime(data.t, data.y, 0.2);
+    points.(fieldname).t05 = extractTime(data.t, data.y, 0.5);
+    points.(fieldname).t07 = extractTime(data.t, data.y, 0.7);
+    points.(fieldname).t08 = extractTime(data.t, data.y, 0.8);
+    points.(fieldname).t01 = extractTime(data.t, data.y, 0.1);
+    points.(fieldname).t09 = extractTime(data.t, data.y, 0.9);
+    points.(fieldname).t95 = extractTime(data.t, data.y, 0.95);
+    points.(fieldname).t99 = extractTime(data.t, data.y, 0.99);
 
     %other data
     points.(fieldname).nu = data.nu;
@@ -127,3 +63,34 @@ end
 
 fprintf('Complete\n');
 save(fullfile(outputFolder, 'Points.mat'), 'points')
+
+
+function t_level = extractTime(t, y, level)
+    % Remove pontos não finitos
+    valid = isfinite(y) & isfinite(t);
+    t = t(valid);
+    y = y(valid);
+    
+    if isempty(t)
+        t_level = NaN;
+        return;
+    end
+    
+    idx = find(y >= level, 1);
+    
+    if isempty(idx) || idx <= 1
+        t_level = NaN;
+        return;
+    end
+    
+    % Usa janela de 4 pontos para pchip (mais estável)
+    i0 = max(1, idx-2);
+    i1 = min(length(y), idx+1);
+    
+    try
+        t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
+    catch
+        % fallback linear
+        t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
+    end
+end

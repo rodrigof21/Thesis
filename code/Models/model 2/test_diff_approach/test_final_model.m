@@ -1,5 +1,5 @@
-nu_real = 0.8;
-zeta_real = 3;
+nu_real = 1.8;
+zeta_real = 1.4;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
@@ -10,7 +10,7 @@ u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
 
-[tau1, tau2, tau3, tau4, tau5, tp, Mp] = extractPoints_final(nu_real, zeta_real, wn);
+[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_real, zeta_real, wn);
 
 
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
@@ -35,23 +35,22 @@ end
 
 
 
-% % ID natural frequency
-% % load Model
-% load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
-% 
-% log_a = fit_wn(nu_g, zeta_g);
-% a = exp(log_a);
-% wn_g = a/t05;
+% ID natural frequency
+% load Model
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
 
-wn_g = wn;
+log_a = fit_wn(nu_g, zeta_g);
+a = exp(log_a);
+wn_g = a/t05;
+
 
 
 % Guessed Model
 G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
 
 
-[t_real, y_real] = invFourierTrapz(G_real, u, 60, 0.05);
-[t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
+[t_real, y_real] = invFourierTrapz(G_real, u, 20, 0.05);
+[t_guess, y_guess] = invFourierTrapz(G_guess, u, 20, 0.05);
 
 fprintf('Real: nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
 fprintf('Guess: nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
@@ -68,11 +67,22 @@ rms = sqrt(mean(err.^2));
 fprintf('RMS = %.3f\n', rms);
 
 
+% fprintf('--- VALORES EXTRAÍDOS NO TESTE REAL ---\n');
+% fprintf('Mp calculado: %.6f\n', Mp);
+% fprintf('tau1 (t07/tp): %.4f\n', tau1);
+% fprintf('tau2 ((t08-t05)/(t05-t02)): %.4f\n', tau2);
+% fprintf('tau3 (t01/t05): %.4f\n', tau3);
+% fprintf('tau4 (t08/t02): %.4f\n', tau4);
+% fprintf('tau5 (t05/t09): %.4f\n', tau5);
+
+
+
+
 
 
 %% Functions
 
-function [tau1, tau2, tau3, tau4, tau5, tp, Mp] = extractPoints_final(nu_test, zeta_test, wn_test)
+function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_test, zeta_test, wn_test)
 
     G_test = @(s) 1 ./ (1 + 2.*zeta_test.*(s/wn_test).^nu_test + (s/wn_test).^(nu_test+1));
     u = @(s) 1./s;
@@ -88,59 +98,13 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp] = extractPoints_final(nu_test, z
         tp = 0; % Ou o tempo final da simulação
     end
 
-    % t_0.5
-    idx_50 = find(data.y >= 0.5, 1);
-    if isempty(idx_50)
-        t05 = NaN; 
-    else
-        t05 = data.t(idx_50); 
-    end
 
-
-    % t_0.2
-    idx_20 = find(data.y >= 0.2, 1);
-    if isempty(idx_20)
-        t02 = NaN; 
-    else
-        t02 = data.t(idx_20); 
-    end
-
-
-    % t_0.8
-    idx_80 = find(data.y >= 0.8, 1);
-    if isempty(idx_80)
-        t08 = NaN; 
-    else
-        t08 = data.t(idx_80); 
-    end
-
-
-    % t_0.7
-    idx_70 = find(data.y >= 0.7, 1);
-    if isempty(idx_70)
-        t07 = NaN; 
-    else
-        t07 = data.t(idx_70); 
-    end
-
-
-    % t_0.1
-    idx_10 = find(data.y >= 0.1, 1);
-    if isempty(idx_10)
-        t01 = NaN; 
-    else
-        t01 = data.t(idx_10); 
-    end
-
-
-    % t_0.9
-    idx_90 = find(data.y >= 0.9, 1);
-    if isempty(idx_90)
-        t09 = NaN; 
-    else
-        t09 = data.t(idx_90); 
-    end
-
+    t01 = extractTime(data.t, data.y, 0.1);
+    t02 = extractTime(data.t, data.y, 0.2);
+    t05 = extractTime(data.t, data.y, 0.5);
+    t07 = extractTime(data.t, data.y, 0.7);
+    t08 = extractTime(data.t, data.y, 0.8);
+    t09 = extractTime(data.t, data.y, 0.9);
 
 
     tau1 = (t07/tp);
@@ -149,4 +113,35 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp] = extractPoints_final(nu_test, z
     tau4 = t08/t02;
     tau5 = t05/t09;
 
+end
+
+
+function t_level = extractTime(t, y, level)
+    % Remove pontos não finitos
+    valid = isfinite(y) & isfinite(t);
+    t = t(valid);
+    y = y(valid);
+    
+    if isempty(t)
+        t_level = NaN;
+        return;
+    end
+    
+    idx = find(y >= level, 1);
+    
+    if isempty(idx) || idx <= 1
+        t_level = NaN;
+        return;
+    end
+    
+    % Usa janela de 4 pontos para pchip (mais estável)
+    i0 = max(1, idx-2);
+    i1 = min(length(y), idx+1);
+    
+    try
+        t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
+    catch
+        % fallback linear
+        t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
+    end
 end

@@ -27,7 +27,7 @@ nu   = results(:, 4);
 zeta = results(:, 5);
 
 
-idx = nu > 0.6 & zeta < 2;
+idx = nu > 0.6 & zeta >= 2;
 
 tau = t08./t02;
 tau2 = t05./t02;
