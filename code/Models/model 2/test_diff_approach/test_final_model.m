@@ -1,5 +1,5 @@
-nu_real = 1.8;
-zeta_real = 1.4;
+nu_real = 1.3;
+zeta_real = 1.8;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
