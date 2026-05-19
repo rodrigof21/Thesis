@@ -12,8 +12,12 @@
 % OUTPUT FOLDER: N/A
 %==========================================================================
 
-nu_values = 0.01:0.02:2.0;
-zeta_values = 0.01:0.05:5.0;
+% nu_values = 0.01:0.02:2.0;
+% zeta_values = 0.01:0.05:5.0;
+
+nu_values = 0.6:0.01:2;
+zeta_values = 2:0.05:5;
+
 rms = zeros(length(nu_values), length(zeta_values));
 wn = 1;
 u = @(s) 1./s;
@@ -21,6 +25,8 @@ total = length(nu_values)*length(zeta_values);
 count = 1;
 
 guess = zeros(length(nu_values), length(zeta_values), 2);
+err_nu = zeros(length(nu_values), length(zeta_values));
+err_zeta = zeros(length(nu_values), length(zeta_values));
 
 for i = 1:length(nu_values)
     for j = 1:length(zeta_values)
@@ -38,10 +44,10 @@ for i = 1:length(nu_values)
             continue
         end
         
-        [t02, t05, t08] = extractPoints(nu_real, zeta_real);
-        [nu_g, zeta_g] = identify2(t02, t05, t08);
+        [t02, t05, t08] = extractPoints(nu_real, zeta_real, wn);
 
-        if t02 == 0 || t05 == 0 || t08 == 0
+
+        if isnan(t02) || isnan(t08) || isnan(t05)
             rms(i,j) = inf;
             fprintf('non existing time\n')
             fprintf('%.i/%.i\n', count, total);
@@ -49,11 +55,24 @@ for i = 1:length(nu_values)
             continue
         end
 
+        % if Mp == 0
+        %     rms(i,j) = inf;
+        %     fprintf('non existing Mp\n')
+        %     fprintf('%.i/%.i\n', count, total);
+        %     count=count+1;
+        %     continue
+        % end
+
+        [nu_g, zeta_g] = identify2(t02, t05, t08);
+        %zeta_g = exp(log_zeta_g);
+
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
         % fprintf('nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
 
         guess(i, j, 1) = nu_g;
         guess(i, j, 2) = zeta_g;
+        err_nu(i, j) = nu_real - nu_g;
+        err_zeta(i, j) = zeta_real - zeta_g;
         
         G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
         G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
@@ -68,8 +87,8 @@ for i = 1:length(nu_values)
         % legend('show')
         % 
         % % Display values
-        % fprintf('real: nu = %.2f, zeta=%.2f\n', nu_real, zeta_real)
-        % fprintf('guess: nu = %.2f, zeta=%.2f\n', nu_g, zeta_g)
+        fprintf('real: nu = %.2f, zeta=%.2f\n', nu_real, zeta_real)
+        fprintf('guess: nu = %.2f, zeta=%.2f\n', nu_g, zeta_g)
     
         % RMS
         err = y_real - y_guess;

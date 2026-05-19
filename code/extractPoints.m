@@ -18,14 +18,14 @@
 % OUTPUT FOLDER:
 %==========================================================================
 
-function [t02, t05, t08] = extractPoints(nu, zeta)
+function [t02, t05, t08] = extractPoints(nu, zeta, wn)
 
     % stable = checkStability(nu, zeta);
     % if stable, fprintf('Stable\n')
     % else, fprintf('Unstable\n'), return
     % end
 
-    wn = 1;
+    %wn = 1;
     G = @(s) 1 ./ (1 + 2.*zeta.*(s/wn).^nu + (s/wn).^(nu+1));
     
     u = @(s) 1./s;
@@ -37,7 +37,7 @@ function [t02, t05, t08] = extractPoints(nu, zeta)
 
     % % Mp tp Overshoot
     % [pks, locs] = findpeaks(y, t, 'MinPeakHeight', 1.05);
-    % if ~isempty(pks)
+    % if ~isempty(pks) & pks(1) - 1 > 0.05
     %     Mp = pks(1) - 1; 
     %     tp = locs(1);
     % else
@@ -52,7 +52,7 @@ function [t02, t05, t08] = extractPoints(nu, zeta)
     else
         t05 = t(idx_50); 
     end
-    
+
     % t_0.2
     idx_20 = find(y >= 0.2, 1);
     if isempty(idx_20)
@@ -68,5 +68,21 @@ function [t02, t05, t08] = extractPoints(nu, zeta)
     else
         t08 = t(idx_80); 
     end
+
+    % % t_0.9
+    % idx_90 = find(y >= 0.9, 1);
+    % if isempty(idx_90)
+    %     t09 = NaN; 
+    % else
+    %     t09 = t(idx_90); 
+    % end
+    % 
+    % % t_0.95
+    % idx_95 = find(y >= 0.95, 1);
+    % if isempty(idx_95)
+    %     t95 = NaN; 
+    % else
+    %     t95 = t(idx_95); 
+    % end
 
 end

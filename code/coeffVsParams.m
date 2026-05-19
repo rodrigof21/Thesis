@@ -51,5 +51,6 @@ zlabel('Scaling Factor (a)');
 title('Relationship between \omega_n and t_{05}: \omega_n = a / t_{05}');
 
 % Adjust the view to highlight the stability boundary "cliff"
-view(140, 30); 
+view(140, 30);
 grid on;
+

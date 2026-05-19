@@ -30,48 +30,31 @@ for k = 1:length(sys)
     current = sys{k};
     data = data_storage.(current);
 
-    fieldname = sprintf('sys_%d', count);
+    fieldname = current;
 
-    % % Mp tp Overshoot
-    % [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.05);
-    % if ~isempty(pks)
-    %     points.(fieldname).Mp = pks(1) - 1; 
-    %     points.(fieldname).tp = locs(1);
-    % else
-    %     points.(fieldname).Mp = 0;
-    %     points.(fieldname).tp = NaN; % Ou o tempo final da simulação
-    % end
-
-    % t_0.5
-    idx_50 = find(data.y >= 0.5, 1);
-    if isempty(idx_50)
-        t05 = NaN; 
+    % Mp tp Overshoot
+    [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.05);
+    if ~isempty(pks) & pks(1) - 1 > 0.05
+        points.(fieldname).Mp = pks(1) - 1; 
+        points.(fieldname).tp = locs(1);
     else
-        t05 = data.t(idx_50); 
+        points.(fieldname).Mp = 0;
+        points.(fieldname).tp = 0; % Ou o tempo final da simulação
     end
-    points.(fieldname).t05 = t05;
 
-    % t_0.2
-    idx_20 = find(data.y >= 0.2, 1);
-    if isempty(idx_20)
-        t02 = NaN; 
-    else
-        t02 = data.t(idx_20); 
-    end
-    points.(fieldname).t02 = t02;
-
-    % t_0.8
-    idx_80 = find(data.y >= 0.8, 1);
-    if isempty(idx_80)
-        t08 = NaN; 
-    else
-        t08 = data.t(idx_80); 
-    end
-    points.(fieldname).t08 = t08;
+    points.(fieldname).t02 = extractTime(data.t, data.y, 0.2);
+    points.(fieldname).t05 = extractTime(data.t, data.y, 0.5);
+    points.(fieldname).t07 = extractTime(data.t, data.y, 0.7);
+    points.(fieldname).t08 = extractTime(data.t, data.y, 0.8);
+    points.(fieldname).t01 = extractTime(data.t, data.y, 0.1);
+    points.(fieldname).t09 = extractTime(data.t, data.y, 0.9);
+    points.(fieldname).t95 = extractTime(data.t, data.y, 0.95);
+    points.(fieldname).t99 = extractTime(data.t, data.y, 0.99);
 
     %other data
     points.(fieldname).nu = data.nu;
     points.(fieldname).zeta = data.zeta;
+
     
     % Console Log
     %fprintf('Status: %d/%d\n', count, total);
@@ -80,3 +63,34 @@ end
 
 fprintf('Complete\n');
 save(fullfile(outputFolder, 'Points.mat'), 'points')
+
+
+function t_level = extractTime(t, y, level)
+    % Remove pontos não finitos
+    valid = isfinite(y) & isfinite(t);
+    t = t(valid);
+    y = y(valid);
+    
+    if isempty(t)
+        t_level = NaN;
+        return;
+    end
+    
+    idx = find(y >= level, 1);
+    
+    if isempty(idx) || idx <= 1
+        t_level = NaN;
+        return;
+    end
+    
+    % Usa janela de 4 pontos para pchip (mais estável)
+    i0 = max(1, idx-2);
+    i1 = min(length(y), idx+1);
+    
+    try
+        t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
+    catch
+        % fallback linear
+        t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
+    end
+end

@@ -18,10 +18,12 @@ function [nu_guess, zeta_guess] = identify2(t02, t05, t08)
     fit_nu = idModel2.step1;
     fit_zeta = idModel2.step2;
     
-    tau = t08/t02;
+    tau = t08./t02;
+    tau2 = t05./t02;
+    %tau3 = t08./t05;
 
-    nu_guess = fit_nu(log(tau), log(t05));
-    zeta_guess = fit_zeta(log(t05), nu_guess);
-
+    nu_guess = fit_nu(log(tau), log(tau2));
+    zeta_guess = fit_zeta(log(tau2), nu_guess);
+    
 end
 
