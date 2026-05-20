@@ -5,6 +5,7 @@ load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\
 nu_values   = 0.7:0.1:2;
 zeta_values = 0.1:0.1:5;
 
+
 rms      = zeros(length(nu_values), length(zeta_values));
 err_nu   = zeros(length(nu_values), length(zeta_values));
 err_zeta = zeros(length(nu_values), length(zeta_values));
@@ -14,7 +15,6 @@ count = 1;
 
 wn = 1;
 u  = @(s) 1./s;
-
 
 warning('off', 'signal:findpeaks:largeMinPeakHeight');
 
@@ -35,9 +35,22 @@ for i = 1:length(nu_values)
             continue
         end
         
-        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_real, zeta_real, wn);
-
+        % Real Curve
+        u = @(s) 1./s;
+        G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
+        [t_real, y_clean] = invFourierTrapz(G_real, u, 60, 0.05);
         
+        % Add noise
+        rng(42); % seed
+        noise_level = 0.01;
+        noise = noise_level * randn(size(y_clean));
+        y_noise = y_clean + noise;
+        
+        
+        % Point Extraction from noisy curve
+        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
+
+        % Failsafe
         if isnan(tau1) || isnan(tau2) || isnan(tau3) || isnan(tau4) || isnan(tau5) || isnan(t05)
             rms(i,j) = NaN;
             fprintf('non existing time\n')
@@ -48,17 +61,10 @@ for i = 1:length(nu_values)
             continue
         end
 
-        % if Mp == 0
-        %     rms(i,j) = inf;
-        %     fprintf('non existing Mp\n')
-        %     fprintf('%.i/%.i\n', count, total);
-        %     count=count+1;
-        %     continue
-        % end
         
         %ID Logic
 
-        if Mp >= 10e-5
+        if Mp >= 0.05
             model = idModel_final.peak;
             zeta_g = model(log(tau1), tau2);
         else
@@ -74,11 +80,6 @@ for i = 1:length(nu_values)
             nu_g = model2(tau5, zeta_g);
         end
         
-
-        % Real Model
-        G_real  = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
-        [t_real, y_real] = invFourierTrapz(G_real, u, 60, 0.05);
-
 
         % Guessed Model
         G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
@@ -121,41 +122,7 @@ fprintf('===========================================\n\n');
 
 
 
-%% auxiliar functions
-
-function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_test, zeta_test, wn_test)
-
-    G_test = @(s) 1 ./ (1 + 2.*zeta_test.*(s/wn_test).^nu_test + (s/wn_test).^(nu_test+1));
-    u = @(s) 1./s;
-    [data.t, data.y] = invFourierTrapz(G_test, u, 60, 0.05);
-    
-    % Mp tp Overshoot
-    [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.0001);
-    if ~isempty(pks) && pks(1) - 1 > 0.05
-        Mp = pks(1) - 1; 
-        tp = locs(1);
-    else
-        Mp = 0;
-        tp = 0; % Ou o tempo final da simulação
-    end
-
-
-    t01 = extractTime(data.t, data.y, 0.1);
-    t02 = extractTime(data.t, data.y, 0.2);
-    t05 = extractTime(data.t, data.y, 0.5);
-    t07 = extractTime(data.t, data.y, 0.7);
-    t08 = extractTime(data.t, data.y, 0.8);
-    t09 = extractTime(data.t, data.y, 0.9);
-
-
-    tau1 = (t07/tp);
-    tau2 = (t08-t05)/(t05-t02);
-    tau3 = (t01/t05);
-    tau4 = t08/t02;
-    tau5 = t05/t09;
-
-end
-
+%% Functions
 
 function t_level = extractTime(t, y, level)
     % Remove pontos não finitos
@@ -185,4 +152,48 @@ function t_level = extractTime(t, y, level)
         % fallback linear
         t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
     end
+end
+
+
+function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, noise_y)
+    
+    
+    % % Mp tp Overshoot with findpeaks()  --> may not work with noise
+    % [pks, locs] = findpeaks(noise_y, t, 'MinPeakHeight', 1.05);
+    % if ~isempty(pks) && pks(1) - 1 > 0.05
+    %     Mp = pks(1) - 1; 
+    %     tp = locs(1);
+    % else
+    %     Mp = 0;
+    %     tp = 0; % Ou o tempo final da simulação
+    % end
+
+    % Mp tp Overshoot with max()
+    [max_val, idx_max] = max(noise_y);
+    
+    Mp_candidato = max_val - 1;
+    
+    if Mp_candidato > 0.05
+        Mp = Mp_candidato;
+        tp = t(idx_max);
+    else
+        Mp = 0;
+        tp = 0;
+    end
+
+
+    t01 = extractTime(t, noise_y, 0.1);
+    t02 = extractTime(t, noise_y, 0.2);
+    t05 = extractTime(t, noise_y, 0.5);
+    t07 = extractTime(t, noise_y, 0.7);
+    t08 = extractTime(t, noise_y, 0.8);
+    t09 = extractTime(t, noise_y, 0.9);
+
+
+    tau1 = (t07/tp);
+    tau2 = (t08-t05)/(t05-t02);
+    tau3 = (t01/t05);
+    tau4 = t08/t02;
+    tau5 = t05/t09;
+
 end

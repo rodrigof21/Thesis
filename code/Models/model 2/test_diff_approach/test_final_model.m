@@ -1,23 +1,31 @@
-nu_real = 1.3;
-zeta_real = 1.8;
+nu_real = 1.1;
+zeta_real = 1.1;
+wn = 1;
 
 stable = checkStability(nu_real, zeta_real);
 if ~stable, fprintf('Unstable\n'), return
 end
 
-wn = 1;
+% Real Curve
 u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
+[t_real, y_clean] = invFourierTrapz(G_real, u, 60, 0.05);
+
+% Adds noise
+rng(42);
+noise_level = 0.01;
+noise = noise_level * randn(size(y_clean));
+y_noise = y_clean + noise;
 
 
-[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_real, zeta_real, wn);
+% Point Extraction from noisy curve
+[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
 
-
-load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
 
 % ID Logic
+load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
 
-if Mp >= 10e-5
+if Mp >= 0.05
     model = idModel_final.peak;
     zeta_g = model(log(tau1), tau2);
 else
@@ -42,6 +50,7 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 log_a = fit_wn(nu_g, zeta_g);
 a = exp(log_a);
 wn_g = a/t05;
+%wn_g = wn;
 
 
 
@@ -49,8 +58,8 @@ wn_g = a/t05;
 G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
 
 
-[t_real, y_real] = invFourierTrapz(G_real, u, 20, 0.05);
-[t_guess, y_guess] = invFourierTrapz(G_guess, u, 20, 0.05);
+%[t_real, y_real] = invFourierTrapz(G_real, u, 20, 0.05);
+[t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
 
 fprintf('Real: nu = %.2f and zeta = %.2f\n', nu_real, zeta_real);
 fprintf('Guess: nu = %.2f and zeta = %.2f\n', nu_g, zeta_g);
@@ -58,11 +67,11 @@ fprintf('Real wn = %.2f\n', wn);
 fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
-plot(t_real, y_real, 'DisplayName', 'Real'), hold on
+plot(t_real, y_noise, 'DisplayName', 'Real'), hold on
 plot(t_guess, y_guess, 'DisplayName', 'Guess')
 legend('show');
 
-err = y_real-y_guess;
+err = y_clean-y_guess;
 rms = sqrt(mean(err.^2));
 fprintf('RMS = %.3f\n', rms);
 
@@ -81,40 +90,6 @@ fprintf('RMS = %.3f\n', rms);
 
 
 %% Functions
-
-function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_final(nu_test, zeta_test, wn_test)
-
-    G_test = @(s) 1 ./ (1 + 2.*zeta_test.*(s/wn_test).^nu_test + (s/wn_test).^(nu_test+1));
-    u = @(s) 1./s;
-    [data.t, data.y] = invFourierTrapz(G_test, u, 60, 0.05);
-    
-    % Mp tp Overshoot
-    [pks, locs] = findpeaks(data.y, data.t, 'MinPeakHeight', 1.0001);
-    if ~isempty(pks) && pks(1) - 1 > 0.05
-        Mp = pks(1) - 1; 
-        tp = locs(1);
-    else
-        Mp = 0;
-        tp = 0; % Ou o tempo final da simulação
-    end
-
-
-    t01 = extractTime(data.t, data.y, 0.1);
-    t02 = extractTime(data.t, data.y, 0.2);
-    t05 = extractTime(data.t, data.y, 0.5);
-    t07 = extractTime(data.t, data.y, 0.7);
-    t08 = extractTime(data.t, data.y, 0.8);
-    t09 = extractTime(data.t, data.y, 0.9);
-
-
-    tau1 = (t07/tp);
-    tau2 = (t08-t05)/(t05-t02);
-    tau3 = (t01/t05);
-    tau4 = t08/t02;
-    tau5 = t05/t09;
-
-end
-
 
 function t_level = extractTime(t, y, level)
     % Remove pontos não finitos
@@ -144,4 +119,50 @@ function t_level = extractTime(t, y, level)
         % fallback linear
         t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
     end
+end
+
+
+function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, noise_y)
+    
+    
+    % % Mp tp Overshoot
+    % [pks, locs] = findpeaks(noise_y, t, 'MinPeakHeight', 1.05);
+    % if ~isempty(pks) && pks(1) - 1 > 0.05
+    %     Mp = pks(1) - 1; 
+    %     tp = locs(1);
+    % else
+    %     Mp = 0;
+    %     tp = 0; % Ou o tempo final da simulação
+    % end
+
+    % --- Abordagem usando o Máximo Absoluto (Substitui o findpeaks) ---
+    [max_val, idx_max] = max(noise_y);
+    
+    % O overshoot (Mp) é a amplitude máxima menos o valor de regime estacionário (1)
+    Mp_candidato = max_val - 1;
+    
+    % Só consideramos overshoot verdadeiro se passar o teu limiar de 0.05 (5%)
+    if Mp_candidato > 0.05
+        Mp = Mp_candidato;
+        tp = t(idx_max); % O tempo do pico é o tempo associado ao índice do máximo
+    else
+        Mp = 0;
+        tp = 0;
+    end
+
+
+    t01 = extractTime(t, noise_y, 0.1);
+    t02 = extractTime(t, noise_y, 0.2);
+    t05 = extractTime(t, noise_y, 0.5);
+    t07 = extractTime(t, noise_y, 0.7);
+    t08 = extractTime(t, noise_y, 0.8);
+    t09 = extractTime(t, noise_y, 0.9);
+
+
+    tau1 = (t07/tp);
+    tau2 = (t08-t05)/(t05-t02);
+    tau3 = (t01/t05);
+    tau4 = t08/t02;
+    tau5 = t05/t09;
+
 end
