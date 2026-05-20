@@ -103,7 +103,7 @@ $a = f(\nu, \zeta) \rightarrow \texttt{polyXX}$
 
 **Another Option** would be
 
-$$\omega_n = \frac{t_k}{t_{k_{\omega_n = 1}}}$$
+$$\omega_n = \frac{t_{k_{\omega_n = 1}}}{t_k}$$
 
 Because of the time-scaling properties of $\omega_n$
 

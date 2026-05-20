@@ -1,6 +1,10 @@
 
-% Model
+% Model nu zeta
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
+
+% load Model wn
+load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
+
 
 nu_values   = 0.7:0.1:2;
 zeta_values = 0.1:0.1:5;
@@ -9,6 +13,7 @@ zeta_values = 0.1:0.1:5;
 rms      = zeros(length(nu_values), length(zeta_values));
 err_nu   = zeros(length(nu_values), length(zeta_values));
 err_zeta = zeros(length(nu_values), length(zeta_values));
+err_wn   = zeros(length(nu_values), length(zeta_values));
 
 total = length(nu_values)*length(zeta_values);
 count = 1;
@@ -32,6 +37,7 @@ for i = 1:length(nu_values)
             count=count+1;
             err_nu(i,j) = NaN;
             err_zeta(i, j) = NaN;
+            %err_wn(i, j) = NaN;
             continue
         end
         
@@ -46,9 +52,11 @@ for i = 1:length(nu_values)
         noise = noise_level * randn(size(y_clean));
         y_noise = y_clean + noise;
         
+        % Filter Data
+        y_filtered = movmean(y_noise, 10);
         
         % Point Extraction from noisy curve
-        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
+        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
 
         % Failsafe
         if isnan(tau1) || isnan(tau2) || isnan(tau3) || isnan(tau4) || isnan(tau5) || isnan(t05)
@@ -58,6 +66,7 @@ for i = 1:length(nu_values)
             count=count+1;
             err_nu(i,j) = NaN;
             err_zeta(i, j) = NaN;
+            %err_wn(i, j) = NaN;
             continue
         end
 
@@ -80,14 +89,22 @@ for i = 1:length(nu_values)
             nu_g = model2(tau5, zeta_g);
         end
         
+        % % wn ID
+        % log_a = fit_wn(nu_g, zeta_g);
+        % a = exp(log_a);
+        % wn_g = a/t05;
+
+        wn_g = wn;
+
 
         % Guessed Model
-        G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn).^nu_g + (s/wn).^(nu_g+1));
+        G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
         [t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
 
         % Errors
         err_nu(i, j) = abs(nu_real - nu_g);
         err_zeta(i, j) = abs(zeta_real - zeta_g);
+        %err_wn(i, j) = abs(wn - wn_g);
         err = y_real-y_guess;
         rms(i, j) = sqrt(mean(err.^2));
         
@@ -108,15 +125,21 @@ mean_nu   = mean(err_nu(:), 'omitnan');
 max_nu    = max(err_nu(:));
 
 mean_zeta = mean(err_zeta(:), 'omitnan');
-maz_zeta  = max(err_zeta(:));
+max_zeta  = max(err_zeta(:));
+
+% mean_wn   = mean(err_wn(:), 'omitnan');
+% max_wn    = max(err_wn(:));
+
+
 
 % --- Print dos Resultados Globais de Erro ---
 fprintf('\n===========================================\n');
 fprintf('       MÉTRICAS DE ERRO DO MODELO          \n');
 fprintf('===========================================\n');
-fprintf('RMS Médio:     %.4f | RMS Máximo:     %.4f\n', mean_rms, max_rms);
+fprintf('RMS Médio:      %.4f | RMS Máximo:      %.4f\n', mean_rms, max_rms);
 fprintf('Erro Nu Médio:  %.4f | Erro Nu Máximo:  %.4f\n', mean_nu, max_nu);
-fprintf('Erro Zeta Médio:%.4f | Erro Zeta Máximo:%.4f\n', mean_zeta, maz_zeta);
+fprintf('Erro Zeta Médio:%.4f | Erro Zeta Máximo:%.4f\n', mean_zeta, max_zeta);
+%fprintf('Erro wn Médio:  %.4f | Erro  wn  Máximo:%.4f\n', mean_wn, max_wn);
 fprintf('===========================================\n\n');
 
 
