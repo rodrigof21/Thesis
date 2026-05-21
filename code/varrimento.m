@@ -1,10 +1,11 @@
 %% =========================================================================
-%   SUPER-VARRIMENTO COMBINATÓRIO ATUALIZADO (INCLUI t09, t95, t99 E RAMOS NU)
+%   SUPER-VARRIMENTO COMBINATÓRIO ATUALIZADO (INCLUI t09, t95, t99)
 %% =========================================================================
+
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\filterPoints\filteredPoints.mat')
 results = filteredPoints;
-toCol = @(x) x(:);
 
+toCol = @(x) x(:);
 t02  = toCol(results(:, 1));  t05  = toCol(results(:, 2));  t08  = toCol(results(:, 3));
 nu   = toCol(results(:, 4));  zeta = toCol(results(:, 5));  t07  = toCol(results(:, 6));
 Mp   = toCol(results(:, 7));  tp   = toCol(results(:, 8));   t01  = toCol(results(:, 9));
@@ -13,15 +14,13 @@ t09  = toCol(results(:, 10)); t95  = toCol(results(:, 11)); t99  = toCol(results
 warning('off', 'curvefit:fit:equationBadlyConditioned');
 warning('off', 'curvefit:fit:perfectFit');
 
-% --- DEFINIÇÃO DOS CENÁRIOS (Expandido com Segmentação de Nu) ---
+% --- DEFINIÇÃO DOS CENÁRIOS ---
 cenarios = { ...
-    'Global (Todo o Espetro)',          (nu > 0.6); ...
-    'Com Picos (Mp > 1e-5)',           (nu > 0.6 & Mp > 1e-5); ...
-    'Sem Picos (Mp <= 1e-5)',          (nu > 0.6 & Mp <= 1e-5); ...
-    'Zeta < 2',                         (nu > 0.6 & zeta < 2); ...
-    'Zeta >= 2',                        (nu > 0.6 & zeta >= 2); ...
-    'Nu < 1.2 (Ordens Baixas)',         (nu > 0.6 & nu < 1.2); ...
-    'Nu >= 1.2 (Ordens Altas)',         (nu >= 1.2) ...
+    'Global (Todo o Espetro)',         (nu > 0.6); ...
+    'Com Picos (Mp > 1e-5)',          (nu > 0.6 & Mp > 1e-5); ...
+    'Sem Picos (Mp <= 1e-5)',         (nu > 0.6 & Mp <= 1e-5); ...
+    'Zeta < 2',                        (nu > 0.6 & zeta < 2); ...
+    'Zeta >= 2',                       (nu > 0.6 & zeta >= 2)  ...
 };
 
 for c = 1:size(cenarios,1)
@@ -35,14 +34,14 @@ for c = 1:size(cenarios,1)
     if sum(idx) < 50, fprintf('Poucos pontos. A saltar...\n'); continue; end
     
     %% --- CONSTRUÇÃO DINÂMICA DA BIBLIOTECA DE INPUTS ---
-    % Nota: Ativação de Mp apenas se houver picos significativos no cenário analisado
-    permite_pico = any(Mp(idx) > 1e-5) && ~strcmp(c_name, 'Sem Picos (Mp <= 1e-5)'); 
+    permite_pico = strcmp(c_name, 'Com Picos (Mp > 1e-5)'); 
     
+    % Incluídos os novos tempos t09, t95, t99 na lista base
     if permite_pico
         t_vals = [t01, t02, t05, t07, t08, t09, t95, t99, tp];
         t_names = {'t01', 't02', 't05', 't07', 't08', 't09', 't95', 't99', 'tp'};
     else
-        t_vals = [t01, t02, t05, t07, t08, t09, t95, t99]; 
+        t_vals = [t01, t02, t05, t07, t08, t09, t95, t99]; % tp banido para não estragar o range
         t_names = {'t01', 't02', 't05', 't07', 't08', 't09', 't95', 't99'};
     end
     N_prim = length(t_names);
@@ -56,8 +55,8 @@ for c = 1:size(cenarios,1)
             raw_names{end+1} = [t_names{i} '/' t_names{j}];
         end
     end
-    
-    % B. Rácios de Diferenças Críticos
+
+    % B. Rácios de Diferenças Críticos (Expandido para os tempos novos)
     diffs = { ...
         (t08-t05), ' (t08-t05)'; ...
         (t05-t02), ' (t05-t02)'; ...
@@ -72,7 +71,7 @@ for c = 1:size(cenarios,1)
             raw_names{end+1} = [diffs{i,2} '/' diffs{j,2}];
         end
     end
-    
+
     % Aplicar a transformação LOG
     inputs_valores = {}; inputs_nome = {};
     for k = 1:length(raw_inputs)
@@ -80,12 +79,13 @@ for c = 1:size(cenarios,1)
         inputs_valores{end+1} = val;        inputs_nome{end+1} = name;
         inputs_valores{end+1} = log(val);   inputs_nome{end+1} = ['log(' name ')'];
     end
-    
+
     if permite_pico
         inputs_valores{end+1} = Mp;        inputs_nome{end+1} = 'Mp';
     end
     inputs_valores{end+1} = nu;        inputs_nome{end+1} = 'nu_real';
     inputs_valores{end+1} = zeta;      inputs_nome{end+1} = 'zeta_real';
+
     N_total_vars = length(inputs_valores);
     
     %% --- EXECUÇÃO DOS FITS ---
