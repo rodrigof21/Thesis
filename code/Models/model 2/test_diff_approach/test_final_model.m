@@ -1,5 +1,5 @@
-nu_real = 1.1;
-zeta_real = 1.1;
+nu_real = 1.4;
+zeta_real = 2.8;
 wn = 1;
 
 stable = checkStability(nu_real, zeta_real);
@@ -17,9 +17,13 @@ noise_level = 0.01;
 noise = noise_level * randn(size(y_clean));
 y_noise = y_clean + noise;
 
+% Filter Data
+%y_filtered = movmean(y_noise, 10);
+y_filtered = lowpass(y_noise, 0.05);
+%y_filtered = y_noise;
 
 % Point Extraction from noisy curve
-[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
+[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
 
 
 % ID Logic
@@ -49,8 +53,8 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 
 log_a = fit_wn(nu_g, zeta_g);
 a = exp(log_a);
-wn_g = a/t05;
-%wn_g = wn;
+% wn_g = a/t05;
+wn_g = wn;
 
 
 
@@ -67,8 +71,9 @@ fprintf('Real wn = %.2f\n', wn);
 fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
-plot(t_real, y_noise, 'DisplayName', 'Real'), hold on
-plot(t_guess, y_guess, 'DisplayName', 'Guess')
+plot(t_real, y_filtered, 'DisplayName', 'Noisy'), hold on
+plot(t_guess, y_guess, 'DisplayName', 'Guess'), hold on
+plot(t_guess, y_clean, 'DisplayName', 'Real')
 legend('show');
 
 err = y_clean-y_guess;
@@ -136,7 +141,7 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, no
     % end
 
     % --- Abordagem usando o Máximo Absoluto (Substitui o findpeaks) ---
-    [max_val, idx_max] = max(noise_y);
+    [max_val, idx_max] = max(noise_y(1:600));
     
     % O overshoot (Mp) é a amplitude máxima menos o valor de regime estacionário (1)
     Mp_candidato = max_val - 1;

@@ -26,7 +26,7 @@ X_zeta_p = [log(tau1(idx_pico)),(tau2(idx_pico))];
 [fit_zeta_p, gof_zeta_p] = fit(X_zeta_p, zeta(idx_pico), 'poly44');
 fprintf('R-squared para Zeta_p: %.4f\n', gof_zeta_p.rsquare);
 
-figure('Visible','off'),
+figure('Visible','on'),
 plot(fit_zeta_p, X_zeta_p, zeta(idx_pico));
 
 % Zeta sem pico
@@ -38,7 +38,6 @@ tau4 = t08./t02;
 X_zeta_n = [log(tau3(idx_npico)),(tau4(idx_npico))];
 [fit_zeta_n, gof_zeta_n] = fit(X_zeta_n, zeta(idx_npico), 'poly44');
 fprintf('R-squared para Zeta_n: %.4f\n', gof_zeta_n.rsquare);
-
 
 
 % nu para zeta => 2

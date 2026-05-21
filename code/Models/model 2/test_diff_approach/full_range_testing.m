@@ -53,8 +53,9 @@ for i = 1:length(nu_values)
         y_noise = y_clean + noise;
         
         % Filter Data
-        y_filtered = movmean(y_noise, 10);
-        
+        % y_filtered = movmean(y_noise, 2);
+        y_filtered = lowpass(y_noise, 0.05);
+
         % Point Extraction from noisy curve
         [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
 
@@ -108,7 +109,9 @@ for i = 1:length(nu_values)
         err = y_real-y_guess;
         rms(i, j) = sqrt(mean(err.^2));
         
-        fprintf('RMS = %.4f\n', rms(i,j))
+        % fprintf('RMS = %.4f\n', rms(i,j))
+        fprintf('Nu Error: %.4f\n', err_nu(i, j))
+        fprintf('Zeta Error: %.4f\n', err_zeta(i, j))
 
         fprintf('%.i/%.i\n', count, total);
         count=count+1;
@@ -178,7 +181,7 @@ function t_level = extractTime(t, y, level)
 end
 
 
-function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, noise_y)
+function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, y)
     
     
     % % Mp tp Overshoot with findpeaks()  --> may not work with noise
@@ -192,7 +195,7 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, no
     % end
 
     % Mp tp Overshoot with max()
-    [max_val, idx_max] = max(noise_y);
+    [max_val, idx_max] = max(y(1:1000));
     
     Mp_candidato = max_val - 1;
     
@@ -205,12 +208,12 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, no
     end
 
 
-    t01 = extractTime(t, noise_y, 0.1);
-    t02 = extractTime(t, noise_y, 0.2);
-    t05 = extractTime(t, noise_y, 0.5);
-    t07 = extractTime(t, noise_y, 0.7);
-    t08 = extractTime(t, noise_y, 0.8);
-    t09 = extractTime(t, noise_y, 0.9);
+    t01 = extractTime(t, y, 0.1);
+    t02 = extractTime(t, y, 0.2);
+    t05 = extractTime(t, y, 0.5);
+    t07 = extractTime(t, y, 0.7);
+    t08 = extractTime(t, y, 0.8);
+    t09 = extractTime(t, y, 0.9);
 
 
     tau1 = (t07/tp);
