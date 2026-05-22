@@ -29,7 +29,7 @@ hold on
 % Plot dos tempos de transição necessários
 h(2) = plot(t01, 0.1, 'mo', 'MarkerFaceColor', 'm', 'DisplayName', 't_{0.1}');
 h(3) = plot(t02, 0.2, 'ro', 'MarkerFaceColor', 'r', 'DisplayName', 't_{0.2}');
-h(4) = plot(t05, 0.5, 'mx', 'MarkerFaceColor', 'm', 'DisplayName', 't_{0.5}');
+h(4) = plot(t05, 0.5, 'rx', 'MarkerFaceColor', 'm', 'DisplayName', 't_{0.5}');
 h(5) = plot(t07, 0.7, 'co', 'MarkerFaceColor', 'c', 'DisplayName', 't_{0.7}');
 h(6) = plot(t08, 0.8, 'ko', 'MarkerFaceColor', 'k', 'DisplayName', 't_{0.8}');
 h(7) = plot(t09, 0.9, 'go', 'MarkerFaceColor', 'g', 'DisplayName', 't_{0.9}');

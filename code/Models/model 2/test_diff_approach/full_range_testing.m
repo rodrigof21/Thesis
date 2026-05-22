@@ -1,4 +1,3 @@
-
 % Model nu zeta
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
 
@@ -106,7 +105,7 @@ for i = 1:length(nu_values)
         err_nu(i, j) = abs(nu_real - nu_g);
         err_zeta(i, j) = abs(zeta_real - zeta_g);
         %err_wn(i, j) = abs(wn - wn_g);
-        err = y_real-y_guess;
+        err = y_clean-y_guess;
         rms(i, j) = sqrt(mean(err.^2));
         
         % fprintf('RMS = %.4f\n', rms(i,j))

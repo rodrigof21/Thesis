@@ -1,5 +1,5 @@
-nu_real = 1.4;
-zeta_real = 2.8;
+nu_real = 0.7;
+zeta_real = 1;
 wn = 1;
 
 stable = checkStability(nu_real, zeta_real);
@@ -11,19 +11,19 @@ u = @(s) 1./s;
 G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 [t_real, y_clean] = invFourierTrapz(G_real, u, 60, 0.05);
 
-% Adds noise
-rng(42);
-noise_level = 0.01;
-noise = noise_level * randn(size(y_clean));
-y_noise = y_clean + noise;
-
-% Filter Data
-%y_filtered = movmean(y_noise, 10);
-y_filtered = lowpass(y_noise, 0.05);
-%y_filtered = y_noise;
+% % Adds noise
+% rng(42);
+% noise_level = 0.0;
+% noise = noise_level * randn(size(y_clean));
+% y_noise = y_clean + noise;
+% 
+% % Filter Data
+% %y_filtered = movmean(y_noise, 10);
+% % y_filtered = lowpass(y_noise, 0.05);
+% y_filtered = y_noise;
 
 % Point Extraction from noisy curve
-[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
+[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_clean);
 
 
 % ID Logic
@@ -71,7 +71,7 @@ fprintf('Real wn = %.2f\n', wn);
 fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
-plot(t_real, y_filtered, 'DisplayName', 'Noisy'), hold on
+%plot(t_real, y_filtered, 'DisplayName', 'Noisy'), hold on
 plot(t_guess, y_guess, 'DisplayName', 'Guess'), hold on
 plot(t_guess, y_clean, 'DisplayName', 'Real')
 legend('show');
@@ -130,30 +130,30 @@ end
 function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, noise_y)
     
     
-    % % Mp tp Overshoot
-    % [pks, locs] = findpeaks(noise_y, t, 'MinPeakHeight', 1.05);
-    % if ~isempty(pks) && pks(1) - 1 > 0.05
-    %     Mp = pks(1) - 1; 
-    %     tp = locs(1);
-    % else
-    %     Mp = 0;
-    %     tp = 0; % Ou o tempo final da simulação
-    % end
-
-    % --- Abordagem usando o Máximo Absoluto (Substitui o findpeaks) ---
-    [max_val, idx_max] = max(noise_y(1:600));
-    
-    % O overshoot (Mp) é a amplitude máxima menos o valor de regime estacionário (1)
-    Mp_candidato = max_val - 1;
-    
-    % Só consideramos overshoot verdadeiro se passar o teu limiar de 0.05 (5%)
-    if Mp_candidato > 0.05
-        Mp = Mp_candidato;
-        tp = t(idx_max); % O tempo do pico é o tempo associado ao índice do máximo
+    % Mp tp Overshoot
+    [pks, locs] = findpeaks(noise_y, t, 'MinPeakHeight', 1.05);
+    if ~isempty(pks) && pks(1) - 1 > 0.05
+        Mp = pks(1) - 1; 
+        tp = locs(1);
     else
         Mp = 0;
-        tp = 0;
+        tp = 0; % Ou o tempo final da simulação
     end
+
+    % % --- Abordagem usando o Máximo Absoluto (Substitui o findpeaks) ---
+    % [max_val, idx_max] = max(noise_y(1:600));
+    % 
+    % % O overshoot (Mp) é a amplitude máxima menos o valor de regime estacionário (1)
+    % Mp_candidato = max_val - 1;
+    % 
+    % % Só consideramos overshoot verdadeiro se passar o teu limiar de 0.05 (5%)
+    % if Mp_candidato > 0.05
+    %     Mp = Mp_candidato;
+    %     tp = t(idx_max); % O tempo do pico é o tempo associado ao índice do máximo
+    % else
+    %     Mp = 0;
+    %     tp = 0;
+    % end
 
 
     t01 = extractTime(t, noise_y, 0.1);
