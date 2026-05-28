@@ -8,6 +8,9 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 nu_values   = 0.7:0.1:2;
 zeta_values = 0.1:0.1:5;
 
+% nu_values = 1.4;
+% zeta_values = 3;
+
 
 rms      = zeros(length(nu_values), length(zeta_values));
 err_nu   = zeros(length(nu_values), length(zeta_values));
@@ -20,6 +23,7 @@ count = 1;
 wn = 1;
 u  = @(s) 1./s;
 
+[b, a] = butter(2, 1.5 / (20/2), 'low');
 warning('off', 'signal:findpeaks:largeMinPeakHeight');
 
 for i = 1:length(nu_values)
@@ -52,8 +56,11 @@ for i = 1:length(nu_values)
         y_noise = y_clean + noise;
         
         % Filter Data
-        % y_filtered = movmean(y_noise, 2);
-        y_filtered = lowpass(y_noise, 0.05);
+        
+        y_filtered1 = lowpass(y_noise, 0.1);
+        y_filtered = movmean(y_filtered1, 11);
+        % y_filtered = sgolayfilt(y_noise, 3, 15);
+        % y_filtered = filtfilt(b, a, y_noise);
 
         % Point Extraction from noisy curve
         [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
@@ -166,11 +173,12 @@ function t_level = extractTime(t, y, level)
         t_level = NaN;
         return;
     end
-    
-    % Usa janela de 4 pontos para pchip (mais estável)
+
+
+    % Keep this if without noise
     i0 = max(1, idx-2);
     i1 = min(length(y), idx+1);
-    
+
     try
         t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
     catch
@@ -183,8 +191,9 @@ end
 function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, y)
     
     
-    % % Mp tp Overshoot with findpeaks()  --> may not work with noise
-    % [pks, locs] = findpeaks(noise_y, t, 'MinPeakHeight', 1.05);
+    % % Mp tp Overshoot with findpeaks()  --> may not work with noise, use
+    % without noise
+    % [pks, locs] = findpeaks(y(1:600), t(1:600), 'MinPeakHeight', 1.05);
     % if ~isempty(pks) && pks(1) - 1 > 0.05
     %     Mp = pks(1) - 1; 
     %     tp = locs(1);
@@ -194,10 +203,10 @@ function [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t, y)
     % end
 
     % Mp tp Overshoot with max()
-    [max_val, idx_max] = max(y(1:1000));
-    
+    [max_val, idx_max] = max(y(1:400));
+
     Mp_candidato = max_val - 1;
-    
+
     if Mp_candidato > 0.05
         Mp = Mp_candidato;
         tp = t(idx_max);
