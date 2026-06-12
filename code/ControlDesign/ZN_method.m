@@ -3,8 +3,8 @@
 nu_values = 0.5:0.2:1.9;
 zeta_values = 0.5:0.5:5;
 
-% nu_values = 1.5;
-% zeta_values = 0.5;
+nu_values = 1.5;
+zeta_values = 0.5;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
 total = length(nu_values)*length(zeta_values);
@@ -111,11 +111,11 @@ for i = 1:length(nu_values)
 end
 
 
-% figure,
-% plot(t, y, 'DisplayName', 'System'), hold on
-% plot(t_ctrl, y_ctrl, 'DisplayName', 'PID Controlled')
-% grid on
-% legend('show')
+figure,
+plot(t, y, 'DisplayName', 'System'), hold on
+plot(t_ctrl, y_ctrl, 'DisplayName', 'PID Controlled')
+grid on
+legend('show')
 
 
 

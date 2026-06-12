@@ -54,8 +54,8 @@ load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results
 
 log_a = fit_wn(nu_g, zeta_g);
 a = exp(log_a);
-wn_g = a/t05;
-%wn_g = wn;
+%wn_g = a/t05;
+wn_g = wn;
 
 
 
@@ -79,7 +79,7 @@ plot(t_real, y_noise, 'DisplayName', 'Noisy Data'), hold on
 plot(t_guess, y_guess, 'DisplayName', 'Guess'), hold on
 %plot(t_guess, y_clean, 'DisplayName', 'Real')
 legend('show');
-title('Guessed model with estimated \omega_n (\omega_n = 1.31)')
+title('Guessed model with real \omega_n (\omega_n = 1)')
 xlabel('t (s)')
 ylabel('Amplitude')
 

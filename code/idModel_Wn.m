@@ -37,5 +37,6 @@ h = plot(fit_wn, [x, y], z);
 xlabel('\nu (Fractional Order)');
 ylabel('\zeta (Damping)');
 zlabel('Scaling Factor (a)');
-title(sprintf('Polynomial Fit (R^2 = %.3f)', gof.rsquare));
+title('Identification Surface for \omega_n');
+colormap turbo
 grid on;
