@@ -1,41 +1,56 @@
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_data_withTf.mat")
+nu_raw   = PSO_data(:, 1);
+zeta_raw = PSO_data(:, 2);
 
-nu   = PSO_data(:, 1);
-zeta = PSO_data(:, 2);
-Kp   = PSO_data(:, 3);
-Ki   = PSO_data(:, 4);
-Kd   = PSO_data(:, 5);
-Tf   = PSO_data(:, 6);
+nu_vals = linspace(min(nu_raw), max(nu_raw), 50);
+zeta_vals = linspace(min(zeta_raw), max(zeta_raw), 50);
+[Nu_grid, Zeta_grid] = meshgrid(nu_vals, zeta_vals);
 
-% Kp Model
-X = [nu, zeta];
-[fit_kp, gof_kp] = fit(X, Kp, 'Poly44');
-fprintf('Kp R^2 = %.4f\n', gof_kp.rsquare)
-% figure, plot(fit_kp, X, Kp)
-% title('Kp')
+function [X_clean, Y_clean] = smooth_surface(x, y, z, X_grid, Y_grid)
 
-% Ki Model
-[fit_ki, gof_ki] = fit(X, Ki, 'Poly44');
-fprintf('Ki R^2 = %.4f\n', gof_ki.rsquare)
-% figure, plot(fit_ki, X, Ki)
-% title('Ki')
+    F = scatteredInterpolant(x, y, z, 'natural', 'none');
+    Z_grid = F(X_grid, Y_grid);
+    Z_smooth = smoothdata2(Z_grid, 'gaussian', 5);
+    
+    X_clean = [X_grid(:), Y_grid(:)];
+    Y_clean = Z_smooth(:);
+    
+    validos = ~isnan(Y_clean);
+    X_clean = X_clean(validos, :);
+    Y_clean = Y_clean(validos);
+end
 
-% Kd Model
-[fit_kd, gof_kd] = fit(X, Kd, 'Poly44');
-fprintf('Kd R^2 = %.4f\n', gof_kd.rsquare)
-% figure, plot(fit_kd, X, Kd)
-% title('Kd')
+[X_kp, Kp_clean] = smooth_surface(nu_raw, zeta_raw, PSO_data(:, 3), Nu_grid, Zeta_grid);
+[X_ki, Ki_clean] = smooth_surface(nu_raw, zeta_raw, PSO_data(:, 4), Nu_grid, Zeta_grid);
+[X_kd, Kd_clean] = smooth_surface(nu_raw, zeta_raw, PSO_data(:, 5), Nu_grid, Zeta_grid);
+[X_tf, Tf_clean] = smooth_surface(nu_raw, zeta_raw, PSO_data(:, 6), Nu_grid, Zeta_grid);
 
-% Tf Model
-[fit_tf, gof_tf] = fit(X, Tf, 'Poly44');
-fprintf('Tf R^2 = %.4f\n', gof_tf.rsquare)
-% figure, plot(fit_tf, X, Tf)
-% title('Tf')
+
+opts = fitoptions('poly44');
+
+[fit_kp, gof_kp] = fit(X_kp, Kp_clean, 'Poly44', opts);
+fprintf('NOVO Kp R^2 = %.4f\n', gof_kp.rsquare)
+
+[fit_ki, gof_ki] = fit(X_ki, Ki_clean, 'Poly44', opts);
+fprintf('NOVO Ki R^2 = %.4f\n', gof_ki.rsquare)
+
+[fit_kd, gof_kd] = fit(X_kd, Kd_clean, 'Poly44', opts);
+fprintf('NOVO Kd R^2 = %.4f\n', gof_kd.rsquare)
+
+[fit_tf, gof_tf] = fit(X_tf, Tf_clean, 'Poly44', opts);
+fprintf('NOVO Tf R^2 = %.4f\n', gof_tf.rsquare)
+
+% figure;
+% subplot(2,2,1); plot(fit_kp, X_kp, Kp_clean); title('Kp Smooth');
+% subplot(2,2,2); plot(fit_ki, X_ki, Ki_clean); title('Ki Smooth');
+% subplot(2,2,3); plot(fit_kd, X_kd, Kd_clean); title('Kd Smooth');
+% subplot(2,2,4); plot(fit_tf, X_tf, Tf_clean); title('Tf Smooth');
+
 
 PID_Models = struct('fit_Kp', fit_kp, 'fit_Ki', fit_ki, 'fit_Kd', fit_kd, 'fit_Tf', fit_tf, ...
                     'gof_Kp', gof_kp, 'gof_Ki', gof_ki, 'gof_Kd', gof_kd, 'gof_Tf', gof_tf);
 
-pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models.mat";
+pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models_smoothsurface.mat";
 
 save(pasta_destino, 'PID_Models');
 disp('Struct com os modelos guardada com sucesso!');
@@ -44,13 +59,16 @@ disp('Struct com os modelos guardada com sucesso!');
 % % =========================================================
 % % VALIDAÇÃO: TESTE ALEATÓRIO (Controlado vs Não Controlado)
 % % =========================================================
+% % 1. Escolher um par (nu, zeta) aleatório dentro dos limites dos teus dados crus
+% nu_test = min(nu_raw) + rand() * (max(nu_raw) - min(nu_raw));
+% zeta_test = min(zeta_raw) + rand() * (max(zeta_raw) - min(zeta_raw));
+% nu = nu_test;
+% zeta = zeta_test;
 % 
-% % 1. Escolher um par (nu, zeta) aleatório dentro dos limites dos teus dados
-% nu = min(nu) + rand() * (max(nu) - min(nu));
-% zeta = min(zeta) + rand() * (max(zeta) - min(zeta));
-% nu_test = nu;
-% zeta_test = zeta;
 % wn = 1;
+% 
+% fprintf('\n--- TESTE ALEATÓRIO DE VALIDAÇÃO ---\n');
+% fprintf('Planta gerada: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
 % 
 % fprintf('\n--- TESTE ALEATÓRIO DE VALIDAÇÃO ---\n');
 % fprintf('Planta gerada: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
@@ -95,3 +113,5 @@ disp('Struct com os modelos guardada com sucesso!');
 % xlabel('Tempo (s)');
 % ylabel('Amplitude');
 % legend('Location', 'best');
+
+
