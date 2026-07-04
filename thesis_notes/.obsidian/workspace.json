@@ -1,0 +1,262 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "c604c6cdad424a72",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e50ff24281235162",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Project/Controller Design/PID Model After PSO.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "PID Model After PSO"
+            }
+          },
+          {
+            "id": "f9a88c2468c29560",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Project/Controller Design/ITAE for ZN methods.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ITAE for ZN methods"
+            }
+          },
+          {
+            "id": "3d7c1d17a778438c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Project/theory notes/ID Models/Final Model.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Final Model"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d426f368ecc6a5ff",
+    "type": "split",
+    "children": [
+      {
+        "id": "3892d0402055e049",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e06d66c1f7091ba4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "845b2b13bceb6996",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "f3496e3a33b1718d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 246.5
+  },
+  "right": {
+    "id": "2ad9295a5b19ba41",
+    "type": "split",
+    "children": [
+      {
+        "id": "bde8d891d3810c33",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "40d71c3c6fa99f7c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Project/Report Writing/SLIDES Project Recap 19-05-26.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for SLIDES Project Recap 19-05-26"
+            }
+          },
+          {
+            "id": "e4ee1a51611b60d9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "File Index.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from File Index"
+            }
+          },
+          {
+            "id": "3ed41c9da52c0ed1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c860c2d034933b95",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "7ed40fabc90241e5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "File Index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of File Index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 222.5,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "e50ff24281235162",
+  "lastOpenFiles": [
+    "Project/Controller Design/ITAE for ZN methods.md",
+    "Project/Controller Design/PID Model After PSO.md",
+    "Assets/Pasted image 20260624112729.png",
+    "Assets/Pasted image 20260624111945.png",
+    "Project/theory notes/ID Models/Final Model.md",
+    "Info/Notation.md",
+    "Info/Matlab Script Index.md",
+    "Project/Controller Design/Particle Swarm Optimisation.md",
+    "Project/Controller Design/Second Order Online ID.md",
+    "Assets/Pasted image 20260527232320.png",
+    "Project/Report Writing/SLIDES Project Recap 19-05-26.md",
+    "Assets/Pasted image 20260527110932.png",
+    "Assets/Pasted image 20260527110744.png",
+    "Assets/Pasted image 20260527110739.png",
+    "Assets/Pasted image 20260527110654.png",
+    "Project/Controller Design",
+    "Project/Results and analysis/Effects of varying wn.md",
+    "Project/Results and analysis/Varrimento de variaveis para modelos.md",
+    "Project/Links.md",
+    "Project/theory notes/Stability Chart.md",
+    "Project/Report Writing/Proposed Thesis Structure.md",
+    "Project/theory notes/ID Models/Model with Limited range.md",
+    "Project/theory notes/ID Models/Inverse ID Approach.md",
+    "Project/Results and analysis/Sector Division For Identification.md",
+    "Assets/varywn.eps",
+    "Assets/time_scaling_wn.png",
+    "Assets/images.png",
+    "Assets/curve_with_points.png",
+    "Project/theory notes/ID Models/ID Model Auto.md",
+    "Project/Report Writing/Suggestions for writing.md",
+    "Project/Results and analysis/Bode Plot Analysis.md",
+    "Main Models - Finished",
+    "Main Models - Finished/Model Main.md",
+    "Project/Model Main.md",
+    "Project/TODO - Project.md",
+    "Project/TODO - Report.md",
+    "Project/theory notes/ID Models/Identification Model 2.md",
+    "Project/Results and analysis/Point correlation.md",
+    "Project/Report Writing",
+    "Project/theory notes/ID Models",
+    "Project/Results and analysis",
+    "Info/ist-ul-msc-dissertation.pdf",
+    "Assets/DatabaseImgs",
+    "Project/ObsidianBase.base",
+    "Project/theory notes"
+  ]
+}

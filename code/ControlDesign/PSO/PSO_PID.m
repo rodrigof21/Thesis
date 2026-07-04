@@ -38,20 +38,26 @@ for i = 1:length(nu_values)
         
         num_vars = 4;
         lb = [0.01, 0.001, 0.001, 1];
-        ub = [100, 100, 100, 500];
+        ub = [100, 100, 100, 100];
 
         % pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
         %                       'SwarmSize', 10, 'MaxIterations', 10);
         
-
-        if valid_count == 0
+        if nu > 1.2
+            S_size = 30; Max_iter = 30;
+        else
+            S_size = 10; Max_iter = 10;
+        end
+        
+        if valid_count > 0 && j > 1
             pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
-                                  'SwarmSize', 20, 'MaxIterations', 20);
+                'SwarmSize', S_size, 'MaxIterations', Max_iter, ...
+                'InitialSwarmMatrix', gains_now);
         else
             pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
-                                  'SwarmSize', 20, 'MaxIterations', 20, ...
-                                  'InitialSwarmMatrix', gains_now);
+                'SwarmSize', S_size, 'MaxIterations', Max_iter);
         end
+            
 
         obj_fun = @(x) calc_cost(x, G, t);
         
@@ -120,11 +126,16 @@ function cost = calc_cost(x, G_plant, t_sim)
     penalty_os = 1000 * os;
        
     % control action penalty
-    U_tf = feedback(C, G_plant);
-    u_signal = step(U_tf, t_out);
-    
-    max_u = max(abs(u_signal));
-    penalty_u = 0.005 * max_u;
+    % U_tf = feedback(C, G_plant);
+    % u_signal = step(U_tf, t_out);
+    % max_u = max(abs(u_signal));
+    % penalty_u = 0.005 * max_u;
+    penalty_u = 0.005*(Kp+Kd);
 
     cost = itae + penalty_os + penalty_u;
 end
+
+
+pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_Data.mat";
+
+save(pasta_destino, 'PSO_data');
