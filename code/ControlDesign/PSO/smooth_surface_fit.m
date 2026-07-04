@@ -40,11 +40,11 @@ fprintf('NOVO Kd R^2 = %.4f\n', gof_kd.rsquare)
 [fit_tf, gof_tf] = fit(X_tf, Tf_clean, 'Poly44', opts);
 fprintf('NOVO Tf R^2 = %.4f\n', gof_tf.rsquare)
 
-% figure;
-% subplot(2,2,1); plot(fit_kp, X_kp, Kp_clean); title('Kp Smooth');
-% subplot(2,2,2); plot(fit_ki, X_ki, Ki_clean); title('Ki Smooth');
-% subplot(2,2,3); plot(fit_kd, X_kd, Kd_clean); title('Kd Smooth');
-% subplot(2,2,4); plot(fit_tf, X_tf, Tf_clean); title('Tf Smooth');
+figure;
+subplot(2,2,1); plot(fit_kp, X_kp, Kp_clean); title('Kp Smooth');
+subplot(2,2,2); plot(fit_ki, X_ki, Ki_clean); title('Ki Smooth');
+subplot(2,2,3); plot(fit_kd, X_kd, Kd_clean); title('Kd Smooth');
+subplot(2,2,4); plot(fit_tf, X_tf, Tf_clean); title('Tf Smooth');
 
 
 PID_Models = struct('fit_Kp', fit_kp, 'fit_Ki', fit_ki, 'fit_Kd', fit_kd, 'fit_Tf', fit_tf, ...
@@ -53,65 +53,60 @@ PID_Models = struct('fit_Kp', fit_kp, 'fit_Ki', fit_ki, 'fit_Kd', fit_kd, 'fit_T
 pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models_smoothsurface.mat";
 
 save(pasta_destino, 'PID_Models');
-disp('Struct com os modelos guardada com sucesso!');
+%disp('Struct com os modelos guardada com sucesso!');
 
 
-% % =========================================================
-% % VALIDAÇÃO: TESTE ALEATÓRIO (Controlado vs Não Controlado)
-% % =========================================================
-% % 1. Escolher um par (nu, zeta) aleatório dentro dos limites dos teus dados crus
+% Validation
+
 % nu_test = min(nu_raw) + rand() * (max(nu_raw) - min(nu_raw));
 % zeta_test = min(zeta_raw) + rand() * (max(zeta_raw) - min(zeta_raw));
-% nu = nu_test;
-% zeta = zeta_test;
-% 
-% wn = 1;
-% 
-% fprintf('\n--- TESTE ALEATÓRIO DE VALIDAÇÃO ---\n');
-% fprintf('Planta gerada: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
-% 
-% fprintf('\n--- TESTE ALEATÓRIO DE VALIDAÇÃO ---\n');
-% fprintf('Planta gerada: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
-% 
-% % 2. Calcular os ganhos instantaneamente usando os teus modelos polinomiais
-% Kp_calc = fit_kp(nu_test, zeta_test);
-% Ki_calc = fit_ki(nu_test, zeta_test);
-% Kd_calc = fit_kd(nu_test, zeta_test);
-% Tf_calc = fit_tf(nu_test, zeta_test);
-% 
-% fprintf('Ganhos extraídos das equações analíticas:\n');
-% fprintf('Kp = %.2f | Ki = %.2f | Kd = %.2f | Tf = %.2f\n', Kp_calc, Ki_calc, Kd_calc, Tf_calc);
-% 
-% G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
-% 
-% % 4. Construir o Controlador PID FOTF com o filtro derivativo
-% num_coefs = [(Kp_calc/Tf_calc + Kd_calc), (Kp_calc + Ki_calc/Tf_calc), Ki_calc];
-% den_coefs = [1/Tf_calc, 1];
-% C = fotf(den_coefs, [2, 1], num_coefs, [2, 1, 0]);
-% 
-% % 5. Fechar a malha
-% T = feedback(C*G, 1);
-% 
-% % 6. Simulação e Gráficos
-% t_sim = 0:0.01:30; % Ajusta o tempo se necessário
-% 
-% figure('Name', 'Validação do Modelo Analítico', 'Position', [200, 200, 800, 500]);
-% hold on; grid on;
-% 
-% % Simular o sistema em Malha Aberta (Não Controlado)
-% y_open = step(G, t_sim);
-% plot(t_sim, y_open, 'r--', 'LineWidth', 1.5, 'DisplayName', 'Não Controlado (Malha Aberta)');
-% 
-% % Simular o sistema em Malha Fechada (Controlado pelo Polinómio)
-% y_closed = step(T, t_sim);
-% plot(t_sim, y_closed, 'b-', 'LineWidth', 2, 'DisplayName', 'Controlado (Polinómio 44)');
-% 
-% % Linha de Referência
-% yline(1, 'k:', 'Referência', 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left', 'HandleVisibility', 'off');
-% 
-% title(sprintf('Comparação de Resposta ao Degrau (\\nu = %.3f, \\zeta = %.3f)', nu_test, zeta_test));
-% xlabel('Tempo (s)');
-% ylabel('Amplitude');
-% legend('Location', 'best');
+nu_test = 1.6;
+zeta_test = 0.6;
+nu = nu_test;
+zeta = zeta_test;
+
+wn = 1;
+
+
+fprintf('\n--- TESTE ALEATÓRIO DE VALIDAÇÃO ---\n');
+fprintf('params: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
+
+Kp_calc = fit_kp(nu_test, zeta_test);
+Ki_calc = fit_ki(nu_test, zeta_test);
+Kd_calc = fit_kd(nu_test, zeta_test);
+Tf_calc = fit_tf(nu_test, zeta_test);
+
+if Kp_calc < 0
+    Kp_calc = 0;
+end
+
+fprintf('gains:\n');
+fprintf('Kp = %.2f | Ki = %.2f | Kd = %.2f | Tf = %.2f\n', Kp_calc, Ki_calc, Kd_calc, Tf_calc);
+
+G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
+
+num_coefs = [(Kp_calc/Tf_calc + Kd_calc), (Kp_calc + Ki_calc/Tf_calc), Ki_calc];
+den_coefs = [1/Tf_calc, 1];
+C = fotf(den_coefs, [2, 1], num_coefs, [2, 1, 0]);
+
+T = feedback(C*G, 1);
+
+t_sim = 0:0.01:30;
+
+figure('Name', 'Validação do Modelo Analítico', 'Position', [200, 200, 800, 500]);
+hold on; grid on;
+
+y_open = step(G, t_sim);
+plot(t_sim, y_open, 'r--', 'LineWidth', 1.5, 'DisplayName', 'Não Controlado (Malha Aberta)');
+
+y_closed = step(T, t_sim);
+plot(t_sim, y_closed, 'b-', 'LineWidth', 2, 'DisplayName', 'Controlado (Polinómio 44)');
+
+yline(1, 'k:', 'Referência', 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left', 'HandleVisibility', 'off');
+
+title(sprintf('Comparação de Resposta ao Degrau (\\nu = %.3f, \\zeta = %.3f)', nu_test, zeta_test));
+xlabel('Tempo (s)');
+ylabel('Amplitude');
+legend('Location', 'best');
 
 

@@ -1,16 +1,16 @@
-nu_values = 0.7:0.1:1.9;
+nu_values = 0.7:0.2:1.9;
 zeta_values = 0:0.2:5;
 
-% nu_values = 0.7;
-% zeta_values = 3.4;
+% nu_values = 1.4;
+% zeta_values = 0.6;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
 total = length(nu_values)*length(zeta_values);
 count = 1;
 
-gains = zeros(length(nu_values), length(zeta_values), 3);
+gains = zeros(length(nu_values), length(zeta_values), 4);
 
-PSO_data = zeros(total, 5); 
+PSO_data = zeros(total, 6); 
 valid_count = 0;
 
 for i = 1:length(nu_values)
@@ -36,21 +36,34 @@ for i = 1:length(nu_values)
         y = step(G, t);
         K = 1;
         
-        num_vars = 3;
-        lb = [0.01, 0.001, 0.001];
-        ub = [100, 100, 100];
-        pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
-                              'SwarmSize', 10, 'MaxIterations', 10);
+        num_vars = 4;
+        lb = [0.01, 0.001, 0.001, 1];
+        ub = [100, 100, 100, 500];
+
+        % pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
+        %                       'SwarmSize', 10, 'MaxIterations', 10);
         
+
+        if valid_count == 0
+            pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
+                                  'SwarmSize', 20, 'MaxIterations', 20);
+        else
+            pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
+                                  'SwarmSize', 20, 'MaxIterations', 20, ...
+                                  'InitialSwarmMatrix', gains_now);
+        end
+
         obj_fun = @(x) calc_cost(x, G, t);
         
         [gains_now, ITAE(i, j)] = particleswarm(obj_fun, num_vars, lb, ub, pso_options);
-        Kp = gains_now(1); Ki = gains_now(2); Kd = gains_now(3);
+        Kp = gains_now(1); Ki = gains_now(2); 
+        Kd = gains_now(3); Tf = gains_now(4);
 
-        gains(i, j, 1) = Kp; gains(i, j, 2) = Ki; gains(i, j, 3) = Kd;
+        gains(i, j, 1) = Kp; gains(i, j, 2) = Ki; 
+        gains(i, j, 3) = Kd; gains(i, j, 4) = Tf;
 
         valid_count = valid_count + 1;
-        PSO_data(valid_count, :) = [nu, zeta, Kp, Ki, Kd];
+        PSO_data(valid_count, :) = [nu, zeta, Kp, Ki, Kd, Tf];
         
         
         fprintf('%.i/%.i\n', count, total)
@@ -79,9 +92,16 @@ PSO_data = PSO_data(1:valid_count, :);
 
 function cost = calc_cost(x, G_plant, t_sim)
     
-    Kp = x(1); Ki = x(2); Kd = x(3);
+    Kp = x(1); Ki = x(2); 
+    Kd = x(3); Tf = x(4);
 
-    C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
+    
+    num_coefs = [(Kp/Tf + Kd), (Kp + Ki/Tf), Ki];
+    den_coefs = [1/Tf, 1];
+    
+    C = fotf(den_coefs, [2, 1], num_coefs, [2, 1, 0]);
+
+    %C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
     
     T = feedback(C*G_plant, 1);
     [y, t_out] = step(T, t_sim);

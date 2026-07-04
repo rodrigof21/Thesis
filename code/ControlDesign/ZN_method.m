@@ -120,20 +120,6 @@ legend('show')
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 %% PLot from gemini with ZN params
 
 % figure;

@@ -1,4 +1,4 @@
-% 1. Carregar os dados
+% load data
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_data_withTf.mat")
 nu_raw   = PSO_data(:, 1);
 zeta_raw = PSO_data(:, 2);
@@ -14,7 +14,6 @@ nu_sel   = [nu_unicos(1), nu_unicos(round(end/2)), nu_unicos(end)];
 Nomes = {'Kp', 'Ki', 'Kd', 'Tf'};
 Cores = {'#0072BD', '#D95319', '#EDB120'};
 
-%% FIGURA 1: Parâmetros em função de NU (Para 3 valores de Zeta)
 fig1 = figure('Name', 'Parâmetros vs Nu', 'Position', [100, 100, 700, 900]);
 for i = 1:4
     subplot(4, 1, i);
@@ -41,7 +40,6 @@ for i = 1:4
     legend('Location', 'best');
 end
 
-%% FIGURA 2: Parâmetros em função de ZETA (Para 3 valores de Nu)
 fig2 = figure('Name', 'Parâmetros vs Zeta', 'Position', [850, 100, 700, 900]);
 for i = 1:4
     subplot(4, 1, i);

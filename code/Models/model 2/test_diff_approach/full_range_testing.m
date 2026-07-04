@@ -57,7 +57,7 @@ for i = 1:length(nu_values)
         
         % Filter Data
         
-        y_filtered1 = lowpass(y_noise, 0.1);
+        %y_filtered1 = lowpass(y_noise, 0.1);
         y_filtered = movmean(y_filtered1, 11);
         % y_filtered = sgolayfilt(y_noise, 3, 15);
         % y_filtered = filtfilt(b, a, y_noise);
