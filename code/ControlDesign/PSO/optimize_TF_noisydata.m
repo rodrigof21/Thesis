@@ -3,6 +3,7 @@ load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Control
 nu_values = 0.7:0.2:1.9;
 zeta_values = 0:0.2:5;
 
+rng(21);
 
 ITAE = zeros(length(nu_values), length(zeta_values));
 total = length(nu_values)*length(zeta_values);
@@ -82,41 +83,49 @@ end
 
 PSO_data_Tf = PSO_data_Tf(1:valid_count, :);
 
+
+
 function cost = calc_cost(x, G_plant, t_sim, gains)
-    
+
     Kp = gains(1); Ki = gains(2); 
     Kd = gains(3); Tf = x;
 
-    
+
     num_coefs = [(Kp/Tf + Kd), (Kp + Ki/Tf), Ki];
     den_coefs = [1/Tf, 1];
-    
+
     C = fotf(den_coefs, [2, 1], num_coefs, [2, 1, 0]);
 
     %C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
-    
+
     T = feedback(C*G_plant, 1);
-    [y, t_out] = step(T, t_sim);
-    
+    [y_clean, t_out] = step(T, t_sim);
+
+    %adds noise
+    %rng(42); % seed
+    noise_level = 0.01;
+    noise = noise_level * randn(size(y_clean));
+    y_noise = y_clean + noise;
+
     % failsafe
-    if any(isnan(y)) || any(isinf(y)) || max(abs(y)) > 1e4
+    if any(isnan(y_clean)) || any(isinf(y_clean)) || max(abs(y_clean)) > 1e4
         cost = 1e6;
         return;
     end
 
-    err = 1 - y;
+    err = 1 - y_noise;
     itae = trapz(t_out(:), t_out(:) .* abs(err(:)));
 
     % overshoot penalty
     os = max(0, max(y) - 1); 
     penalty_os = 1000 * os;
-       
-    % control action penalty
-    U_tf = feedback(C, G_plant);
-    u_signal = step(U_tf, t_out);
-    
-    max_u = max(abs(u_signal));
-    penalty_u = 0.005 * max_u;
+
+    % % control action penalty
+    % U_tf = feedback(C, G_plant);
+    % u_signal = step(U_tf, t_out);
+    % max_u = max(abs(u_signal));
+    % penalty_u = 0.005 * max_u;
+    penalty_u = 0.005*(Kp+Kd);
 
     cost = itae + penalty_os + penalty_u;
 end

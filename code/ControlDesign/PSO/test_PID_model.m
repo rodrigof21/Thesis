@@ -25,52 +25,44 @@ for i = 1:length(nu_vec)
             gains(i, j, 4) = Inf;
             continue
         end
-        % 
+        
+        G = fotf([1/(wn^(n_t+1)), (2*z_t)/(wn^n_t), 1], [n_t+1, n_t, 0], 1, 0);
+
+
         % Extrair ganhos da struct PID_Models
         Kp = exp(PID_Models.fit_Kp(n_t, z_t));
         Ki = exp(PID_Models.fit_Ki(n_t, z_t));
         Kd = exp(PID_Models.fit_Kd(n_t, z_t));
-        Tf = 20;
 
-        G = fotf([1/(wn^(n_t+1)), (2*z_t)/(wn^n_t), 1], [n_t+1, n_t, 0], 1, 0);
-        C = fotf([1/Tf, 1], [2, 1], [(Kp/Tf + Kd), (Kp + Ki/Tf), Ki], [2, 1, 0]);
+        % without Tf
+        C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
 
-        [Gm, Pm, Wcg, Wcp] = margin(C * G);
-        Tf_new = 3*Wcp;
-        C = fotf([1/Tf_new, 1], [2, 1], [(Kp/Tf_new + Kd), (Kp + Ki/Tf_new), Ki], [2, 1, 0]);
+        [Gm, Pm, Wcg, Wcp] = margin(C*G);
+        Tf = 1/(3*Wcp);        
+        
+        % with Tf
+                
+        Cp = fotf(1, 0, Kp, 0);
+        Ci = fotf(1, 1, Ki, 0);
+        Cd = fotf([Tf, 1], [1, 0], Kd, 1);
+        C = Cp + Ci + Cd;
+
 
         T = feedback(C*G, 1);
         [y, t] = step(T, t_sim);
-
-        % % Extrair ganhos da struct PID_Models
-        % Kp = exp(PID_Models.fit_Kp(n_t, z_t));
-        % Ki = exp(PID_Models.fit_Ki(n_t, z_t));
-        % Kd = exp(PID_Models.fit_Kd(n_t, z_t));
-        % 
-        % % 1. A Sonda (PID Ideal para descobrir o Wcp real imposto pelos ganhos)
-        % % C_ideal(s) = Kd*s^2 + Kp*s + Ki / s
-        % C_ideal = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]); 
-        % 
-        % % Obter as margens da malha compensada ideal (Wcp é a tua omega_c)
-        % G = fotf([1/(wn^(n_t+1)), (2*z_t)/(wn^n_t), 1], [n_t+1, n_t, 0], 1, 0);
-        % [Gm, Pm, Wcg, Wcp] = margin(C_ideal * G);
-        % 
-        % % 2. O Controlador Real (com o filtro adaptativo a 3x a bandwidth)
-        % Tf_new = 3 * Wcp;
-        % C_real = fotf([1/Tf_new, 1], [2, 1], [(Kp/Tf_new + Kd), (Kp + Ki/Tf_new), Ki], [2, 1, 0]);
-        % 
-        % % 3. Simulação
-        % T = feedback(C_real * G, 1);
-        % [y, t] = step(T, t_sim);
         
         ITAE_matrix(i,j) = trapz(t(:), t(:) .* abs(1 - y(:)));
         gains(i, j, 1) = Kp;
         gains(i, j, 2) = Ki;
         gains(i, j, 3) = Kd;
-        gains(i, j, 4) = Tf_new;
+        gains(i, j, 4) = Tf;
     end
 end
 
 % figure; mesh(zeta_vec, nu_vec, ITAE_matrix);
 % xlabel('\zeta'); ylabel('\nu'); zlabel('ITAE');
 % title('Mapa Global de Performance ITAE (Modelos Analíticos)');
+
+itae = ITAE_matrix(:);
+itae = itae(~isinf(itae));
+fprintf('máximo ITAE: %.4f', max(itae))
