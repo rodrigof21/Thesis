@@ -49,21 +49,16 @@ for i = 1:length(nu_values)
         G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
         [t_real, y_clean] = invFourierTrapz(G_real, u, 60, 0.05);
         
-        % Add noise
-        rng(42); % seed
-        noise_level = 0.01;
-        noise = noise_level * randn(size(y_clean));
-        y_noise = y_clean + noise;
+        % % Add noise
+        % rng(42); % seed
+        % noise_level = 0.01;
+        % noise = noise_level * randn(size(y_clean));
+        % y_noise = y_clean + noise;
         
-        % Filter Data
         
-        %y_filtered1 = lowpass(y_noise, 0.1);
-        y_filtered = movmean(y_filtered1, 11);
-        % y_filtered = sgolayfilt(y_noise, 3, 15);
-        % y_filtered = filtfilt(b, a, y_noise);
 
         % Point Extraction from noisy curve
-        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
+        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_clean);
 
         % Failsafe
         if isnan(tau1) || isnan(tau2) || isnan(tau3) || isnan(tau4) || isnan(tau5) || isnan(t05)

@@ -1,5 +1,5 @@
 
-## Closed loop with two inputs
+## Closed loop
 
 $$y(s) = T(s),R(s) - T(s),N(s)$$
 

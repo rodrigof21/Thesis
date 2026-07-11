@@ -11,7 +11,7 @@ gains = zeros(length(nu_vec), length(zeta_vec), 4);
 
 t_sim = 0:0.1:30;
 r = ones(size(t_sim)); % step input
-rng(42); 
+rng(21); 
 
 
 for i = 1:length(nu_vec)
@@ -39,10 +39,9 @@ for i = 1:length(nu_vec)
         C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
 
         [~, ~, ~, Wcp] = margin(C*G);
-        Tf = 1/(3*Wcp);        
+        Tf = 1/(3*Wcp);
 
         % with Tf
-
         Cp = fotf(1, 0, Kp, 0);
         Ci = fotf(1, 1, Ki, 0);
         Cd = fotf([Tf, 1], [1, 0], Kd, 1);
@@ -92,8 +91,8 @@ r = ones(size(t_sim)); % step input
 rng(42);
 n_sensor = 0.02 * randn(size(t_sim));
 
-nu_choice   = 1.1;
-zeta_choice = 1.6;
+nu_choice   = 1.7;
+zeta_choice = 0.8;
 
 n_t = nu_choice;
 z_t = zeta_choice;
