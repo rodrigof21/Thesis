@@ -1,22 +1,21 @@
 % Load models
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
-load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models.mat")
+load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\FO_PID\results\FOPID_Models.mat")
 
 nu_vec = 0.7:0.1:1.9;
 zeta_vec = 0.2:0.1:5;
 
-% nu_vec = 0.8;
-% zeta_vec = 0.4;
-
+% nu_vec = 1.2;
+% zeta_vec = 3.2;
 
 
 ITAE_matrix = zeros(length(nu_vec), length(zeta_vec));
-gains = zeros(length(nu_vec), length(zeta_vec), 4);
+gains = zeros(length(nu_vec), length(zeta_vec), 6);
 nu_guess = zeros(length(nu_vec), length(zeta_vec));
 zeta_guess = zeros(length(nu_vec), length(zeta_vec));
 
 wn = 1;
-t_sim = 0:0.1:30;
+t_sim = 0:0.05:30;
 
 total = length(nu_vec)*length(zeta_vec);
 count = 1;
@@ -29,10 +28,7 @@ for i = 1:length(nu_vec)
         is_stable = checkStability(nu_real, zeta_real);
         if ~is_stable
             ITAE_matrix(i, j) = Inf;
-            gains(i, j, 1) = Inf;
-            gains(i, j, 2) = Inf;
-            gains(i, j, 3) = Inf;
-            gains(i, j, 4) = Inf;
+            gains(i, j, :) = Inf;
             fprintf('Unstable\n');
             fprintf('%.i/%.i\n', count, total);
             count=count+1;
@@ -55,7 +51,7 @@ for i = 1:length(nu_vec)
 
         % % Filter Data 
         % y_filtered1 = lowpass(y_noise, 0.1);
-        % y_filtered = movmean(y_filtered1, 11);
+        % y_filtered = movmean(y_noise, 11);
         % y_filtered = sgolayfilt(y_noise, 3, 15);
         % y_filtered = filtfilt(b, a, y_noise);
 
@@ -95,39 +91,41 @@ for i = 1:length(nu_vec)
         %Estimated system (w/ est params)
         G_est = fotf([1/(wn^(n_t+1)), (2*z_t)/(wn^n_t), 1], [n_t+1, n_t, 0], 1, 0);
 
-        % gains from models
-        Kp = exp(PID_Models.fit_Kp(n_t, z_t));
-        Ki = exp(PID_Models.fit_Ki(n_t, z_t));
-        Kd = exp(PID_Models.fit_Kd(n_t, z_t));
+        Kp     = FOPID_Models.fit_Kp(n_t, z_t);
+        Ki     = exp(FOPID_Models.fit_Ki(n_t, z_t));
+        Kd     = FOPID_Models.fit_Kd(n_t, z_t);
+        lambda = FOPID_Models.fit_lam(n_t, z_t);
+        mu     = FOPID_Models.fit_mu(n_t, z_t);
 
-        % PID without Tf
-        C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
-
-        [Gm, Pm, Wcg, Wcp] = margin(C*G_est);       
-
-        if isnan(Wcp) || isinf(Wcp) || Wcp > 25 || Wcp < 0.1 % Wcp fallback
-            Wcp = 10*wn; 
-        end
-        
-        Tf = 1/(3*Wcp); 
-
-        % PID with Tf          
+        % before tf
         Cp = fotf(1, 0, Kp, 0);
-        Ci = fotf(1, 1, Ki, 0);
-        Cd = fotf([Tf, 1], [1, 0], Kd, 1);
-        C = Cp + Ci + Cd;
+        Ci = fotf(1, lambda, Ki, 0);
+        Cd_ideal = fotf(1, 0, Kd, mu);
+        C_ideal = Cp + Ci + Cd_ideal;
+
+        [Gm, Pm, Wcg, Wcp] = margin(C_ideal * G_est);
+        Tf = 1 / (3 * Wcp);  
         
-        % using final PID and real curve (real params = G)
-        T = feedback(C*G, 1);
+        % with Tf
+                
+        Cd_real = fotf([Tf, 1], [mu, 0], Kd, mu);
+        C_real  = Cp + Ci + Cd_real;
+
+
+        T = feedback(C_real*G, 1);
         [y, t] = step(T, t_sim);
         
-        ITAE_matrix(i,j) = trapz(t(:), t(:) .* abs(1 - y(:)));
+        itae_now = trapz(t(:), t(:) .* abs(1 - y(:)));
+        ITAE_matrix(i,j) = itae_now;
         gains(i, j, 1) = Kp;
         gains(i, j, 2) = Ki;
         gains(i, j, 3) = Kd;
         gains(i, j, 4) = Tf;
-
+        gains(i, j, 5) = lambda;
+        gains(i, j, 6) = mu;
+    
         fprintf('%.i/%.i\n', count, total);
+        fprintf('ITAE = %.4f\n',  itae_now)
         count=count+1;
     end
 end
@@ -139,6 +137,8 @@ end
 itae = ITAE_matrix(:);
 itae = itae(~isinf(itae));
 fprintf('máximo ITAE: %.4f\n', max(itae))
+fprintf('real: nu = %.2f | zeta = %.2f\n', nu_real, zeta_real)
+fprintf('guess: nu = %.2f | zeta = %.2f\n', n_t, z_t)
 
 
 % Plot one curve
@@ -147,9 +147,6 @@ plot(t_real, y_clean, 'DisplayName', ' Real Curve'), hold on
 plot(t, y, 'DisplayName', 'Closed Loop')
 grid on
 legend('show')
-fprintf('real: nu = %.2f | zeta = %.2f\n', nu_real, zeta_real)
-fprintf('guess: nu = %.2f | zeta = %.2f\n', n_t, z_t)
-
 
 open ITAE_matrix
 
@@ -177,18 +174,19 @@ function t_level = extractTime(t, y, level)
         t_level = NaN;
         return;
     end
+    
+    t_level = t(idx);
 
-
-    % Keep this if without noise
-    i0 = max(1, idx-2);
-    i1 = min(length(y), idx+1);
-
-    try
-        t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
-    catch
-        % fallback linear
-        t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
-    end
+    % % Keep this if without noise
+    % i0 = max(1, idx-2);
+    % i1 = min(length(y), idx+1);
+    % 
+    % try
+    %     t_level = interp1(y(i0:i1), t(i0:i1), level, 'pchip');
+    % catch
+    %     % fallback linear
+    %     t_level = interp1(y(idx-1:idx), t(idx-1:idx), level, 'linear');
+    % end
 end
 
 

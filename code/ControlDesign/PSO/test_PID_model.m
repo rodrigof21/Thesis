@@ -1,15 +1,15 @@
 clear; clc;
 % 1. Carregar os modelos guardados
-load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models.mat")
+load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\FOPID\results\FOPID_Models.mat")
 
 
-nu_vec = 0.6:0.1:1.9;
+nu_vec = 0.7:0.1:1.9;
 zeta_vec = 0.2:0.1:5;
 ITAE_matrix = zeros(length(nu_vec), length(zeta_vec));
 gains = zeros(length(nu_vec), length(zeta_vec), 4);
 
 wn = 1;
-t_sim = 0:0.1:30;
+t_sim = 0:0.05:30;
 
 for i = 1:length(nu_vec)
     for j = 1:length(zeta_vec)
