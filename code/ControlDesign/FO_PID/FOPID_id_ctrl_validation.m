@@ -2,11 +2,11 @@
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\model 2\test_diff_approach\idModel_final.mat")
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\FO_PID\results\FOPID_Models.mat")
 
-nu_vec = 0.7:0.1:1.9;
-zeta_vec = 0.2:0.1:5;
+% nu_vec = 0.7:0.1:1.9;
+% zeta_vec = 0.2:0.1:5;
 
-% nu_vec = 1.2;
-% zeta_vec = 3.2;
+nu_vec = 0.7;
+zeta_vec = 3.4;
 
 
 ITAE_matrix = zeros(length(nu_vec), length(zeta_vec));
@@ -51,12 +51,12 @@ for i = 1:length(nu_vec)
 
         % % Filter Data 
         % y_filtered1 = lowpass(y_noise, 0.1);
-        % y_filtered = movmean(y_noise, 11);
+        y_filtered = movmean(y_noise, 11);
         % y_filtered = sgolayfilt(y_noise, 3, 15);
         % y_filtered = filtfilt(b, a, y_noise);
 
         % Point Extraction from noisy curve
-        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
+        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
 
 
         % Fallback
@@ -125,7 +125,7 @@ for i = 1:length(nu_vec)
         gains(i, j, 6) = mu;
     
         fprintf('%.i/%.i\n', count, total);
-        fprintf('ITAE = %.4f\n',  itae_now)
+        %fprintf('ITAE = %.4f\n',  itae_now)
         count=count+1;
     end
 end
@@ -141,12 +141,12 @@ fprintf('real: nu = %.2f | zeta = %.2f\n', nu_real, zeta_real)
 fprintf('guess: nu = %.2f | zeta = %.2f\n', n_t, z_t)
 
 
-% Plot one curve
-figure, 
-plot(t_real, y_clean, 'DisplayName', ' Real Curve'), hold on
-plot(t, y, 'DisplayName', 'Closed Loop')
-grid on
-legend('show')
+% % Plot one curve
+% figure, 
+% plot(t_real, y_clean, 'DisplayName', ' Real Curve'), hold on
+% plot(t, y, 'DisplayName', 'Closed Loop')
+% grid on
+% legend('show')
 
 open ITAE_matrix
 

@@ -1,30 +1,42 @@
-load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_data.mat")
+load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_data_only_ITAE.mat")
 
 nu   = PSO_data(:, 1);
 zeta = PSO_data(:, 2);
-Kp   = PSO_data(:, 3);
-Ki   = PSO_data(:, 4);
-Kd   = PSO_data(:, 5);
+Kpo   = PSO_data(:, 3);
+Kio   = PSO_data(:, 4);
+Kdo   = PSO_data(:, 5);
 %Tf   = PSO_data(:, 6);
+
+idxp = Kpo == 100;
+idxi = Kio == 100;
+idxd = Kdo == 100;
+
+Kp = Kpo(~idxp);
+Ki = Kio(~idxi);
+Kd = Kdo(~idxd);
+
 
 % Kp Model
 X = [nu, zeta];
-[fit_kp, gof_kp] = fit(X, log(Kp), 'Poly44');
+Xp = [nu(~idxp), zeta(~idxp)];
+[fit_kp, gof_kp] = fit(Xp, log(Kp), 'Poly44');
 fprintf('Kp R^2 = %.4f\n', gof_kp.rsquare)
-% figure, plot(fit_kp, X, log(Kp))
-% title('Kp')
+figure, plot(fit_kp, X, log(Kpo))
+title('Kp')
 
 % Ki Model
-[fit_ki, gof_ki] = fit(X, log(Ki), 'Poly44');
+Xi = [nu(~idxi), zeta(~idxi)];
+[fit_ki, gof_ki] = fit(Xi, log(Ki), 'Poly44');
 fprintf('Ki R^2 = %.4f\n', gof_ki.rsquare)
-% figure, plot(fit_ki, X, Ki)
-% title('Ki')
+figure, plot(fit_ki, Xi, log(Ki))
+title('Ki')
 
 % Kd Model
-[fit_kd, gof_kd] = fit(X, log(Kd), 'Poly44');
+Xd = [nu(~idxd), zeta(~idxd)];
+[fit_kd, gof_kd] = fit(Xd, log(Kd), 'Poly44');
 fprintf('Kd R^2 = %.4f\n', gof_kd.rsquare)
-% figure, plot(fit_kd, X, Kd)
-% title('Kd')
+figure, plot(fit_kd, Xd, log(Kd))
+title('Kd')
 
 % % Tf Model
 % [fit_tf, gof_tf] = fit(X, Tf, 'Poly44');
@@ -32,68 +44,68 @@ fprintf('Kd R^2 = %.4f\n', gof_kd.rsquare)
 % % figure, plot(fit_tf, X, Tf)
 % % title('Tf')
 
-PID_Models = struct('fit_Kp', fit_kp, 'fit_Ki', fit_ki, 'fit_Kd', fit_kd, ... %, 'fit_Tf', fit_tf, ...
+PID_Models_only_ITAE = struct('fit_Kp', fit_kp, 'fit_Ki', fit_ki, 'fit_Kd', fit_kd, ... %, 'fit_Tf', fit_tf, ...
                     'gof_Kp', gof_kp, 'gof_Ki', gof_ki, 'gof_Kd', gof_kd ); %, 'gof_Tf', gof_tf);
 
-pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models.mat";
+pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PID_Models_only_ITAE.mat";
 
-save(pasta_destino, 'PID_Models');
+save(pasta_destino, 'PID_Models_only_ITAE');
 
 fprintf('---------------\n')
 
 
 
-% % Validation
-% 
-% % random point
-% % nu = min(nu) + rand() * (max(nu) - min(nu));
-% % zeta = min(zeta) + rand() * (max(zeta) - min(zeta));
-% nu = 1.9;
-% zeta = 1.7;
-% nu_test = nu;
-% zeta_test = zeta;
-% wn = 1;
-% 
-% fprintf('\n--- random test ---\n');
-% fprintf('params: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
-% 
-% % gains 
-% Kp_calc = exp(fit_kp(nu_test, zeta_test));
-% Ki_calc = exp(fit_ki(nu_test, zeta_test));
-% Kd_calc = exp(fit_kd(nu_test, zeta_test));
-% %Tf_calc = (fit_tf(nu_test, zeta_test));
-% 
-% 
-% fprintf('gains:\n');
-% fprintf('Kp = %.2f | Ki = %.2f | Kd = %.2f', Kp_calc, Ki_calc, Kd_calc);
-% 
-% G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
-% 
-% % controller
-% Cp = fotf(1, 0, Kp_calc, 0);
-%     Ci = fotf(1, 1, Ki_calc, 0);
-%     Cd = fotf(1, 0, Kd_calc, 1);
-%     C = Cp + Ci + Cd;
-% 
-% T = feedback(C*G, 1);
-% 
-% t_sim = 0:0.01:100;
-% 
-% figure('Name', 'Validação do Modelo Analítico', 'Position', [200, 200, 800, 500]);
-% hold on; grid on;
-% 
-% y_open = step(G, t_sim);
-% plot(t_sim, y_open, 'r--', 'LineWidth', 1.5, 'DisplayName', 'Não Controlado');
-% 
-% y_closed = step(T, t_sim);
-% plot(t_sim, y_closed, 'b-', 'LineWidth', 2, 'DisplayName', 'Controlado');
-% 
-% yline(1, 'k:', 'Referência', 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left', 'HandleVisibility', 'off');
-% 
-% title(sprintf('step response (\\nu = %.3f, \\zeta = %.3f)', nu_test, zeta_test));
-% xlabel('Tempo (s)');
-% ylabel('Amplitude');
-% legend('Location', 'best');
+% Validation
+
+% random point
+% nu = min(nu) + rand() * (max(nu) - min(nu));
+% zeta = min(zeta) + rand() * (max(zeta) - min(zeta));
+nu = 1.9;
+zeta = 1.7;
+nu_test = nu;
+zeta_test = zeta;
+wn = 1;
+
+fprintf('\n--- random test ---\n');
+fprintf('params: nu = %.3f | zeta = %.3f\n', nu_test, zeta_test);
+
+% gains 
+Kp_calc = exp(fit_kp(nu_test, zeta_test));
+Ki_calc = exp(fit_ki(nu_test, zeta_test));
+Kd_calc = exp(fit_kd(nu_test, zeta_test));
+%Tf_calc = (fit_tf(nu_test, zeta_test));
+
+
+fprintf('gains:\n');
+fprintf('Kp = %.2f | Ki = %.2f | Kd = %.2f', Kp_calc, Ki_calc, Kd_calc);
+
+G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
+
+% controller
+Cp = fotf(1, 0, Kp_calc, 0);
+    Ci = fotf(1, 1, Ki_calc, 0);
+    Cd = fotf(1, 0, Kd_calc, 1);
+    C = Cp + Ci + Cd;
+
+T = feedback(C*G, 1);
+
+t_sim = 0:0.01:100;
+
+figure('Name', 'Validação do Modelo Analítico', 'Position', [200, 200, 800, 500]);
+hold on; grid on;
+
+y_open = step(G, t_sim);
+plot(t_sim, y_open, 'r--', 'LineWidth', 1.5, 'DisplayName', 'Não Controlado');
+
+y_closed = step(T, t_sim);
+plot(t_sim, y_closed, 'b-', 'LineWidth', 2, 'DisplayName', 'Controlado');
+
+yline(1, 'k:', 'Referência', 'LineWidth', 1.5, 'LabelHorizontalAlignment', 'left', 'HandleVisibility', 'off');
+
+title(sprintf('step response (\\nu = %.3f, \\zeta = %.3f)', nu_test, zeta_test));
+xlabel('Tempo (s)');
+ylabel('Amplitude');
+legend('Location', 'best');
 
 % fprintf('\n%% ==================================================\n');
 % fprintf('%% --- CÓDIGO LATEX PARA COPIAR PARA O OBSIDIAN ---\n');

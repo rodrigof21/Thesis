@@ -29,11 +29,10 @@ general:
 - [ ] update [[Project Workflow (PT)]]
 - [ ] change [[surfaceMapping.m]] folder
 
-### Models to test
-- [x] 2: ratios tau between to2 t05 t08
-- [x] 3: least squares matrix with the 3 time values
 
 
-### Professor's suggestions
-Para o Rodrigo: (1) pôr por escrito as regras que já achou; (2) tentar ajustar uma superfície ao caso 0.5<nu<1 ou um intervalo semelhante, descobrindo depois zeta a partir de nu; (3) se isto não funcionar mande-me os gráficos que me esteve a mostrar
+#### PID PART
+- [x] Measure settling time 5% and overshoot for the integer PIDs
+- [ ] Mexican Workshop 2026 writing
+- [ ] Maybe plot a nu and zeta errors vs. FO PID ITAE in the id-ctrl-validation of the FOPID.
 

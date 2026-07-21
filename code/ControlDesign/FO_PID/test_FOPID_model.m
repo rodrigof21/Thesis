@@ -76,7 +76,7 @@ end
 
 % figure; mesh(zeta_vec, nu_vec, ITAE_matrix);
 % xlabel('\zeta'); ylabel('\nu'); zlabel('ITAE');
-% title('Mapa Global de Performance ITAE (Modelos Analíticos)');
+% title('Global Performance ITAE');
 
 itae = ITAE_matrix(:);
 itae = itae(~isinf(itae));

@@ -1,3 +1,8 @@
+% WARNING:
+% this script has already been changed to test the PSO's optimization if we
+% didn't consider the Tf. The values used for the final PID models were
+% obtained with a previous version of this files available on Github.
+
 nu_values = 0.7:0.2:1.9;
 zeta_values = 0:0.2:5;
 
@@ -10,7 +15,7 @@ count = 1;
 
 gains = zeros(length(nu_values), length(zeta_values), 4);
 
-PSO_data = zeros(total, 6); 
+PSO_data = zeros(total, 5); 
 valid_count = 0;
 
 for i = 1:length(nu_values)
@@ -36,9 +41,9 @@ for i = 1:length(nu_values)
         y = step(G, t);
         K = 1;
         
-        num_vars = 4;
-        lb = [0.01, 0.001, 0.001, 1];
-        ub = [100, 100, 100, 100];
+        num_vars = 3;
+        lb = [0.01, 0.001, 0.001];
+        ub = [100, 100, 100];
 
         % pso_options = optimoptions('particleswarm', 'Display', 'iter', ...
         %                       'SwarmSize', 10, 'MaxIterations', 10);
@@ -63,13 +68,13 @@ for i = 1:length(nu_values)
         
         [gains_now, ITAE(i, j)] = particleswarm(obj_fun, num_vars, lb, ub, pso_options);
         Kp = gains_now(1); Ki = gains_now(2); 
-        Kd = gains_now(3); Tf = gains_now(4);
+        Kd = gains_now(3); %Tf = gains_now(4);
 
         gains(i, j, 1) = Kp; gains(i, j, 2) = Ki; 
-        gains(i, j, 3) = Kd; gains(i, j, 4) = Tf;
+        gains(i, j, 3) = Kd; %gains(i, j, 4) = Tf;
 
         valid_count = valid_count + 1;
-        PSO_data(valid_count, :) = [nu, zeta, Kp, Ki, Kd, Tf];
+        PSO_data(valid_count, :) = [nu, zeta, Kp, Ki, Kd];
         
         
         fprintf('%.i/%.i\n', count, total)
@@ -99,13 +104,13 @@ PSO_data = PSO_data(1:valid_count, :);
 function cost = calc_cost(x, G_plant, t_sim)
     
     Kp = x(1); Ki = x(2); 
-    Kd = x(3); Tf = x(4);
+    Kd = x(3);
 
     
-    num_coefs = [(Kp/Tf + Kd), (Kp + Ki/Tf), Ki];
-    den_coefs = [1/Tf, 1];
-    
-    C = fotf(den_coefs, [2, 1], num_coefs, [2, 1, 0]);
+    Cp = fotf(1, 0, Kp, 0);
+    Ci = fotf(1, 1, Ki, 0);
+    Cd = fotf(1, 0, Kd, 1);
+    C = Cp + Ci + Cd;
 
     %C = fotf(1, 1, [Kd, Kp, Ki], [2, 1, 0]);
     
@@ -138,4 +143,4 @@ end
 
 pasta_destino = "C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\PSO\results\PSO_Data.mat";
 
-save(pasta_destino, 'PSO_data');
+save(pasta_destino, 'PSO_data_only_ITAE');

@@ -10,31 +10,31 @@ mu     = FOPSO_data(:, 7);
 
 % Kp Model
 X = [nu, zeta];
-[fit_kp, gof_kp] = fit(X, (Kp), 'Poly55');
+[fit_kp, gof_kp] = fit(X, (Kp), 'Poly53');
 fprintf('Kp R^2 = %.4f\n', gof_kp.rsquare)
 % figure, plot(fit_kp, X, Kp)
 % title('Kp')
 
 % Ki Model
-[fit_ki, gof_ki] = fit(X, log(Ki), 'Poly55');
+[fit_ki, gof_ki] = fit(X, log(Ki), 'Poly52');
 fprintf('Ki R^2 = %.4f\n', gof_ki.rsquare)
-% figure, plot(fit_ki, X, Ki)
+% figure, plot(fit_ki, X, log(Ki))
 % title('Ki')
 
 % Kd Model
-[fit_kd, gof_kd] = fit(X, (Kd), 'Poly55');
+[fit_kd, gof_kd] = fit(X, (Kd), 'Poly54');
 fprintf('Kd R^2 = %.4f\n', gof_kd.rsquare)
 % figure, plot(fit_kd, X, Kd)
 % title('Kd')
 
 % Lambda Model
-[fit_lam, gof_lam] = fit(X, lambda, 'Poly55');
+[fit_lam, gof_lam] = fit(X, lambda, 'Poly53');
 fprintf('lambda R^2 = %.4f\n', gof_lam.rsquare)
-figure, plot(fit_lam, X, lambda)
-title('Lambda')
+% figure, plot(fit_lam, X, lambda)
+% title('Lambda')
 
 % mu Model
-[fit_mu, gof_mu] = fit(X, mu, 'Poly55');
+[fit_mu, gof_mu] = fit(X, mu, 'Poly52');
 fprintf('mu R^2 = %.4f\n', gof_mu.rsquare)
 % figure, plot(fit_mu, X, mu)
 % title('mu')
@@ -50,6 +50,8 @@ fprintf('---------------\n')
 
 
 
+
+%% Plots one curve
 % % Validation
 % 
 % % random point
@@ -101,44 +103,138 @@ fprintf('---------------\n')
 % ylabel('Amplitude');
 % legend('Location', 'best');
 
-% fprintf('\n%% ==================================================\n');
-% fprintf('%% --- CÓDIGO LATEX PARA COPIAR PARA O OBSIDIAN ---\n');
-% fprintf('%% ==================================================\n\n');
+
+
+
+
+
+
+%% Equaçoes LATEX
+% % =========================================================================
+% % GERADOR DE CÓDIGO LATEX PARA OBSIDIAN (EQUAÇÕES + TABELA DE COEFICIENTES)
+% % =========================================================================
 % 
-% % Extrair os valores otimizados
-% v_kp = coeffvalues(fit_kp);
-% v_ki = coeffvalues(fit_ki);
-% v_kd = coeffvalues(fit_kd);
-% subs = {'00', '10', '01', '20', '11', '02', '30', '21', '12', '03', '40', '31', '22', '13', '04'};
+% % 1. Estruturar os modelos e as suas respetivas letras
+% models = {fit_kp, fit_ki, fit_kd, fit_lam, fit_mu};
+% letters = {'a', 'b', 'c', 'd', 'e'};
+% param_names = {'K_p(\nu, \zeta)', '\ln\big(K_i(\nu, \zeta)\big)', 'K_d(\nu, \zeta)', '\lambda(\nu, \zeta)', '\mu(\nu, \zeta)'};
 % 
-% % --- MODELO Kp (Letra i) ---
+% % Extrair informação de cada modelo
+% max_coeffs = 0;
+% all_coeffs = cell(1, 5);
+% all_names = cell(1, 5);
+% 
+% for m = 1:5
+%     c_names = coeffnames(models{m});
+%     c_vals = coeffvalues(models{m})';
+% 
+%     % Traduzir nomes 'p21' -> 'a_{21}', 'p00' -> 'a_{00}'
+%     latex_indices = cell(length(c_names), 1);
+%     for k = 1:length(c_names)
+%         idx_str = c_names{k}(2:end); % remove o 'p' do matlab
+%         if length(idx_str) == 1
+%             idx_str = ['0' idx_str]; % caso de p1 -> p01
+%         end
+%         latex_indices{k} = sprintf('%s_{%s}', letters{m}, idx_str);
+%     end
+% 
+%     all_coeffs{m} = c_vals;
+%     all_names{m} = latex_indices;
+%     if length(c_vals) > max_coeffs
+%         max_coeffs = length(c_vals);
+%     end
+% end
+% 
+% 
+%
+% % =========================================================================
+% % 1. GERAR EQUAÇÕES POR EXTENSO (PARA COLAR NO OBSIDIAN)
+% % =========================================================================
+% fprintf('\n%% =========================================================\n');
+% fprintf('%% EQUAÇÕES POR EXTENSO (COPIAR PARA O OBSIDIAN):\n');
+% fprintf('%% =========================================================\n\n');
 % fprintf('$$\n\\begin{aligned}\n');
-% fprintf('\\ln K_p(\\nu, \\zeta) = & \\, i_{00} + i_{10}\\nu + i_{01}\\zeta + i_{20}\\nu^2 + i_{11}\\nu\\zeta + i_{02}\\zeta^2 \\\\\n');
-% fprintf('& + i_{30}\\nu^3 + i_{21}\\nu^2\\zeta + i_{12}\\nu\\zeta^2 + i_{03}\\zeta^3 \\\\\n');
-% fprintf('& + i_{40}\\nu^4 + i_{31}\\nu^3\\zeta + i_{22}\\nu^2\\zeta^2 + i_{13}\\nu\\zeta^3 + i_{04}\\zeta^4\n');
-% fprintf('\\end{aligned}\n$$\n\n');
 % 
-% % --- MODELO Ki (Letra j) ---
-% fprintf('$$\n\\begin{aligned}\n');
-% fprintf('\\ln K_i(\\nu, \\zeta) = & \\, j_{00} + j_{10}\\nu + j_{01}\\zeta + j_{20}\\nu^2 + j_{11}\\nu\\zeta + j_{02}\\zeta^2 \\\\\n');
-% fprintf('& + j_{30}\\nu^3 + j_{21}\\nu^2\\zeta + j_{12}\\nu\\zeta^2 + j_{03}\\zeta^3 \\\\\n');
-% fprintf('& + j_{40}\\nu^4 + j_{31}\\nu^3\\zeta + j_{22}\\nu^2\\zeta^2 + j_{13}\\nu\\zeta^3 + j_{04}\\zeta^4\n');
-% fprintf('\\end{aligned}\n$$\n\n');
+% for m = 1:5
+%     c_names = coeffnames(models{m});
+%     c_vals = coeffvalues(models{m})';
 % 
-% % --- MODELO Kd (Letra k) ---
-% fprintf('$$\n\\begin{aligned}\n');
-% fprintf('\\ln K_d(\\nu, \\zeta) = & \\, k_{00} + k_{10}\\nu + k_{01}\\zeta + k_{20}\\nu^2 + k_{11}\\nu\\zeta + k_{02}\\zeta^2 \\\\\n');
-% fprintf('& + k_{30}\\nu^3 + k_{21}\\nu^2\\zeta + k_{12}\\nu\\zeta^2 + k_{03}\\zeta^3 \\\\\n');
-% fprintf('& + k_{40}\\nu^4 + k_{31}\\nu^3\\zeta + k_{22}\\nu^2\\zeta^2 + k_{13}\\nu\\zeta^3 + k_{04}\\zeta^4\n');
-% fprintf('\\end{aligned}\n$$\n\n');
+%     eq_str = sprintf('    %s &= ', param_names{m});
 % 
-% % --- TABELA DE COEFICIENTES ---
-% fprintf('Valores dos coeficientes:\n');
-% fprintf('$$\n\\begin{aligned}\n');
-% for idx = 1:15
-%     fprintf('%s_{%s} &= %10.4f & %s_{%s} &= %10.4f & %s_{%s} &= %10.4f \\\\\n', ...
-%         'i', subs{idx}, v_kp(idx), ...
-%         'j', subs{idx}, v_ki(idx), ...
-%         'k', subs{idx}, v_kd(idx));
+%     for k = 1:length(c_vals)
+%         val = c_vals(k);
+%         idx_str = c_names{k}(2:end);
+%         if length(idx_str) == 1, idx_str = ['0' idx_str]; end
+% 
+%         % Determinar sinal e operador
+%         if val >= 0
+%             if k == 1, sign_str = ''; else, sign_str = ' + '; end
+%         else
+%             if k == 1, sign_str = '-'; else, sign_str = ' - '; end
+%         end
+% 
+%         % Determinar variáveis nu e zeta baseado no índice pIJ
+%         i_pow = str2double(idx_str(1));
+%         j_pow = str2double(idx_str(2));
+% 
+%         var_str = '';
+%         if i_pow == 1, var_str = [var_str '\nu ']; elseif i_pow > 1, var_str = [var_str sprintf('\\nu^%d ', i_pow)]; end
+%         if j_pow == 1, var_str = [var_str '\zeta ']; elseif j_pow > 1, var_str = [var_str sprintf('\\zeta^%d ', j_pow)]; end
+% 
+%         % Adicionar termo à equação
+%         eq_str = [eq_str sprintf('%s%.4g\\, %s_%s\\, %s', sign_str, abs(val), letters{m}, idx_str, var_str)];
+%     end
+%     eq_str = [eq_str '\\\\'];
+%     fprintf('%s\n', eq_str);
 % end
 % fprintf('\\end{aligned}\n$$\n');
+% 
+% % =========================================================================
+% % 2. GERAR TABELA DE COEFICIENTES EM LATEX
+% % =========================================================================
+% fprintf('\n%% =========================================================\n');
+% fprintf('%% TABELA DE COEFICIENTES (COPIAR PARA O OBSIDIAN / LATEX):\n');
+% fprintf('%% =========================================================\n\n');
+% 
+% fprintf('\\begin{table}[htbp]\n');
+% fprintf('    \\centering\n');
+% fprintf('    \\caption{Estimated values for the fractional PID polynomial coefficients ($a_{ij}$ to $e_{ij}$).}\n');
+% fprintf('    \\label{tab:fopid_coefficients}\n');
+% fprintf('    \\begin{tabular}{cr cr cr cr cr}\n');
+% fprintf('        \\toprule\n');
+% fprintf('        \\textbf{Coeff.} & \\textbf{Value} & \\textbf{Coeff.} & \\textbf{Value} & \\textbf{Coeff.} & \\textbf{Value} & \\textbf{Coeff.} & \\textbf{Value} & \\textbf{Coeff.} & \\textbf{Value} \\\\\n');
+% fprintf('        \\midrule\n');
+% 
+% for r = 1:max_coeffs
+%     row_str = '        ';
+%     for m = 1:5
+%         if r <= length(all_coeffs{m})
+%             c_name = all_names{m}{r};
+%             c_val = all_coeffs{m}(r);
+%             % Formatar valor (notação científica se for muito grande/pequeno)
+%             if abs(c_val) >= 1e4 || (abs(c_val) < 1e-3 && c_val ~= 0)
+%                 val_str = sprintf('$%.3e$', c_val);
+%                 val_str = strrep(val_str, 'e', '\\times 10^{');
+%                 val_str = strrep(val_str, '+0', '');
+%                 val_str = strrep(val_str, '-0', '-');
+%                 val_str = [val_str '}'];
+%             else
+%                 val_str = sprintf('$%.4f$', c_val);
+%             end
+%             col_str = sprintf('$%s$ & %s', c_name, val_str);
+%         else
+%             col_str = ' & '; % Célula vazia se este polinómio tiver menos termos
+%         end
+% 
+%         if m < 5
+%             row_str = [row_str col_str ' & '];
+%         else
+%             row_str = [row_str col_str ' \\\\'];
+%         end
+%     end
+%     fprintf('%s\n', row_str);
+% end
+% 
+% fprintf('        \\bottomrule\n');
+% fprintf('    \\end{tabular}\n');
+% fprintf('\\end{table}\n');
