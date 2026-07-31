@@ -5,12 +5,13 @@ load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
 
 
-nu_values   = 0.7:0.1:2;
-zeta_values = 0.1:0.1:5;
+nu_values   = 1.95;
+zeta_values = 0.05:0.1:5;
 
 % nu_values = 1.4;
 % zeta_values = 3;
 
+rng(42); % seed
 
 rms      = zeros(length(nu_values), length(zeta_values));
 err_nu   = zeros(length(nu_values), length(zeta_values));
@@ -50,12 +51,13 @@ for i = 1:length(nu_values)
         [t_real, y_clean] = invFourierTrapz(G_real, u, 60, 0.05);
         
         % % Add noise
-        % rng(42); % seed
+        % 
         % noise_level = 0.01;
         % noise = noise_level * randn(size(y_clean));
         % y_noise = y_clean + noise;
-        
-        
+        % 
+        % % filter data
+        % y_filtered = movmean(y_noise, 10);
 
         % Point Extraction from noisy curve
         [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_clean);

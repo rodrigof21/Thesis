@@ -6,7 +6,7 @@ wn = 1;
 
 % fractional values
 nu = 1.2;
-zeta = 2;
+zeta = 2.4;
 wn_f = 1;
 
 coef_1 = 1 / (wn_f^(nu+1));
