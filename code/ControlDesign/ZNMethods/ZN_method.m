@@ -3,10 +3,12 @@
 nu_values = 0.5:0.2:1.9;
 zeta_values = 0.5:0.5:5;
 
-nu_values = 1.5;
-zeta_values = 0.5;
+% nu_values = 0.9;
+% zeta_values = 1.5;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
+max_os = zeros(length(nu_values), length(zeta_values));
+set_time = zeros(length(nu_values), length(zeta_values));
 total = length(nu_values)*length(zeta_values);
 count = 1;
 
@@ -43,13 +45,16 @@ for i = 1:length(nu_values)
         % Step response data
         t = 0:0.01:60;
         y = step(G, t);
-        K = y(end);
+        K = 1;
+        %K = y(end);
 
         if max(y) > 1.001
             fprintf('Not S-Shaped\n')
             ITAE(i, j) = NaN;
             fprintf('%.i/%.i\n', count, total)
             count = count+1;
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
             continue
         end
         
@@ -68,6 +73,8 @@ for i = 1:length(nu_values)
             ITAE(i, j) = NaN;
             fprintf('%.i/%.i\n', count, total)
             count = count+1;
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
             continue
         end
         
@@ -101,6 +108,22 @@ for i = 1:length(nu_values)
         
         r = ones(size(y_ctrl));
         err = r - y_ctrl;
+
+        max_os(i, j) = max(y_ctrl);
+
+        % settling time 5%
+        banda = 0.05;
+        dentro_da_banda = abs(y_ctrl - 1) <= banda;
+        idx_fora = find(~dentro_da_banda, 1, 'last');
+        if isempty(idx_fora)
+            ts = t_ctrl(1);
+        elseif idx_fora == length(t_ctrl)
+            ts = NaN;
+        else
+            ts = t_ctrl(idx_fora + 1);
+        end
+        
+        set_time(i, j) = ts;
         
         ITAE(i, j) = trapz(t_ctrl, t_ctrl .*abs(err));
         fprintf('ITAE = %.4f\n', ITAE(i, j));
@@ -112,35 +135,39 @@ end
 
 
 figure,
-plot(t, y, 'DisplayName', 'System'), hold on
-plot(t_ctrl, y_ctrl, 'DisplayName', 'PID Controlled')
+plot(t, y, 'DisplayName', 'Open Loop'), hold on
+plot(t_ctrl, y_ctrl, 'DisplayName', 'Closed Loop')
 grid on
 legend('show')
+title('Example of the S-Shape Method')
+xlabel('Time (s)')
+ylabel('Amplitude')
 
 
 
 
 %% PLot from gemini with ZN params
 
-% figure;
-% plot(t, y, 'b', 'LineWidth', 2); hold on;
-% 
-% % tangent line
-% t_tangent = linspace(max(0, theta-1), t_inf + T + 1, 100);
-% y_tangent = max_slope * (t_tangent - theta);
-% 
-% % points and plot
-% plot(t_tangent, y_tangent, 'r--', 'LineWidth', 1.5);
-% yline(K, 'k:', 'LineWidth', 1);
-% xline(theta, 'g:', 'LineWidth', 1.5);
-% plot(t_inf, y_inf, 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 8); % inflexion point
-% 
-% % graph configs
-% ylim([0 K*1.2]);
-% xlim([0 max(t_tangent)]);
-% title('Ziegler-Nichols params');
-% xlabel('Time (s)');
-% ylabel('Amplitude');
-% legend('Step Response', 'Tangent', 'K = 1', '\theta', 'Inf. Point', 'Location', 'Southeast');
-% grid on;
+figure;
+plot(t, y, 'b', 'LineWidth', 2); hold on;
+
+% tangent line
+t_tangent = linspace(max(0, theta-1), t_inf + T + 1, 100);
+y_tangent = max_slope * (t_tangent - theta);
+
+% points and plot
+plot(t_tangent, y_tangent, 'r--', 'LineWidth', 1);
+yline(K, 'k:', 'LineWidth', 1);
+xline(theta, 'm:', 'LineWidth', 1);
+plot(t_inf, y_inf, 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 5); % inflexion point
+
+
+% graph configs
+ylim([0 K*1.2]);
+xlim([0 max(t_tangent)]);
+title('Ziegler-Nichols params');
+xlabel('Time (s)');
+ylabel('Amplitude');
+legend('Step Response', 'Tangent', 'K = 1', '\theta', 'Inf. Point', 'Location', 'Southeast');
+grid on;
 

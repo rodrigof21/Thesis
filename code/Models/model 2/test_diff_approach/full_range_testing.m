@@ -5,8 +5,8 @@ load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\Models\
 load('C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\results\effectsOfWn_coefficients\wnid_model.mat')
 
 
-nu_values   = 1.95;
-zeta_values = 0.05:0.1:5;
+nu_values   = 0.7:0.1:1.9;
+zeta_values = 0.1:0.1:5;
 
 % nu_values = 1.4;
 % zeta_values = 3;
@@ -41,7 +41,7 @@ for i = 1:length(nu_values)
             count=count+1;
             err_nu(i,j) = NaN;
             err_zeta(i, j) = NaN;
-            %err_wn(i, j) = NaN;
+            err_wn(i, j) = NaN;
             continue
         end
         
@@ -70,7 +70,7 @@ for i = 1:length(nu_values)
             count=count+1;
             err_nu(i,j) = NaN;
             err_zeta(i, j) = NaN;
-            %err_wn(i, j) = NaN;
+            err_wn(i, j) = NaN;
             continue
         end
 
@@ -98,23 +98,26 @@ for i = 1:length(nu_values)
         % a = exp(log_a);
         % wn_g = a/t05;
 
-        wn_g = wn;
-
+        wn_m = 1;
 
         % Guessed Model
-        G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_g).^nu_g + (s/wn_g).^(nu_g+1));
+        G_guess = @(s) 1 ./ (1 + 2.*zeta_g.*(s/wn_m).^nu_g + (s/wn_m).^(nu_g+1));
         [t_guess, y_guess] = invFourierTrapz(G_guess, u, 60, 0.05);
 
+        [~, ~,~,~,~,~,~, t05_g] = extractPoints_noise(t_guess, y_guess);
+
+        wn_g = t05_g/t05;
+
         % Errors
-        err_nu(i, j) = abs(nu_real - nu_g);
-        err_zeta(i, j) = abs(zeta_real - zeta_g);
-        %err_wn(i, j) = abs(wn - wn_g);
-        err = y_clean-y_guess;
-        rms(i, j) = sqrt(mean(err.^2));
+        % err_nu(i, j) = abs(nu_real - nu_g);
+        % err_zeta(i, j) = abs(zeta_real - zeta_g);
+        err_wn(i, j) = abs(wn - wn_g);
+        % err = y_clean-y_guess;
+        % rms(i, j) = sqrt(mean(err.^2));
         
         % fprintf('RMS = %.4f\n', rms(i,j))
-        fprintf('Nu Error: %.4f\n', err_nu(i, j))
-        fprintf('Zeta Error: %.4f\n', err_zeta(i, j))
+        % fprintf('Nu Error: %.4f\n', err_nu(i, j))
+        % fprintf('Zeta Error: %.4f\n', err_zeta(i, j))
 
         fprintf('%.i/%.i\n', count, total);
         count=count+1;
@@ -133,8 +136,8 @@ max_nu    = max(err_nu(:));
 mean_zeta = mean(err_zeta(:), 'omitnan');
 max_zeta  = max(err_zeta(:));
 
-% mean_wn   = mean(err_wn(:), 'omitnan');
-% max_wn    = max(err_wn(:));
+mean_wn   = mean(err_wn(:), 'omitnan');
+max_wn    = max(err_wn(:));
 
 
 
@@ -145,7 +148,7 @@ fprintf('===========================================\n');
 fprintf('RMS Médio:      %.4f | RMS Máximo:      %.4f\n', mean_rms, max_rms);
 fprintf('Erro Nu Médio:  %.4f | Erro Nu Máximo:  %.4f\n', mean_nu, max_nu);
 fprintf('Erro Zeta Médio:%.4f | Erro Zeta Máximo:%.4f\n', mean_zeta, max_zeta);
-%fprintf('Erro wn Médio:  %.4f | Erro  wn  Máximo:%.4f\n', mean_wn, max_wn);
+fprintf('Erro wn Médio:  %.4f | Erro  wn  Máximo:%.4f\n', mean_wn, max_wn);
 fprintf('===========================================\n\n');
 
 

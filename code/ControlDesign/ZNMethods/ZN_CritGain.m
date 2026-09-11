@@ -1,12 +1,14 @@
 % Critical Gain ZN
 
-% nu_values = 0.5:0.2:1.9;
-% zeta_values = 0.5:0.5:5;
+nu_values = 0.5:0.2:1.9;
+zeta_values = 0.5:0.5:5;
 
-nu_values = 1.5;
-zeta_values = 0.5;
+% nu_values = 1.5;
+% zeta_values = 2.5;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
+max_os = zeros(length(nu_values), length(zeta_values));
+set_time = zeros(length(nu_values), length(zeta_values));
 total = length(nu_values)*length(zeta_values);
 count = 1;
 
@@ -24,10 +26,13 @@ for i = 1:length(nu_values)
             ITAE(i, j) = Inf;
             fprintf('%.i/%.i\n', count, total)
             count = count+1;
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
             continue
         end
         
         G = fotf([1/(wn^(nu+1)), (2*zeta)/(wn^nu), 1], [nu+1, nu, 0], 1, 0);
+        
         
         % print and paste simulink block
         coef_1 = 1 / (wn^(nu+1));
@@ -37,22 +42,26 @@ for i = 1:length(nu_values)
         str_polos = sprintf('%g*s^%g + %g*s^%g + 1', coef_1, ord_1, coef_2, ord_2);
         set_param('PID_arch/Controlled FTF','polePoly', str_polos);
         set_param('PID_arch/Free FTF','polePoly', str_polos);
-                
+        
+
+        
         % Step response data
-        t = 0:0.01:30;
+        t = 0:0.01:60;
         y = step(G, t);
         K = y(end);
                 
         % Z-N params
         [Gm, Pm, Wcg, Wcp] = margin(G);
         Kcr = Gm; %bc K = 1
-        Pcr = 2 * pi / Wcg;
+        Pcr = 2 * pi / Wcp;
         
         if Gm >= 1e4
             fprintf('no Kcr\n')
             ITAE(i, j) = NaN;
             fprintf('%.i/%.i\n', count, total)
             count = count+1;
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
             continue
         end
                 
@@ -60,25 +69,61 @@ for i = 1:length(nu_values)
         Kp = 0.6*Kcr;
         Ti = 0.5*Pcr;
         Td = Pcr/8;
+
+        % % PID with small overshoot
+        % Kp = Kcr/3;
+        % Ti = Pcr/2;
+        % Td = Pcr/3;
+
+        % % PID with no overshoot
+        % Kp = 0.2*Kcr;
+        % Ti = Pcr/2;
+        % Td = Pcr/3;
+
+
         Ki = Kp/Ti;
         Kd = Kp*Td;
-                
-        % running the simulation
-        data = sim("PID_arch.slx");
+
+
+        try
+            % Executa a simulação do Simulink
+            data = sim("PID_arch.slx");
+            
+            % Se a simulação correr bem, calcula o ITAE normal
+            t_ctrl = data.controlled.Time;
+            y_ctrl = data.controlled.Data;
+            r = ones(size(y_ctrl));
+            err = r - y_ctrl;
+            ITAE(i, j) = trapz(t_ctrl, t_ctrl .*abs(err));
+            fprintf('ITAE = %.4f\n', ITAE(i, j));
+
+            max_os(i, j) = max(y_ctrl);
+
+            % settling time 5%
+            banda = 0.05;
+            dentro_da_banda = abs(y_ctrl - 1) <= banda;
+            idx_fora = find(~dentro_da_banda, 1, 'last');
+            if isempty(idx_fora)
+                ts = t_ctrl(1);
+            elseif idx_fora == length(t_ctrl)
+                ts = NaN;
+            else
+                ts = t_ctrl(idx_fora + 1);
+            end
+            
+            set_time(i, j) = ts;
         
-        %plot the simulations
+        catch ME
+            % Se o Simulink explodir (singularidade/instabilidade), entra aqui:
+            warning('A malha fechada desestabilizou no tempo t = 13.85s: %s', ME.message);
+            
+            % Atribuis Infinito ao ITAE para sinalizar falha por instabilidade
+            ITAE(i, j) = Inf; 
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
+        end 
+
         
-        t_ctrl = data.controlled.Time;
-        y_ctrl = data.controlled.Data;
-                
-                
-        % Error metric - ITAE
-        
-        r = ones(size(y_ctrl));
-        err = r - y_ctrl;
-        
-        ITAE(i, j) = trapz(t_ctrl, t_ctrl .*abs(err));
-        fprintf('ITAE = %.4f\n', ITAE(i, j));
         fprintf('%.i/%.i\n', count, total)
         count = count+1;
 
@@ -87,7 +132,10 @@ end
 
 
 figure,
-plot(t, y, 'DisplayName', 'System'), hold on
-plot(t_ctrl, y_ctrl, 'DisplayName', 'PID Controlled')
+plot(t, y, 'DisplayName', 'Open Loop'), hold on
+plot(t_ctrl, y_ctrl, 'DisplayName', 'Closed Loop (PID)')
 grid on
 legend('show')
+title('Example of the S-Shape Method')
+xlabel('Time (s)')
+ylabel('Amplitude')
