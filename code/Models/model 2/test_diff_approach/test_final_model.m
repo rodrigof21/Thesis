@@ -13,7 +13,7 @@ G_real = @(s) 1 ./ (1 + 2.*zeta_real.*(s/wn).^nu_real + (s/wn).^(nu_real+1));
 
 % Adds noise
 rng(42);
-noise_level = 0.01;
+noise_level = 0.0;
 noise = noise_level * randn(size(y_clean));
 y_noise = y_clean + noise;
 
@@ -24,7 +24,7 @@ y_filtered = movmean(y_noise, 30);
 % y_filtered = y_noise;
 
 % Point Extraction from noisy curve
-[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
+[tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_clean);
 
 
 % ID Logic
@@ -72,16 +72,17 @@ fprintf('Real wn = %.2f\n', wn);
 fprintf('Guess wn = %.2f\n', wn_g);
 
 figure
-plot(t_real, y_noise, 'DisplayName', 'Noisy Data'), hold on
+plot(t_real, y_noise, 'DisplayName', 'Curve w/ real parameters'), hold on
 %plot(t_real, y_filtered, 'DisplayName', 'Filtered'), hold on
 %plot(tp, Mp+1, 'ro');
 %plot(t05, 0.5, 'ro');
-plot(t_guess, y_guess, 'DisplayName', 'Guess'), hold on
+plot(t_guess, y_guess, 'DisplayName', 'Curve w/ identified parameters'), hold on
 %plot(t_guess, y_clean, 'DisplayName', 'Real')
 legend('show');
-title('Guessed model with real \omega_n (\omega_n = 1)')
-xlabel('t (s)')
+title('Example of System Identification')
+xlabel('Time (s)')
 ylabel('Amplitude')
+grid on
 
 err = y_clean-y_guess;
 rms = sqrt(mean(err.^2));

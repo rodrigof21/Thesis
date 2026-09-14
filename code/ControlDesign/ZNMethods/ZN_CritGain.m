@@ -1,10 +1,10 @@
 % Critical Gain ZN
 
-nu_values = 0.5:0.2:1.9;
-zeta_values = 0.5:0.5:5;
+% nu_values = 0.5:0.2:1.9;
+% zeta_values = 0.5:0.5:5;
 
-% nu_values = 1.5;
-% zeta_values = 2.5;
+nu_values = 1.9;
+zeta_values = 2;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
 max_os = zeros(length(nu_values), length(zeta_values));
@@ -46,7 +46,7 @@ for i = 1:length(nu_values)
 
         
         % Step response data
-        t = 0:0.01:60;
+        t = 0:0.01:30;
         y = step(G, t);
         K = y(end);
                 
@@ -94,7 +94,18 @@ for i = 1:length(nu_values)
             y_ctrl = data.controlled.Data;
             r = ones(size(y_ctrl));
             err = r - y_ctrl;
-            ITAE(i, j) = trapz(t_ctrl, t_ctrl .*abs(err));
+            ITAE_atual = trapz(t_ctrl, t_ctrl .*abs(err));
+            
+            if ITAE_atual > 1e6
+                ITAE(i, j) = NaN;
+                fprintf('%.i/%.i\n', count, total);
+                count = count + 1;
+                max_os(i, j) = Inf;
+                set_time(i, j) = Inf;
+                continue; % Salta para a próxima iteração do ciclo
+            end
+
+            ITAE(i, j) = ITAE_atual;
             fprintf('ITAE = %.4f\n', ITAE(i, j));
 
             max_os(i, j) = max(y_ctrl);
@@ -104,14 +115,14 @@ for i = 1:length(nu_values)
             dentro_da_banda = abs(y_ctrl - 1) <= banda;
             idx_fora = find(~dentro_da_banda, 1, 'last');
             if isempty(idx_fora)
-                ts = t_ctrl(1);
+                st = t_ctrl(1);
             elseif idx_fora == length(t_ctrl)
-                ts = NaN;
+                st = NaN;
             else
-                ts = t_ctrl(idx_fora + 1);
+                st = t_ctrl(idx_fora + 1);
             end
             
-            set_time(i, j) = ts;
+            set_time(i, j) = st;
         
         catch ME
             % Se o Simulink explodir (singularidade/instabilidade), entra aqui:
@@ -136,6 +147,6 @@ plot(t, y, 'DisplayName', 'Open Loop'), hold on
 plot(t_ctrl, y_ctrl, 'DisplayName', 'Closed Loop (PID)')
 grid on
 legend('show')
-title('Example of the S-Shape Method')
+title('Worst-case scenario (Critical Gain Method)')
 xlabel('Time (s)')
 ylabel('Amplitude')

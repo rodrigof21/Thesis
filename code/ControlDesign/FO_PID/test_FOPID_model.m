@@ -3,14 +3,16 @@ clear; clc;
 load("C:\Users\r7fon\OneDrive - Universidade de Lisboa\MEMec\Thesis\code\ControlDesign\FO_PID\results\FOPID_Models.mat")
 
 
-nu_vec = 0.7:0.1:1.9;
-zeta_vec = 0.2:0.1:5;
+% nu_vec = 0.7:0.1:1.9;
+% zeta_vec = 0.2:0.1:5;
 
-% nu_vec = 1.6;
-% zeta_vec = 0.9;
+nu_vec = 1.1;
+zeta_vec = 1.4;
 
 ITAE_matrix = zeros(length(nu_vec), length(zeta_vec));
 gains = zeros(length(nu_vec), length(zeta_vec), 6);
+max_os = zeros(length(nu_vec), length(zeta_vec));
+set_time = zeros(length(nu_vec), length(zeta_vec));
 
 wn = 1;
 t_sim = 0:0.05:30;
@@ -29,6 +31,8 @@ for i = 1:length(nu_vec)
             gains(i, j, :) = Inf;
             fprintf('%.i/%.i\n', count, total);
             count=count+1;
+            max_os(i, j) = Inf;
+            set_time(i, j) = Inf;
             continue
         end
         
@@ -67,6 +71,22 @@ for i = 1:length(nu_vec)
         gains(i, j, 4) = Tf;
         gains(i, j, 5) = lambda;
         gains(i, j, 6) = mu;
+
+        max_os(i, j) = max(y);
+
+        % settling time 5%
+        banda = 0.05;
+        dentro_da_banda = abs(y - 1) <= banda;
+        idx_fora = find(~dentro_da_banda, 1, 'last');
+        if isempty(idx_fora)
+            ts = t(1);
+        elseif idx_fora == length(t)
+            ts = NaN;
+        else
+            ts = t(idx_fora + 1);
+        end
+        
+        set_time(i, j) = ts;
         
         fprintf('%.i/%.i\n', count, total);
         count=count+1;
@@ -82,7 +102,26 @@ itae = ITAE_matrix(:);
 itae = itae(~isinf(itae));
 fprintf('máximo ITAE: %.4f', max(itae))
 
-figure, 
-step(G, t_sim), hold on
-plot(t, y)
+% figure, 
+% step(G, t_sim), hold on
+% plot(t, y)
 
+
+filteros = isinf(max_os);
+os = max_os(~filteros);
+mean(os(:))
+
+filterts = isinf(set_time);
+time = set_time(~filterts);
+mean(time(:))
+
+
+figure, 
+plot(t, y)
+hold on
+step(G, t_sim);
+grid on
+legend('Closed Loop', 'Open Loop');
+title('Example of FOPID performance')
+xlabel('Time (s)')
+ylabel('Amplitude')

@@ -4,8 +4,11 @@ wn = 1;
 ts = 0.5;
 t = 0:ts:60;
 
-nu_vec = 0.7:0.1:1.9;
-zeta_vec = 0.1:0.1:5;
+% nu_vec = 0.7:0.1:1.9;
+% zeta_vec = 0.1:0.1:5;
+
+nu_vec = 1.2;
+zeta_vec = 1.9;
 
 rng(42);
 RMS = zeros(length(nu_vec), length(zeta_vec));
@@ -34,7 +37,7 @@ for i = 1:length(nu_vec)
         y_clean = step(G, t); 
 
         % Add noise
-        noise_level = 0.01;
+        noise_level = 0;
         noise = noise_level * randn(size(y_clean));
         y = y_clean + noise;
         
@@ -77,17 +80,18 @@ for i = 1:length(nu_vec)
     end
 end
 
-open RMS
+%open RMS
 
-% % plots
-% figure
-% plot(t, y, 'b')
-% hold on
-% plot(t, y_id_online, 'r') 
-% legend('original', 'identificado', 'location', 'best')
-% xlabel('tempo')
-% ylabel('amplitude')
-% grid on
+% plots
+figure
+plot(t, y, 'b')
+hold on
+plot(t, y_id_online, 'r') 
+legend('Real Curve', 'Identified Curve', 'location', 'best')
+xlabel('Time (s)')
+ylabel('Amplitude')
+title('Example of ARX model identification')
+grid on
 
 function [theta,R] = online_ID(theta_old, R_old, a, err)
     % forgetting factor

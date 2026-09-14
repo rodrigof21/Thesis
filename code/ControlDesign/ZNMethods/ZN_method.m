@@ -1,10 +1,10 @@
 % S-Shape ZN
 
-nu_values = 0.5:0.2:1.9;
-zeta_values = 0.5:0.5:5;
+% nu_values = 0.5:0.2:1.9;
+% zeta_values = 0.5:0.5:5;
 
-% nu_values = 0.9;
-% zeta_values = 1.5;
+nu_values = 0.9;
+zeta_values = 1;
 
 ITAE = zeros(length(nu_values), length(zeta_values));
 max_os = zeros(length(nu_values), length(zeta_values));
@@ -43,7 +43,7 @@ for i = 1:length(nu_values)
         set_param('PID_arch/Free FTF','polePoly', str_polos);        
         
         % Step response data
-        t = 0:0.01:60;
+        t = 0:0.01:30;
         y = step(G, t);
         K = 1;
         %K = y(end);
@@ -139,7 +139,7 @@ plot(t, y, 'DisplayName', 'Open Loop'), hold on
 plot(t_ctrl, y_ctrl, 'DisplayName', 'Closed Loop')
 grid on
 legend('show')
-title('Example of the S-Shape Method')
+title('Worst-case Scenario (S-Shape Method)')
 xlabel('Time (s)')
 ylabel('Amplitude')
 
