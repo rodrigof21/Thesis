@@ -6,7 +6,6 @@
       {
         "id": "c604c6cdad424a72",
         "type": "tabs",
-        "dimension": 59.17008196721312,
         "children": [
           {
             "id": "5777869464fbb748",
@@ -14,47 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Project/Controller Design/PID Model After PSO.md",
+                "file": "Project/Report Writing/Proposed Thesis Structure.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "PID Model After PSO"
-            }
-          }
-        ]
-      },
-      {
-        "id": "3e075d844c12d848",
-        "type": "tabs",
-        "dimension": 40.829918032786885,
-        "children": [
-          {
-            "id": "3a991379cab67429",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Info/Notation.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Notation"
+              "title": "Proposed Thesis Structure"
             }
           },
           {
-            "id": "b59c2a3e4b551a54",
+            "id": "c1d0843c1b4f6260",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Project/TODO - Report.md",
+                "file": "Project/Report Writing/Intro dump.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "TODO - Report"
+              "title": "Intro dump"
             }
           }
         ],
@@ -117,7 +95,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 246.5
+    "width": 200
   },
   "right": {
     "id": "2ad9295a5b19ba41",
@@ -222,14 +200,16 @@
       "bases:Create new base": false
     }
   },
-  "active": "b59c2a3e4b551a54",
+  "active": "c1d0843c1b4f6260",
   "lastOpenFiles": [
+    "Project/Report Writing/Intro dump.md",
+    "Project/Report Writing/Proposed Thesis Structure.md",
     "Project/Controller Design/PID Model After PSO.md",
-    "Project/Controller Design/Noise simulation theory.md",
+    "Info/Notation.md",
     "Project/TODO - Report.md",
+    "Project/Controller Design/Noise simulation theory.md",
     "Info/Matlab Script Index.md",
     "Info/Project Files Structure.md",
-    "Info/Notation.md",
     "Info/Database Values.md",
     "Project/Results and analysis/Tested id models.md",
     "Project/Results and analysis/Point correlation.md",
@@ -238,7 +218,6 @@
     "Project/TODO - Project.md",
     "Project/Controller Design/ITAE for ZN methods.md",
     "Project/Controller Design/Fractional Order PID Models.md",
-    "Untitled.md",
     "Project/theory notes/ID Models/Final Model.md",
     "Project/theory notes/ID Models/Identification Model 2.md",
     "Assets/Pasted image 20260624112729.png",
@@ -255,7 +234,6 @@
     "Project/Results and analysis/Varrimento de variaveis para modelos.md",
     "Project/Links.md",
     "Project/theory notes/Stability Chart.md",
-    "Project/Report Writing/Proposed Thesis Structure.md",
     "Project/theory notes/ID Models/Model with Limited range.md",
     "Project/theory notes/ID Models/Inverse ID Approach.md",
     "Assets/varywn.eps",

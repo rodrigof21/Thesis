@@ -1,0 +1,8 @@
+\section{Problem Statement and Research Gaps}
+\label{sec:intro_problem}
+
+Despite the benefits of fractional-order models, identifying second-kind systems from time-domain responses presents significant practical hurdles. In traditional identification, nonlinear numerical optimization algorithms (such as Levenberg-Marquardt or Nelder-Mead) are often employed to fit transient curves. However, these methods are computationally demanding, sensitive to initial estimates, and susceptible to local minima, making them impractical for fast or automated commissioning.
+
+On the other hand, standard integer-order identification techniques, such as discrete ARX models, fail to capture the true underlying fractional dynamics unless very high model orders are selected. This approach increases parameter complexity and obscures the physical characteristics of the original plant.
+
+Furthermore, an operational gap exists between system identification and practical control synthesis. While dedicated fractional-order controllers can deliver superior closed-loop performance, tuning them typically requires prior knowledge of the plant's parameters. A direct, end-to-end workflow that extracts key morphological features from a single step response, computes the continuous fractional parameters via explicit formulas, and directly synthesizes robust controllers remains largely unaddressed in the literature.

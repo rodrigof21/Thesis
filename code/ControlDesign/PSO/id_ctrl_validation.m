@@ -55,12 +55,12 @@ for i = 1:length(nu_vec)
 
         % % Filter Data 
         % y_filtered1 = lowpass(y_noise, 0.1);
-        % y_filtered = movmean(y_filtered1, 11);
+        y_filtered = movmean(y_noise, 11);
         % y_filtered = sgolayfilt(y_noise, 3, 15);
         % y_filtered = filtfilt(b, a, y_noise);
 
         % Point Extraction from noisy curve
-        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_noise);
+        [tau1, tau2, tau3, tau4, tau5, tp, Mp, t05] = extractPoints_noise(t_real, y_filtered);
 
 
         % Fallback
